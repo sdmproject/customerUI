@@ -3,19 +3,18 @@ import { useState, useEffect} from "react";
 import Tab from "../Components/Tab"
 import Dish from "../Components/Dish"
 import { Divider } from "@mui/material";
+import shuffle from "../Functions/Shuffle";
 
 
 
-
-
-
-const Menu = ({dishes, cart, setCart}) =>{
+const Menu = ({dishes,cart, setCart}) =>{
 
 	const [dishType, setDishType] = useState("")
 	const [allTypeName, setAllTypeName] = useState([])
 	const [allTypeImage, setAllTypeImage] = useState([])
 
 	useEffect(() => {
+		shuffle(dishes)
 		// because the state variable wouldn't render immediately
 		let typeTemp = []
 		for (let i = 0; i < dishes.length; i++){
@@ -28,8 +27,6 @@ const Menu = ({dishes, cart, setCart}) =>{
 		setAllTypeName(typeTemp)	
 	}, []);
 
-	useEffect(() => {
-	}, [dishType]);
 
 	const onClick_dishType = (e, type) => {
 		setDishType(type)
@@ -46,12 +43,15 @@ const Menu = ({dishes, cart, setCart}) =>{
 		<>
 			<Tab items={allTypeName} dishType={dishType} setDishType={setDishType}></Tab>
 			<Divider></Divider>
-			{dishes.map(
+			{/* {dishes.map(
 				(dish)=>  dish.type === dishType
 							?
 							<div className={"button-object"}><AnimateButton imageUrl={dish.image} imageTitle={dish.name} imageWidth={"100%"}></AnimateButton></div>
 							:
-							<></>)}
+							<></>)} */}
+
+			<div className={"button-object"}> <AnimateButton imageUrl={allTypeImage[allTypeName.indexOf(dishType)]} imageTitle={dishType} imageWidth={"100%"} clickAble="false"></AnimateButton></div>
+			<br/>
 			{dishes.map(
 				(dish) => dish.type === dishType
 					?

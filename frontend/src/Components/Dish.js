@@ -14,10 +14,12 @@ import NumberSelector from "./NumberSelector";
 
 const Dish = ({dish, cart, setCart}) => {
 	const [modalOpen, setModalOpen] = React.useState(false)
-	const [notes, setNotes] = React.useState([])
+	const [notes, setNotes] = React.useState("")
 	const [dishNum, setDishNum] = React.useState(0)
 	const onClick_open = () => setModalOpen(true)
 	const onClick_close = () => setModalOpen(false)
+
+
 	const onClick_addToCart = () =>{
 		let temp = cart
 		for (let i = 0; i < dishNum; i++)

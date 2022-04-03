@@ -1,27 +1,10 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 
-const images = [
-  {
-    url: '/static/images/buttons/breakfast.jpg',
-    title: 'Breakfast',
-    width: '40%',
-  },
-  {
-    url: '/static/images/buttons/burgers.jpg',
-    title: 'Burgers',
-    width: '30%',
-  },
-  {
-    url: '/static/images/buttons/camera.jpg',
-    title: 'Camera',
-    width: '30%',
-  },
-];
+
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
@@ -87,10 +70,44 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
-export default function AnimateButton({imageUrl, imageTitle, imageWidth}) {
+export default function AnimateButton({imageUrl, imageTitle, imageWidth, clickAble}) {
   
 
   return (
+    <>
+    {
+    clickAble === "false"
+    ?
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+        <ImageButton
+          // focusRipple
+          key={imageTitle}
+          style={{
+            width: imageWidth,
+          }}
+          disabled
+        >
+          <ImageSrc style={{ backgroundImage: `url(${imageUrl})` }} />
+          <ImageBackdrop className="MuiImageBackdrop-root" />
+          <Image>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              sx={{
+                position: 'relative',
+                p: 4,
+                pt: 2,
+                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+              }}
+            >
+              {imageTitle}
+              <ImageMarked className="MuiImageMarked-root" />
+            </Typography>
+          </Image>
+        </ImageButton>
+      </Box>
+    :
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
         <ImageButton
           focusRipple
@@ -118,6 +135,8 @@ export default function AnimateButton({imageUrl, imageTitle, imageWidth}) {
             </Typography>
           </Image>
         </ImageButton>
-    </Box>
+      </Box>
+      }
+      </>
   );
 }
