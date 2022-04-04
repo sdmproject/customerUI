@@ -5,13 +5,14 @@ const NumberSelector = ({dishNum, setDishNum, Size}) => {
 		setDishNum(dishNum + 1)
 	}
 
-	const onClick_minus = () => {
+	const onClick_min = () => {
+		console.log(dishNum)
 		if (dishNum > 0)
 			setDishNum(dishNum - 1)
 	}
-	// useEffect (()=>{
-	// 	console.log(Size==="small")
-	// }, [])
+	useEffect (()=>{
+		console.log(dishNum)
+	}, [])
 	return (
 		<>
 		{
@@ -21,9 +22,9 @@ const NumberSelector = ({dishNum, setDishNum, Size}) => {
 			{
 				dishNum <= 0
 				?
-				<span onClick={onClick_minus} className="pl-1.5 pr-1.5 text-xl font-serif text-slate-300 no-select">-</span>
+				<span className="pl-1.5 pr-1.5 text-xl font-serif text-slate-300 no-select">-</span>
 				:
-				<span onClick={onClick_minus} className="pl-1.5 pr-1.5  text-xl font-serif hover:bg-zinc-200 no-select">-</span>
+				<span onClick={onClick_min} className="pl-1.5 pr-1.5  text-xl font-serif hover:bg-zinc-200 no-select">-</span>
 			}
 			<span className="border-b-2 border-b-purple-900 p-1">&nbsp;&nbsp;{dishNum}&nbsp;&nbsp;</span>
 			<span onClick={onClick_add} className="pl-1.5 pr-1.5  text-xl font-serif hover:bg-zinc-200 no-select">+</span>
@@ -33,9 +34,9 @@ const NumberSelector = ({dishNum, setDishNum, Size}) => {
 			{
 				dishNum <= 0
 				?
-				<span onClick={onClick_minus} className="pl-px pr-px text-sm font-serif text-slate-300 no-select">-</span>
+				<span className="pl-px pr-px text-sm font-serif text-slate-300 no-select">-</span>
 				:
-				<span onClick={onClick_minus} className="pl-px pr-px text-sm font-serif hover:bg-zinc-200 no-select">-</span>
+				<span onClick={onClick_min} className="pl-px pr-px text-sm font-serif hover:bg-zinc-200 no-select">-</span>
 			}
 			<span className="border-b-2 border-b-purple-900 p-px">&nbsp;{dishNum}&nbsp;</span>
 			<span onClick={onClick_add} className="pl-px pr-px  text-sm font-serif hover:bg-zinc-200 no-select">+</span>

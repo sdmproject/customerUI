@@ -1,6 +1,6 @@
 import GoodInCart from "../Components/GoodInCart"
 import { useState, useEffect } from "react"
-
+import Divider from '@mui/material/Divider';
 const ShoppingCartPage = ({dishes, cart, setCart}) =>{
 
 	const [dishesNum, setDishesNum] = useState([])
@@ -32,8 +32,12 @@ const ShoppingCartPage = ({dishes, cart, setCart}) =>{
 	}, [])
 
 	return (
-		<div>123.{
-		cartForMap.map((order, idx)=><GoodInCart name={order[0].name} image={order[0].image} note={order[1]} number={dishesNum[idx]} cart={cart} setCart={setCart}/>)
+		<div className="my-auto top-40 relative">{
+		cartForMap.length > 0
+			?	
+			cartForMap.map((order, idx)=><div className="my-auto relative"><GoodInCart name={order[0].name} image={order[0].image} note={order[1]} number={dishesNum[idx]} cart={cart} setCart={setCart}/> <Divider/></div>)
+			:
+			<div className="text-2xl text-emerald-400 overline top-20 relative">購物車裡面沒東西喔~</div>
 		}</div>
 	)
 }
