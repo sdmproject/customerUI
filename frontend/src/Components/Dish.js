@@ -33,17 +33,16 @@ const Dish = ({ dish, cart, setCart }) => {
     for (let i = 0; i < dishNum; i++) temp[dish.name].push(notes);
     setDishNum(0);
     setCart(temp);
+    setModalOpen(false);
     console.log(cart);
   };
 
   const onChange_notes = (e) => {
-    // console.log(e.target.value)
     setNotes(e.target.value);
   };
 
   const modalStyle = {
     position: "absolute",
-    // top: '40%',
     top: "5%",
     left: "50%",
     transform: "translate(-50%, 0%)",
@@ -59,20 +58,20 @@ const Dish = ({ dish, cart, setCart }) => {
 
   return (
     <>
-      <Card sx={{ width: 350, height: 100, marginTop: 2, display: "flex" }}>
+      <Card sx={{ width: "100%", height: 100, marginTop: 2, display: "flex" }}>
         <CardActionArea
           sx={{ display: "flex" }}
           component={Button}
           onClick={onClick_open}
         >
           <CardMedia
-            sx={{ position: "relative", width: 140 }}
+            sx={{ position: "relative", width: "40%" }}
             component="img"
             alt="圖片尚未準備"
             image={dish.img}
           />
           <CardContent
-            sx={{ position: "relative", flex: "1 0 auto", width: 210 }}
+            sx={{ position: "relative", flex: "1 0 auto", width: "60%" }}
           >
             <Typography color="text.secondary">{dish.name}</Typography>
             <Typography color="text.secondary">$ {dish.price}</Typography>
@@ -99,11 +98,13 @@ const Dish = ({ dish, cart, setCart }) => {
               className={"pb-4 w-full max-w-md h-44 sm:h-52"}
             />
             <Typography id="transition-modal-title" variant="h5" component="h2">
-              <p className="text-sky-500">{dish.name}</p>
+              {dish.name}
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 0.5 }}>
-              <p className="text-xs">{dish.description}</p>
-              <p className="pt-4 text-lg">$ {dish.price} / 份</p>
+              {dish.description}
+            </Typography>
+            <Typography id="transition-modal-description" sx={{ mt: 0.5 }}>
+              $ {dish.price} / 份
             </Typography>
             <Divider className="pt-1" />
             <NumberSelector dishNum={dishNum} setDishNum={setDishNum} />

@@ -13,37 +13,34 @@ const GoodInCart = ({ name, image, note, number, cart, setCart }) => {
 
   const onClick_Change = () => {
     let temp = cart;
-    console.log(dishNum);
-    console.log(number);
     let changeNum = dishNum - number >= 0 ? dishNum - number : number - dishNum;
     try {
-      // minus
       if (dishNum - number < 0)
         for (let i = 0; i < changeNum; i++) {
           let removeIdx = temp[name].indexOf(note);
           if (removeIdx !== -1) temp[name].splice(removeIdx, 1);
         }
-      //add
       else if (dishNum + number > 0)
         for (let i = 0; i < changeNum; i++) {
           temp[name].push(note);
         }
       setCart(temp);
-      console.log(cart);
     } catch (e) {
-      console.log("There is some error in removing");
+      console.log(e);
     }
   };
 
   return (
-    <Card sx={{ width: 350, height: "auto", marginTop: 2, display: "flex" }}>
+    <Card sx={{ width: "100%", height: 150, marginTop: 2, display: "flex" }}>
       <CardMedia
-        sx={{ position: "relative", width: 140 }}
+        sx={{ position: "relative", width: "40%" }}
         component="img"
         alt="圖片尚未準備"
         image={image}
       />
-      <CardContent sx={{ position: "relative", flex: "1 0 auto", width: 210 }}>
+      <CardContent
+        sx={{ position: "relative", flex: "1 0 auto", width: "60%" }}
+      >
         <Typography color="text.secondary">{name}</Typography>
         <Typography color="text.secondary">{note}</Typography>
         <NumberSelector
