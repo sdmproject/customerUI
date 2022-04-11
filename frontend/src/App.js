@@ -103,50 +103,54 @@ function App() {
 
   useEffect(async () => {
 
-    // get dishes
-    console.log('get dished data start');
-
-    const response = await axios.get("https://api.eatba.tk/menu/1");
-    console.log(response.data);
-    setDishes(response.data);
-
-    console.log("dishes.length");
-    console.log(dishes.length);
-
     const resturantID = 1;
 
-    // const dishesData = await getMenuData(resturantID);
-    // if (dishesData)
-    //   setDishes(dishesData);
+    const dishesData = await getMenuData(resturantID);
+    if (dishesData) {
+      setDishes(dishesData);
 
-    // console.log(dishesData.data);
+      let cartTemp = {};
+      let data = dishesData;
 
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i].name);
+        cartTemp[data[i].name] = [];
+      }
+      setCart(cartTemp);
+      console.log(cartTemp);
 
-
-    // setDishes(getDishesData());
-
-    // axios.get("https://api.eatba.tk/menu/1").then(response => {
-    //   console.log(response.data);
-    //   setDishes(response.data);
-    //   console.log('get data finished');
-    // });
-
-
-    let cartTemp = {};
-
-    for (let i = 0; i < dishes.length; i++) {
-      console.log(dishes[i].name);
-
-      cartTemp[dishes[i].name] = [];
     }
-    setCart(cartTemp);
-    console.log(cartTemp);
 
-
-
+    console.log("dishes.length");
+    console.log(dishes.length);// setDishes 尚未生效 length會是0, 要在useEffect之外才會生效
 
   }, []);
   //用假資料dishes不會更改
+
+
+
+  // // get dishes
+  // console.log('get dished data start');
+
+  // const response = await axios.get("https://api.eatba.tk/menu/1");
+  // console.log(response.data);
+  // setDishes(response.data);
+
+  // console.log("dishes.length");
+  // console.log(dishes.length);
+
+
+  // console.log(dishesData.data);
+
+
+
+  // setDishes(getDishesData());
+
+  // axios.get("https://api.eatba.tk/menu/1").then(response => {
+  //   console.log(response.data);
+  //   setDishes(response.data);
+  //   console.log('get data finished');
+  // });
 
 
 
