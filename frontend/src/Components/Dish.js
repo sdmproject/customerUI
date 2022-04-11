@@ -69,7 +69,7 @@ const Dish = ({ dish, cart, setCart }) => {
             sx={{ position: "relative", width: 140 }}
             component="img"
             alt="圖片尚未準備"
-            image={dish.image}
+            image={dish.img}
           />
           <CardContent
             sx={{ position: "relative", flex: "1 0 auto", width: 210 }}
@@ -95,7 +95,7 @@ const Dish = ({ dish, cart, setCart }) => {
         <Fade in={modalOpen}>
           <Box sx={modalStyle}>
             <img
-              src={dish.image}
+              src={dish.img}
               className={"pb-4 w-full max-w-md h-44 sm:h-52"}
             />
             <Typography id="transition-modal-title" variant="h5" component="h2">

@@ -8,6 +8,7 @@
     "server": "cd backend && yarn server"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "react-router-dom": "^6.3.0"
   }
 }

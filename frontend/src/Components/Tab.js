@@ -47,6 +47,7 @@ export default function TabBar({ items, dishType, setDishType }) {
           <CustomTab
             // sx={{ backgroundColor: theme.palette.primary }}
             // fullWidth
+            key={item}
             label={item}
             value={item}
           />

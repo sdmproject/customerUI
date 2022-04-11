@@ -70,73 +70,73 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
-export default function AnimateButton({imageUrl, imageTitle, imageWidth, clickAble}) {
-  
+export default function AnimateButton({ imageUrl, imageTitle, imageWidth, clickAble }) {
+
 
   return (
     <>
-    {
-    clickAble === "false"
-    ?
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-        <ImageButton
-          // focusRipple
-          key={imageTitle}
-          style={{
-            width: imageWidth,
-          }}
-          disabled
-        >
-          <ImageSrc style={{ backgroundImage: `url(${imageUrl})` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+      {
+        clickAble === "false"
+          ?
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+            <ImageButton
+              // focusRipple
+              key={imageTitle}
+              style={{
+                width: imageWidth,
+              }}
+              disabled
+            >
+              <ImageSrc style={{ backgroundImage: `url(${imageUrl})` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  {imageTitle}
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          </Box>
+          :
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+            <ImageButton
+              focusRipple
+              key={imageTitle}
+              style={{
+                width: imageWidth,
               }}
             >
-              {imageTitle}
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      </Box>
-    :
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-        <ImageButton
-          focusRipple
-          key={imageTitle}
-          style={{
-            width: imageWidth,
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(${imageUrl})` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-              }}
-            >
-              {imageTitle}
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      </Box>
+              <ImageSrc style={{ backgroundImage: `url(${imageUrl})` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  {imageTitle}
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          </Box>
       }
-      </>
+    </>
   );
 }

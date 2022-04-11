@@ -5,6 +5,7 @@ import Dish from "../Components/Dish";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
 import shuffle from "../Functions/Shuffle";
+// import getRedirectUrl from "../Functions/Test";
 
 const Menu = ({ dishes, cart, setCart }) => {
   const [dishType, setDishType] = useState("");
@@ -12,6 +13,7 @@ const Menu = ({ dishes, cart, setCart }) => {
   const [allTypeImage, setAllTypeImage] = useState([]);
 
   useEffect(() => {
+
     shuffle(dishes);
     // because the state variable wouldn't render immediately
     let typeTemp = [];
@@ -19,7 +21,7 @@ const Menu = ({ dishes, cart, setCart }) => {
       if (!typeTemp.includes(dishes[i].type)) {
         // setAllTypeName(all => [...all, dishes[i].type])
         typeTemp.push(dishes[i].type);
-        setAllTypeImage((all) => [...all, dishes[i].image]);
+        setAllTypeImage((all) => [...all, dishes[i].img]);
       }
     }
     setAllTypeName(typeTemp);
@@ -34,6 +36,7 @@ const Menu = ({ dishes, cart, setCart }) => {
       {dishType === "" ? (
         allTypeName.map((type, index) => (
           <div
+            key={index} //if not => Warning: Each child in a list should have a unique "key" prop.
             className={"button-object"}
             onClick={(e) => onClick_dishType(e, type)}
           >
@@ -52,7 +55,7 @@ const Menu = ({ dishes, cart, setCart }) => {
             setDishType={setDishType}
           />
           {/* {dishes.map(
-				(dish)=>  dish.type === dishType
+				  (dish)=>  dish.type === dishType
 							?
 							<div className={"button-object"}><AnimateButton imageUrl={dish.image} imageTitle={dish.name} imageWidth={"100%"}></AnimateButton></div>
 							:
@@ -72,14 +75,15 @@ const Menu = ({ dishes, cart, setCart }) => {
             {dishes.map((dish) =>
               dish.type === dishType ? (
                 // <div className={"my-auto inline-block p-3"}>
-                <Dish dish={dish} cart={cart} setCart={setCart}></Dish>
+                <Dish key={dish.name} dish={dish} cart={cart} setCart={setCart}></Dish>
               ) : // </div>
-              null
+                null
             )}
           </Box>
         </Box>
       )}
     </Box>
+
   );
 };
 
