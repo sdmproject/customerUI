@@ -1,10 +1,16 @@
 import GoodInCart from "../Components/GoodInCart";
-import { useState, useEffect } from "react";
-import Divider from "@mui/material/Divider";
-import { Box, Paper, Fab } from "@mui/material";
+import { Box, Fab, Alert, AlertTitle } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NavigationIcon from "@mui/icons-material/Navigation";
-const ShoppingCartPage = ({ dishes, cart, setCart, sendorder }) => {
+import { Navigate } from "react-router-dom";
+const ShoppingCartPage = ({
+  dishes,
+  cart,
+  setCart,
+  sendorder,
+  showAlert,
+  setShowAlert,
+}) => {
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
@@ -14,6 +20,10 @@ const ShoppingCartPage = ({ dishes, cart, setCart, sendorder }) => {
     return sum;
   };
   // console.log(cart);
+  const closealert = () => {
+    setShowAlert(null);
+    setCart([]);
+  };
 
   return (
     <>
@@ -73,7 +83,33 @@ const ShoppingCartPage = ({ dishes, cart, setCart, sendorder }) => {
           購物車裡面沒東西喔~
         </div>
       )}
-
+      {showAlert && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            display: "flex",
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "black",
+            opacity: 0.5,
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 102,
+          }}
+        >
+          <Alert
+            severity={showAlert === "success" ? "success" : "error"}
+            onClose={() => closealert()}
+            sx={{ position: "relative" }}
+          >
+            <AlertTitle>
+              {showAlert === "success" ? "Success" : "Error"}
+            </AlertTitle>
+            {showAlert === "success" ? "已送出訂單" : "error"}
+          </Alert>
+        </Box>
+      )}
       <Box sx={{ height: 80 }} />
       {cart.length > 0 ? (
         <Fab

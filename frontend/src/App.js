@@ -34,6 +34,7 @@ const theme = createTheme({
 function App() {
   const [cart, setCart] = useState([]);
   const [dishes, setDishes] = useState([]);
+  const [showAlert, setShowAlert] = useState(null);
 
   useEffect(async () => {
     if (dishes.length === 0) {
@@ -48,11 +49,7 @@ function App() {
   const sendorder = async () => {
     const data = await sendOrder(cart);
     console.log(data);
-    // if (status === "ok") {
-    //   console.log(waitingtime)
-    // } else {
-    //   console.log(status)
-    // }
+    setShowAlert(data);
   };
 
   return (
@@ -80,6 +77,8 @@ function App() {
                   cart={cart}
                   setCart={setCart}
                   sendorder={sendorder}
+                  showAlert={showAlert}
+                  setShowAlert={setShowAlert}
                 />
               }
             />
