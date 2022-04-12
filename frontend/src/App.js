@@ -1,11 +1,12 @@
 import "./App.css";
 import Menu from "./Containers/Menu";
+import Home from "./Containers/Home";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData } from "./Functions/api";
+import { getMenuData, getNearbyResturants } from "./Functions/api";
 
 const theme = createTheme({
   palette: {
@@ -86,6 +87,7 @@ const theme = createTheme({
 function App() {
   const [cart, setCart] = useState([]);
   const [dishes, setDishes] = useState([]);
+  const [resturants, setResturants] = useState([]);
 
   useEffect(async () => {
     if (dishes.length === 0) {
@@ -101,6 +103,15 @@ function App() {
         setCart(cartTemp);
       }
     }
+    if (resturants.length === 0) {
+      console.log('into get resturants');
+      const resturantsData = await getNearbyResturants();
+      if (resturantsData) {
+        setResturants(resturantsData);
+        console.log('set resturants');
+
+      }
+    }
   }, []);
 
   return (
@@ -112,6 +123,13 @@ function App() {
               exact
               path="/"
               element={<Navigate to="/menu" replace={true} />}
+            />
+            <Route
+              exact
+              path="/home"
+              element={
+                <Home resturants={resturants}></Home>
+              }
             />
             <Route
               exact

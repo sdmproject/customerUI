@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "react-search-box": "^2.2.1"
   }
 }
