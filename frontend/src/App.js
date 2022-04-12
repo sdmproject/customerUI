@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData, sendOrde, getNearbyResturants } from "./Functions/api";
+import { getMenuData, sendOrder, getNearbyResturants } from "./Functions/api";
 
 const theme = createTheme({
   palette: {
@@ -111,21 +111,21 @@ function App() {
     }
   }, []);
 
-  useEffect(async () => {
-    console.log('into get menu 2');
-    const dishesData = await getMenuData(resturantID);
-    if (dishesData) {
-      setDishes(dishesData);
-      let cartTemp = {};
-      let data = dishesData;
-      for (let i = 0; i < data.length; i++) {
-        cartTemp[data[i].name] = [];
-      }
-      setCart(cartTemp);
-    }
-  }
-    , [resturantID]
-  )
+  // useEffect(async () => {
+  //   console.log('into get menu 2');
+  //   const dishesData = await getMenuData(resturantID);
+  //   if (dishesData) {
+  //     setDishes(dishesData);
+  //     let cartTemp = {};
+  //     let data = dishesData;
+  //     for (let i = 0; i < data.length; i++) {
+  //       cartTemp[data[i].name] = [];
+  //     }
+  //     setCart(cartTemp);
+  //   }
+  // }
+  //   , [resturantID]
+  // )
   const sendorder = async () => {
     const data = await sendOrder(cart);
     console.log(data);
@@ -146,7 +146,7 @@ function App() {
               exact
               path="/home"
               element={
-                <Home resturants={resturants} setResturantID={setResturantID}></Home>
+                <Home resturants={resturants} resturantID={resturantID} setResturantID={setResturantID}></Home>
               }
             />
             <Route

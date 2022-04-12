@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import ReactSearchBox from "react-search-box";
 import HomeIcon from "@mui/icons-material/Home";
 import Restaurant from "../Components/Resturant";
+import { Typography, Rating } from "@mui/material";
 
 
 
 
 
-const Home = ({ resturants, setResturantID }) => {
-    const [hintText, setHintText] = useState("Select ypur resturant");
+
+const Home = ({ resturants, resturantID, setResturantID }) => {
+    // const [hintText, setHintText] = useState("Select ypur resturant");
+    const [hintText, setHintText] = useState("Welcome to the quick order!");
+    const [ratingValue, setRatingValue] = useState(3);
 
     return (
         <>
@@ -38,16 +41,37 @@ const Home = ({ resturants, setResturantID }) => {
             <div>
                 {hintText}
             </div>
+
             {
                 resturants.map((item, idx) => (
 
-                    <div key={idx}>
-                        {/* ${item.name} */}
-                        <Restaurant restaurant={item} setResturantID={setResturantID} setHintText={setHintText} />
-                    </div>
+                    item.id == resturantID ? (
+                        <>
+                            <div key={idx}>
+                                {/* <Restaurant restaurant={item} setResturantID={setResturantID} setHintText={setHintText} /> */}
+                                <Restaurant restaurant={item} setResturantID={() => { }} setHintText={() => { }} />
+                            </div>
+
+                            <Typography style={{ fontFamily: "NotoSansTC" }} component="legend">{item.description}</Typography>
+                            <div style={{ height: 100 }} />
+                            {/* <Typography component="legend">{item.address}</Typography> */}
+                        </>
+                    )
+                        : null
                 ))
 
             }
+            <Typography component="legend">rate this resturant!</Typography>
+
+            <Rating
+                name="simple-controlled"
+                value={ratingValue}
+                onChange={(event, newValue) => {
+                    setRatingValue(newValue);
+                }}
+                size="large"
+            />
+
         </ >
 
 
