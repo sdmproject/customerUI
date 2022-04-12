@@ -1,11 +1,13 @@
 import "./App.css";
+import axios from "axios";
 import Menu from "./Containers/Menu";
+import Home from "./Containers/Home";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData, sendOrder } from "./Functions/api";
+import { getMenuData, sendOrder, getNearbyResturants } from "./Functions/api";
 
 const theme = createTheme({
   palette: {
@@ -35,20 +37,48 @@ function App() {
   const [cart, setCart] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [showAlert, setShowAlert] = useState(null);
+  const [resturants, setResturants] = useState([]);
+  const [resturantID, setResturantID] = useState("1");
 
-  useEffect(async () => {
-    if (dishes.length === 0) {
-      const resturantID = 1;
-      const dishesData = await getMenuData(resturantID);
-      if (dishesData) {
-        setDishes(dishesData);
+  useEffect(() => {
+    const getMenuData = async () => {
+      try {
+        const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
+        if (data) {
+          setResturants(data);
+          console.log("set resturants");
+        }
+      } catch (error) {
+        console.log(error);
       }
+    };
+    if (resturants.length === 0) {
+      console.log("into get resturants");
+
+      getMenuData();
     }
   }, []);
 
+  useEffect(() => {
+    const getMenuData = async (resturantID) => {
+      try {
+        const { data } = await axios.get(
+          `https://api.eatba.tk/menu/${resturantID}`
+        );
+        if (data) {
+          setDishes(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (dishes.length === 0) {
+      getMenuData(resturantID);
+    }
+  }, [resturantID]);
+
   const sendorder = async () => {
     const data = await sendOrder(cart);
-    console.log(data);
     setShowAlert(data);
   };
 
@@ -60,7 +90,14 @@ function App() {
             <Route
               exact
               path="/"
-              element={<Navigate to="/menu" replace={true} />}
+              element={<Navigate to="/home" replace={true} />}
+            />
+            <Route
+              exact
+              path="/home"
+              element={
+                <Home resturants={resturants} setResturantID={setResturantID} />
+              }
             />
             <Route
               exact
@@ -73,7 +110,6 @@ function App() {
               path="/cart"
               element={
                 <ShoppingCartPage
-                  dishes={dishes}
                   cart={cart}
                   setCart={setCart}
                   sendorder={sendorder}

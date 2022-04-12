@@ -7,6 +7,14 @@
   pointer-events: none;
 }
 
+.Homepage-Img {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -14,16 +22,28 @@
 }
 
 .container {
+  display: flex;
   padding-top: 100px;
-  margin:auto;
+  margin: auto;
   /* overflow-y: scroll; */
+}
+
+.img-container {
+  width: "100%";
+  display: "flex";
+  justify-content: center;
+  align-items: center;
+  /* margin-left: auto;
+  margin-right: auto; */
+  /* position: relative;
+  align-items: center; */
 }
 
 
 .button-object {
   display: inline-block;
-  margin:auto;
-  padding:10px;
+  margin: auto;
+  padding: 10px;
 }
 
 .App-header {
@@ -45,6 +65,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -67,4 +88,11 @@
   bottom: auto; */
 
   /* transform: translate(-50%, -50%); */
+}
+
+
+@font-face {
+  font-family: 'NotoSansTC';
+  font-weight: 900;
+  src: local('NotoSansTC'), url(../public/fonts/NotoSansTC-Black.otf) format('opentype');
 }

@@ -3,25 +3,22 @@ import GoodInCart from "../Components/GoodInCart";
 import { Box, Fab, Alert, AlertTitle, Backdrop } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NavigationIcon from "@mui/icons-material/Navigation";
-import { Navigate } from "react-router-dom";
+
 const ShoppingCartPage = ({
-  dishes,
   cart,
   setCart,
   sendorder,
   showAlert,
   setShowAlert,
 }) => {
-  const [open, setOpen] = useState(false);
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
-      // let dish = dishes.filter((e) => e.id === obj.id)[0];
       sum += obj.price * obj.dishesNum;
+      return null;
     });
     return sum;
   };
-  // console.log(cart);
   const closealert = () => {
     setShowAlert(null);
     setCart([]);
