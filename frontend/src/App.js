@@ -88,10 +88,12 @@ function App() {
   const [cart, setCart] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [resturants, setResturants] = useState([]);
+  const [resturantID, setResturantID] = useState('1');
 
   useEffect(async () => {
     if (dishes.length === 0) {
-      const resturantID = 1;
+      // const resturantID = 1;
+      console.log('into get menu 1');
       const dishesData = await getMenuData(resturantID);
       if (dishesData) {
         setDishes(dishesData);
@@ -114,6 +116,22 @@ function App() {
     }
   }, []);
 
+  useEffect(async () => {
+    console.log('into get menu 2');
+    const dishesData = await getMenuData(resturantID);
+    if (dishesData) {
+      setDishes(dishesData);
+      let cartTemp = {};
+      let data = dishesData;
+      for (let i = 0; i < data.length; i++) {
+        cartTemp[data[i].name] = [];
+      }
+      setCart(cartTemp);
+    }
+  }
+    , [resturantID]
+  )
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
@@ -128,7 +146,7 @@ function App() {
               exact
               path="/home"
               element={
-                <Home resturants={resturants}></Home>
+                <Home resturants={resturants} setResturantID={setResturantID}></Home>
               }
             />
             <Route

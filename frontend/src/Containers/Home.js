@@ -8,8 +8,8 @@ import Restaurant from "../Components/Resturant";
 
 
 
-const Home = ({ resturants }) => {
-    console.log('in home');
+const Home = ({ resturants, setResturantID }) => {
+    const [hintText, setHintText] = useState("Select ypur resturant");
 
     return (
         <>
@@ -30,15 +30,20 @@ const Home = ({ resturants }) => {
                 Home
             </Box>
 
+            <div className="img-containe">
+                {/* <div className="Homepage-Img" > */}
+                <img className="Homepage-Img" src={'quickorder.jpeg'} alt="Background" />
+                {/* </div> */}
+            </div>
             <div>
-                <img src={'quickorder.jpeg'} alt="Background" />
+                {hintText}
             </div>
             {
                 resturants.map((item, idx) => (
 
                     <div key={idx}>
                         {/* ${item.name} */}
-                        <Restaurant restaurant={item} />
+                        <Restaurant restaurant={item} setResturantID={setResturantID} setHintText={setHintText} />
                     </div>
                 ))
 

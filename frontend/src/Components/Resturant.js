@@ -9,8 +9,12 @@ import { CardActionArea, TextField } from "@mui/material";
 
 
 
-const Restaurant = ({ restaurant }) => {
+const Restaurant = ({ restaurant, setResturantID, setHintText }) => {
 
+    const onClick_chooseResturant = () => {
+        setResturantID(restaurant.id);
+        setHintText(`you are choosing "${restaurant.name}"`)
+    }
 
     return (
         <>
@@ -18,7 +22,7 @@ const Restaurant = ({ restaurant }) => {
                 <CardActionArea
                     sx={{ display: "flex" }}
                     component={Button}
-                // onClick={onClick_open}
+                    onClick={onClick_chooseResturant}
                 >
                     <CardMedia
                         sx={{ position: "relative", width: "40%" }}
@@ -27,9 +31,10 @@ const Restaurant = ({ restaurant }) => {
                         image={restaurant.img}
                     />
                     <CardContent
+
                         sx={{ position: "relative", flex: "1 0 auto", width: "60%" }}
                     >
-                        <Typography color="text.secondary">{restaurant.name}</Typography>
+                        <Typography style={{ fontFamily: "NotoSansTC" }} color="text.secondary">{restaurant.name}</Typography>
                         <Typography color="text.secondary">{restaurant.rates_ave}</Typography>
                     </CardContent>
                 </CardActionArea>
