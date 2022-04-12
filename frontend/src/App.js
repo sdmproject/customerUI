@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData } from "./Functions/api";
+import { getMenuData, sendOrder } from "./Functions/api";
 
 const theme = createTheme({
   palette: {
@@ -41,15 +41,19 @@ function App() {
       const dishesData = await getMenuData(resturantID);
       if (dishesData) {
         setDishes(dishesData);
-        let cartTemp = {};
-        let data = dishesData;
-        for (let i = 0; i < data.length; i++) {
-          cartTemp[data[i].name] = [];
-        }
-        setCart(cartTemp);
       }
     }
   }, []);
+
+  const sendorder = async () => {
+    const data = await sendOrder(cart);
+    console.log(data);
+    // if (status === "ok") {
+    //   console.log(waitingtime)
+    // } else {
+    //   console.log(status)
+    // }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,6 +79,7 @@ function App() {
                   dishes={dishes}
                   cart={cart}
                   setCart={setCart}
+                  sendorder={sendorder}
                 />
               }
             />
