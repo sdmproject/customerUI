@@ -19,15 +19,13 @@ export default function TabBar({ items, dishType, setDishType }) {
 
   const handleChange = (event, newValue) => {
     setDishType(newValue);
-    // console.log(newValue)
   };
 
   return (
     <Box
       sx={{
-        maxWidth: { xs: 350, sm: 500 },
+        width: "100%",
         bgcolor: "background.paper",
-        // margin: "auto",
         position: "fixed",
         top: 0,
         left: 0,
@@ -37,20 +35,13 @@ export default function TabBar({ items, dishType, setDishType }) {
     >
       <Tabs
         sx={{ width: "100%" }}
-        // centered
         value={dishType}
         onChange={handleChange}
-        variant="scrollable"
+        variant={items.length > 4 ? "scrollable" : "fullWidth"}
         scrollButtons={false}
       >
         {items.map((item) => (
-          <CustomTab
-            // sx={{ backgroundColor: theme.palette.primary }}
-            // fullWidth
-            key={item}
-            label={item}
-            value={item}
-          />
+          <CustomTab key={item} label={item} value={item} />
         ))}
       </Tabs>
       <Divider></Divider>

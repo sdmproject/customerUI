@@ -1,16 +1,11 @@
 import "./App.css";
 import Menu from "./Containers/Menu";
 import { useEffect, useState } from "react";
-// instead of "Switch", in version 6, Switch is discarded
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import axios from "axios";
-import { getMenuData } from "./Functions/api"
-
-
-// BUG:cart在一開始傳給別的container時會是空的(雖然在App.js印出來是有東西的)，所以一定要進行至少一次頁面切換後，才能正確傳遞
+import { getMenuData } from "./Functions/api";
 
 const theme = createTheme({
   palette: {
@@ -93,49 +88,31 @@ function App() {
   const [dishes, setDishes] = useState([]);
 
   useEffect(async () => {
-
-    const resturantID = 1;
-
-    const dishesData = await getMenuData(resturantID);
-    if (dishesData) {
-      setDishes(dishesData);
-
-      let cartTemp = {};
-      let data = dishesData;
-
-      for (let i = 0; i < data.length; i++) {
-        console.log(data[i].name);
-        cartTemp[data[i].name] = [];
+    if (dishes.length === 0) {
+      const resturantID = 1;
+      const dishesData = await getMenuData(resturantID);
+      if (dishesData) {
+        setDishes(dishesData);
+        let cartTemp = {};
+        let data = dishesData;
+        for (let i = 0; i < data.length; i++) {
+          cartTemp[data[i].name] = [];
+        }
+        setCart(cartTemp);
       }
-      setCart(cartTemp);
-      console.log(cartTemp);
-
     }
-
-    console.log("dishes.length");
-    console.log(dishes.length);// setDishes 尚未生效 length會是0, 要在useEffect之外才會生效
-
   }, []);
-
 
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
         <BrowserRouter>
-          {/* <Link to="/">
-            <div>Menu</div>
-          </Link>
-          <Link to="/cart">
-            <div>cart</div>
-          </Link> */}
           <Routes>
-            {/* <Route
+            <Route
               exact
               path="/"
-              element={
-                <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
-              }
-            /> */}
+              element={<Navigate to="/menu" replace={true} />}
+            />
             <Route
               exact
               path="/menu"
@@ -150,7 +127,7 @@ function App() {
                   dishes={dishes}
                   cart={cart}
                   setCart={setCart}
-                ></ShoppingCartPage>
+                />
               }
             />
           </Routes>
