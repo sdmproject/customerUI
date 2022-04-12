@@ -90,24 +90,29 @@ function App() {
             <Route
               exact
               path="/"
-              element={<Navigate to="/home" replace={true} />}
+              element={<Navigate to="/customerUI" replace={true} />}
             />
             <Route
               exact
-              path="/home"
+              path="/customerUI"
+              element={<Navigate to="/customerUI/home" replace={true} />}
+            />
+            <Route
+              exact
+              path="/customerUI/home"
               element={
                 <Home resturants={resturants} setResturantID={setResturantID} />
               }
             />
             <Route
               exact
-              path="/menu"
+              path="/customerUI/menu"
               element={
                 <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
               }
             />
             <Route
-              path="/cart"
+              path="/customerUI/cart"
               element={
                 <ShoppingCartPage
                   cart={cart}

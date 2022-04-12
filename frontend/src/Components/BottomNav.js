@@ -14,6 +14,7 @@ export default function BottomNav() {
   const [value, setValue] = useState(location.pathname);
 
   useEffect(() => {
+    console.log(location.pathname);
     setValue(location.pathname);
   }, [value, location.pathname]);
 
@@ -31,35 +32,35 @@ export default function BottomNav() {
       >
         <BottomNavigationAction
           label="Home"
-          value="/home"
+          value="/customerUI/home"
           icon={<HomeIcon />}
           component={Link}
-          to="/home"
+          to="/customerUI/home"
         />
         <BottomNavigationAction
           key="menu"
           label="Menu"
-          value="/menu"
+          value="/customerUI/menu"
           icon={<MenuIcon />}
           component={Link}
-          to="/menu"
+          to="/customerUI/menu"
         />
         <BottomNavigationAction
           key="cart"
           label="Cart"
-          value="/cart"
+          value="/customerUI/cart"
           icon={<ShoppingCart />}
           component={Link}
-          to="/cart"
+          to="/customerUI/cart"
         />
-        <BottomNavigationAction
+        {/* <BottomNavigationAction
           key="favorites"
           label="Favorites"
           value="/favorites"
           icon={<FavoriteIcon />}
           component={Link}
           to="/favorites"
-        />
+        /> */}
       </BottomNavigation>
     </Paper>
   );

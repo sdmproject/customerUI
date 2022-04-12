@@ -28,7 +28,7 @@ const Home = ({ resturants, setResturantID }) => {
       <div className="img-containe">
         <img
           className="Homepage-Img"
-          src={"/quickorder.jpeg"}
+          src={process.env.PUBLIC_URL + "/quickorder.jpeg"}
           alt="Background"
         />
       </div>

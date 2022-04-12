@@ -12,7 +12,7 @@ const Restaurant = ({ restaurant, setResturantID, setHintText }) => {
   const onClick_chooseResturant = () => {
     setResturantID(restaurant.id);
     setHintText(`you are choosing "${restaurant.name}"`);
-    navigate("../menu", { replace: true });
+    navigate("../customerUI/menu", { replace: true });
   };
 
   return (
