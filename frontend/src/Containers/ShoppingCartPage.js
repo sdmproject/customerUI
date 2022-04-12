@@ -1,5 +1,6 @@
+import { useState } from "react";
 import GoodInCart from "../Components/GoodInCart";
-import { Box, Fab, Alert, AlertTitle } from "@mui/material";
+import { Box, Fab, Alert, AlertTitle, Backdrop } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { Navigate } from "react-router-dom";
@@ -11,6 +12,7 @@ const ShoppingCartPage = ({
   showAlert,
   setShowAlert,
 }) => {
+  const [open, setOpen] = useState(false);
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
@@ -84,31 +86,21 @@ const ShoppingCartPage = ({
         </div>
       )}
       {showAlert && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            display: "flex",
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "black",
-            opacity: 0.5,
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 102,
-          }}
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={showAlert === "success" ? true : false}
         >
           <Alert
             severity={showAlert === "success" ? "success" : "error"}
             onClose={() => closealert()}
-            sx={{ position: "relative" }}
+            sx={{ position: "relative", opacity: 1 }}
           >
             <AlertTitle>
               {showAlert === "success" ? "Success" : "Error"}
             </AlertTitle>
             {showAlert === "success" ? "已送出訂單" : "error"}
           </Alert>
-        </Box>
+        </Backdrop>
       )}
       <Box sx={{ height: 80 }} />
       {cart.length > 0 ? (
