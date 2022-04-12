@@ -46,14 +46,14 @@ function App() {
         const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
         if (data) {
           setResturants(data);
-          console.log("set resturants");
+          // console.log("set resturants");
         }
       } catch (error) {
         console.log(error);
       }
     };
     if (resturants.length === 0) {
-      console.log("into get resturants");
+      // console.log("into get resturants");
 
       getMenuData();
     }
