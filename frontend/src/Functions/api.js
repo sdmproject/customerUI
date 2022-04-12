@@ -14,6 +14,18 @@ export const getMenuData = async (resturantID) => {
         console.log(error)
     }
 }
+
+
+export const getNearbyResturants = async () => {
+    try {
+        const { data } = await getitems(`https://api.eatba.tk/restaurants`);
+        return data
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
 // export const searchRequirement = async (depID, type) => {
 //     try {
 //         //console.log (todo)

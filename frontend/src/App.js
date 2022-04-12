@@ -88,15 +88,6 @@ const theme = createTheme({
 //   },
 // ];
 
-// async function getDishesData() {
-
-//   const Data = await axios.get("https://api.eatba.tk/menu/1");
-//   console.log(Data.data);
-//   // dishes = Data.data;
-//   // setDishes(Data.data);
-//   return Data.data;
-// }
-
 function App() {
   const [cart, setCart] = useState([]);
   const [dishes, setDishes] = useState([]);
@@ -125,33 +116,6 @@ function App() {
     console.log(dishes.length);// setDishes 尚未生效 length會是0, 要在useEffect之外才會生效
 
   }, []);
-  //用假資料dishes不會更改
-
-
-
-  // // get dishes
-  // console.log('get dished data start');
-
-  // const response = await axios.get("https://api.eatba.tk/menu/1");
-  // console.log(response.data);
-  // setDishes(response.data);
-
-  // console.log("dishes.length");
-  // console.log(dishes.length);
-
-
-  // console.log(dishesData.data);
-
-
-
-  // setDishes(getDishesData());
-
-  // axios.get("https://api.eatba.tk/menu/1").then(response => {
-  //   console.log(response.data);
-  //   setDishes(response.data);
-  //   console.log('get data finished');
-  // });
-
 
 
   return (
