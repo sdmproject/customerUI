@@ -8,30 +8,29 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-const GoodInCart = ({ name, image, note, number, cart, setCart }) => {
+const GoodInCart = ({ index, name, image, note, number, cart, setCart }) => {
   const [dishNum, setDishNum] = useState(number);
 
-  const onClick_Change = () => {
-    let temp = cart;
-    let changeNum = dishNum - number >= 0 ? dishNum - number : number - dishNum;
-    try {
-      if (dishNum - number < 0)
-        for (let i = 0; i < changeNum; i++) {
-          let removeIdx = temp[name].indexOf(note);
-          if (removeIdx !== -1) temp[name].splice(removeIdx, 1);
-        }
-      else if (dishNum + number > 0)
-        for (let i = 0; i < changeNum; i++) {
-          temp[name].push(note);
-        }
-      setCart(temp);
-    } catch (e) {
-      console.log(e);
+  useEffect(() => {
+    if (dishNum > 0) {
+      let items = [...cart];
+      let item = { ...items[index], dishesNum: dishNum };
+      items[index] = item;
+      setCart(items);
+    } else {
+      setCart((cart) => cart.filter((_, idx) => idx !== index));
     }
-  };
+  }, [dishNum]);
 
   return (
-    <Card sx={{ width: "100%", height: 150, marginTop: 2, display: "flex" }}>
+    <Card
+      sx={{
+        width: "100%",
+        height: note.length > 0 ? 150 : 100,
+        marginTop: 2,
+        display: "flex",
+      }}
+    >
       <CardMedia
         sx={{ position: "relative", width: "40%" }}
         component="img"
@@ -47,10 +46,7 @@ const GoodInCart = ({ name, image, note, number, cart, setCart }) => {
           dishNum={dishNum}
           setDishNum={setDishNum}
           Size="notsmall"
-        ></NumberSelector>
-        <Button onClick={onClick_Change} variant="contained" size="small">
-          更改為此數量
-        </Button>
+        />
       </CardContent>
     </Card>
   );

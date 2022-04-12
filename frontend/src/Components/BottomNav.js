@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -12,6 +12,11 @@ import { Paper } from "@mui/material";
 export default function BottomNav() {
   const pathname = window.location.pathname;
   const [value, setValue] = useState(pathname);
+
+  useEffect(() => {
+    const newpathname = window.location.pathname;
+    setValue(newpathname);
+  }, [value]);
 
   return (
     <Paper

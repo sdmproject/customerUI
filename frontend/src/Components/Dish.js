@@ -21,20 +21,34 @@ const Dish = ({ dish, cart, setCart }) => {
   const onClick_open = () => setModalOpen(true);
   const onClick_close = () => setModalOpen(false);
 
-  const onClick_addToCart = () => {
-    let temp = cart;
-    for (let i = 0; i < dishNum; i++) temp[dish.name].push("");
-    setDishNum(0);
-    setCart(temp);
-    console.log(cart);
-  };
   const onClick_addToCart_withNotes = () => {
-    let temp = cart;
-    for (let i = 0; i < dishNum; i++) temp[dish.name].push(notes);
+    let idx = cart.map((e, index) => {
+      if (e.id === dish.id && e.customization.localeCompare(notes) === 0)
+        return index;
+    });
+    if (idx.some((e) => e)) {
+      idx.map((e) => {
+        if (e) {
+          let items = [...cart];
+          items[e].dishesNum += 1;
+          setCart(items);
+        }
+      });
+    } else {
+      setCart([
+        ...cart,
+        {
+          name: dish.name,
+          id: dish.id,
+          img: dish.img,
+          customization: notes,
+          dishesNum: dishNum,
+          price: dish.price,
+        },
+      ]);
+    }
     setDishNum(0);
-    setCart(temp);
     setModalOpen(false);
-    console.log(cart);
   };
 
   const onChange_notes = (e) => {
@@ -126,6 +140,7 @@ const Dish = ({ dish, cart, setCart }) => {
               variant="contained"
               size="small"
               onClick={onClick_addToCart_withNotes}
+              disabled={dishNum > 0 ? false : true}
             >
               加到購物車
             </Button>

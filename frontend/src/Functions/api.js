@@ -1,17 +1,16 @@
-import axios from "axios"
-
+import axios from "axios";
 
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-
+var orderid = 0;
+const table = "15A";
 
 export const getMenuData = async (resturantID) => {
     try {
         const { data } = await getitems(`https://api.eatba.tk/menu/${resturantID}`);
-        return data
-    }
-    catch (error) {
-        console.log(error)
+        return data;
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -26,13 +25,37 @@ export const getNearbyResturants = async () => {
     }
 }
 
-// export const searchRequirement = async (depID, type) => {
-//     try {
-//         //console.log (todo)
-//         const { data } = await createitem("http://127.0.0.1:8000/api/search/requirement", { "dep_id": depID, "type": type });
 
-//         return data
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+export const sendOrder = async (cart) => {
+    const gettotalprice = () => {
+        let sum = 0;
+        cart.map((obj) => {
+            //   let dish = dishes.filter((e) => e.id === obj.id)[0];
+            sum += obj.price * obj.dishesNum;
+        });
+        return sum;
+    };
+    try {
+        const {
+            data
+        } = await createitem(`https://api.eatba.tk/order/`, {
+            id: `order${++orderid}`,
+            tableNo: table,
+            totalPrice: gettotalprice(),
+            time: new Date().toISOString(),
+            items: cart.map((e) => {
+                return {
+                    id: e.id,
+                    name: e.name,
+                    price: e.price,
+                    quantity: e.dishesNum,
+                    note: e.customization,
+                    status: "RAW",
+                };
+            }),
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
