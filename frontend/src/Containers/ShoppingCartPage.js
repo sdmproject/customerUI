@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import GoodInCart from "../Components/GoodInCart";
 import { Box, Fab, Alert, AlertTitle, Backdrop } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
@@ -23,6 +23,10 @@ const ShoppingCartPage = ({
     setShowAlert(null);
     setCart([]);
   };
+
+  useEffect(() => {
+    setCart((cart) => cart.filter((item) => item.dishesNum > 0));
+  }, [cart]);
 
   return (
     <>
@@ -65,18 +69,20 @@ const ShoppingCartPage = ({
       </Box>
       <Box sx={{ height: 120 }} />
       {cart.length > 0 ? (
-        cart.map((obj, idx) => (
-          <GoodInCart
-            key={idx}
-            index={idx}
-            name={obj.name}
-            image={obj.img}
-            note={obj.customization}
-            number={obj.dishesNum}
-            cart={cart}
-            setCart={setCart}
-          />
-        ))
+        cart.map((obj, idx) =>
+          obj.dishesNum > 0 ? (
+            <GoodInCart
+              key={idx}
+              index={idx}
+              name={obj.name}
+              image={obj.img}
+              note={obj.customization}
+              number={obj.dishesNum}
+              cart={cart}
+              setCart={setCart}
+            />
+          ) : null
+        )
       ) : (
         <div className="text-2xl text-emerald-400 overline top-20 relative">
           購物車裡面沒東西喔~

@@ -12,14 +12,14 @@ const GoodInCart = ({ index, name, image, note, number, cart, setCart }) => {
   const [dishNum, setDishNum] = useState(number);
 
   useEffect(() => {
-    if (dishNum > 0) {
-      let items = [...cart];
-      let item = { ...items[index], dishesNum: dishNum };
-      items[index] = item;
-      setCart(items);
-    } else {
-      setCart((cart) => cart.filter((_, idx) => idx !== index));
-    }
+    // if (dishNum > 0) {
+    let items = [...cart];
+    let item = { ...items[index], dishesNum: dishNum };
+    items[index] = item;
+    setCart(items);
+    // } else {
+    //   setCart((cart) => cart.filter((_, idx) => idx !== index));
+    // }
   }, [dishNum]);
 
   return (
