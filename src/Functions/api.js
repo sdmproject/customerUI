@@ -1,4 +1,5 @@
 import axios from "axios";
+import { nanoid } from "nanoid";
 
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
@@ -24,7 +25,6 @@ export const getNearbyResturants = async () => {
 };
 
 export const sendOrder = async (cart) => {
-  orderid += 1;
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
@@ -32,12 +32,18 @@ export const sendOrder = async (cart) => {
     });
     return sum;
   };
+
   try {
+    orderid += 1;
+    let date = new Date(); // Or the date you'd like converted.
+    let isoDateTime = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    ).toISOString();
     const { data } = await createitem(`https://api.eatba.tk/order`, {
-      id: `order${orderid}`,
+      id: nanoid(),
       tableNo: table,
       totalPrice: gettotalprice(),
-      time: new Date().toISOString(),
+      time: isoDateTime,
       items: cart.map((e) => {
         return {
           id: e.id,
