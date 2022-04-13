@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-var orderid = 0;
+// var orderid = 0;
 const table = "7A";
 
 export const getMenuData = async (resturantID) => {

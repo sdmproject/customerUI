@@ -3,11 +3,11 @@ import axios from "axios";
 import Menu from "./Containers/Menu";
 import Home from "./Containers/Home";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData, sendOrder, getNearbyResturants } from "./Functions/api";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { sendOrder } from "./Functions/api";
 
 const theme = createTheme({
   palette: {
@@ -57,7 +57,7 @@ function App() {
 
       getMenuData();
     }
-  }, []);
+  }, [resturants.length]);
 
   useEffect(() => {
     const getMenuData = async (resturantID) => {
@@ -75,7 +75,7 @@ function App() {
     if (dishes.length === 0) {
       getMenuData(resturantID);
     }
-  }, [resturantID]);
+  }, [resturantID, dishes.length]);
 
   const sendorder = async () => {
     const data = await sendOrder(cart);

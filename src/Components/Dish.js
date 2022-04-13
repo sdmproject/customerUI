@@ -33,6 +33,7 @@ const Dish = ({ dish, cart, setCart }) => {
           items[e].dishesNum += 1;
           setCart(items);
         }
+        return null;
       });
     } else {
       setCart([

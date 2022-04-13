@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, TextField } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 
 const Restaurant = ({ restaurant, setResturantID, setHintText }) => {
   let navigate = useNavigate();

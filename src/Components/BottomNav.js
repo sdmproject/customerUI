@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import MenuIcon from "@mui/icons-material/Menu";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+// import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { Paper } from "@mui/material";

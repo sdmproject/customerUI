@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import HomeIcon from "@mui/icons-material/Home";
 import Restaurant from "../Components/Restaurant";
