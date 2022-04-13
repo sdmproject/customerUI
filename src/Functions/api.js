@@ -34,7 +34,7 @@ export const sendOrder = async (cart) => {
   };
 
   try {
-    orderid += 1;
+    // orderid += 1;
     let date = new Date(); // Or the date you'd like converted.
     let isoDateTime = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
