@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import HomeIcon from "@mui/icons-material/Home";
 import Restaurant from "../Components/Restaurant";
+import { Typography, Rating } from "@mui/material";
 
 const Home = ({ resturants, setResturantID }) => {
   const [hintText, setHintText] = useState("Select ypur resturant");
+  const [ratingValue, setRatingValue] = useState(3);
 
   return (
     <>
@@ -58,6 +60,16 @@ const Home = ({ resturants, setResturantID }) => {
           />
         </div>
       ))} */}
+      <Typography component="legend">rate this resturant!</Typography>
+
+      <Rating
+        name="simple-controlled"
+        value={ratingValue}
+        onChange={(event, newValue) => {
+          setRatingValue(newValue);
+        }}
+        size="large"
+      />
     </>
   );
 };
