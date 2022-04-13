@@ -33,9 +33,6 @@ const theme = createTheme({
   },
 });
 
-var orderid = 0;
-var table = "3A";
-
 function App() {
   const [cart, setCart] = useState([]);
   const [dishes, setDishes] = useState([]);
@@ -80,39 +77,9 @@ function App() {
     }
   }, [resturantID]);
 
-  const sendOrder = async (cart) => {
-    orderid += 1;
-    const gettotalprice = (cart) => {
-      let sum = 0;
-      cart.map((obj) => {
-        sum += obj.price * obj.dishesNum;
-        return null;
-      });
-      return sum;
-    };
-    try {
-      const { data } = await axios.post(`https://api.eatba.tk/order`, {
-        id: `order${orderid}`,
-        tableNo: table,
-        totalPrice: gettotalprice(),
-        time: new Date().toISOString(),
-        items: cart.map((e) => {
-          return {
-            id: e.id,
-            name: e.name,
-            price: e.price,
-            quantity: e.dishesNum,
-            note: e.customization,
-            status: "RAW",
-          };
-        }),
-      });
-      if (data) {
-        setShowAlert(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const sendorder = async () => {
+    const data = await sendOrder(cart);
+    setShowAlert(data);
   };
 
   return (
@@ -150,7 +117,7 @@ function App() {
                 <ShoppingCartPage
                   cart={cart}
                   setCart={setCart}
-                  sendorder={sendOrder}
+                  sendorder={sendorder}
                   showAlert={showAlert}
                   setShowAlert={setShowAlert}
                 />

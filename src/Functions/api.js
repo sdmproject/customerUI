@@ -3,7 +3,7 @@ import axios from "axios";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
 var orderid = 0;
-const table = "15A";
+const table = "7A";
 
 export const getMenuData = async (resturantID) => {
   try {
@@ -24,6 +24,7 @@ export const getNearbyResturants = async () => {
 };
 
 export const sendOrder = async (cart) => {
+  orderid += 1;
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
@@ -32,8 +33,8 @@ export const sendOrder = async (cart) => {
     return sum;
   };
   try {
-    const { data } = await createitem(`https://api.eatba.tk/order/`, {
-      id: `order${++orderid}`,
+    const { data } = await createitem(`https://api.eatba.tk/order`, {
+      id: `order${orderid}`,
       tableNo: table,
       totalPrice: gettotalprice(),
       time: new Date().toISOString(),
