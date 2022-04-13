@@ -82,10 +82,11 @@ function App() {
 
   const sendOrder = async (cart) => {
     orderid += 1;
-    const gettotalprice = () => {
+    const gettotalprice = (cart) => {
       let sum = 0;
       cart.map((obj) => {
         sum += obj.price * obj.dishesNum;
+        return null;
       });
       return sum;
     };
