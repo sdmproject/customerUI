@@ -90,7 +90,7 @@ function App() {
       return sum;
     };
     try {
-      const { data } = await axios.post(`https://api.eatba.tk/order/`, {
+      const { data } = await axios.post(`https://api.eatba.tk/order`, {
         id: `order${orderid}`,
         tableNo: table,
         totalPrice: gettotalprice(),
