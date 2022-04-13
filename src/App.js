@@ -34,6 +34,7 @@ const theme = createTheme({
 });
 
 var orderid = 0;
+var table = "3A";
 
 function App() {
   const [cart, setCart] = useState([]);
