@@ -38,7 +38,9 @@ export const sendOrder = async (cart) => {
     let date = new Date(); // Or the date you'd like converted.
     let isoDateTime = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
-    ).toISOString();
+    )
+      .toISOString()
+      .slice(0, -1);
     const { data } = await createitem(`https://api.eatba.tk/order`, {
       id: nanoid(),
       tableNo: table,
