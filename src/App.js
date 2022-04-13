@@ -85,34 +85,34 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Routes>
+            {/* <Route
+              exact
+              path="/"
+              element={<Navigate to="" replace={true} />}
+            /> */}
             <Route
               exact
               path="/"
-              element={<Navigate to="/customerUI" replace={true} />}
+              element={<Navigate to="/home" replace={true} />}
             />
             <Route
               exact
-              path="/customerUI"
-              element={<Navigate to="/customerUI/home" replace={true} />}
-            />
-            <Route
-              exact
-              path="/customerUI/home"
+              path="/home"
               element={
                 <Home resturants={resturants} setResturantID={setResturantID} />
               }
             />
             <Route
               exact
-              path="/customerUI/menu"
+              path="/menu"
               element={
                 <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
               }
             />
             <Route
-              path="/customerUI/cart"
+              path="/cart"
               element={
                 <ShoppingCartPage
                   cart={cart}
