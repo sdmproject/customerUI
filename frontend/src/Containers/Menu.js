@@ -68,6 +68,7 @@ const Menu = ({ dishes, cart, setCart }) => {
                 />
               ) : null
             )}
+            <Box sx={{ height: 80 }} />
           </Box>
         </Box>
       )}
