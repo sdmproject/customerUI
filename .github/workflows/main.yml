@@ -5,7 +5,7 @@ name: GitHub Pages
 on:
   push:
     branches:
-      - master  # Set a branch name to trigger deployment
+      - master # Set a branch name to trigger deployment
   # pull_request:
 
 jobs:
@@ -13,27 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 14.x]
+        node-version: [14.x]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+          submodules: true # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: "npm"
 
-      - name: Install and Build
-        run: npm ci
-        run: npm run build
-
-      - name: Test
-        run: npm test
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
