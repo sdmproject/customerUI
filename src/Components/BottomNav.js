@@ -32,26 +32,26 @@ export default function BottomNav() {
       >
         <BottomNavigationAction
           label="Home"
-          value="/home"
+          value="/customerUI/home"
           icon={<HomeIcon />}
           component={Link}
-          to="../home"
+          to="/customerUI/home"
         />
         <BottomNavigationAction
           key="menu"
           label="Menu"
-          value="/menu"
+          value="/customerUI/menu"
           icon={<MenuIcon />}
           component={Link}
-          to="../menu"
+          to="/customerUI/menu"
         />
         <BottomNavigationAction
           key="cart"
           label="Cart"
-          value="/cart"
+          value="/customerUI/cart"
           icon={<ShoppingCart />}
           component={Link}
-          to="../cart"
+          to="/customerUI/cart"
         />
         {/* <BottomNavigationAction
           key="favorites"
