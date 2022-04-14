@@ -85,7 +85,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter basename="/customerUI">
           {/* basename={process.env.PUBLIC_URL} */}
           <Routes>
             {/* <Route
