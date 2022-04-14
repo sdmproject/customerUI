@@ -32,7 +32,7 @@ export default function BottomNav() {
       >
         <BottomNavigationAction
           label="Home"
-          value="/home"
+          value="/customerUI/home"
           icon={<HomeIcon />}
           component={Link}
           to="/customerUI/home"
@@ -40,7 +40,7 @@ export default function BottomNav() {
         <BottomNavigationAction
           key="menu"
           label="Menu"
-          value="/menu"
+          value="/customerUI/menu"
           icon={<MenuIcon />}
           component={Link}
           to="/customerUI/menu"
@@ -48,7 +48,7 @@ export default function BottomNav() {
         <BottomNavigationAction
           key="cart"
           label="Cart"
-          value="/cart"
+          value="/customerUI/cart"
           icon={<ShoppingCart />}
           component={Link}
           to="/customerUI/cart"
