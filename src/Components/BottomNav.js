@@ -14,7 +14,7 @@ export default function BottomNav() {
   const [value, setValue] = useState(location.pathname);
 
   useEffect(() => {
-    // console.log(location.pathname);
+    console.log(location.pathname);
     setValue(location.pathname);
   }, [value, location.pathname]);
 
