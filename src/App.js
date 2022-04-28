@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { sendOrder } from "./Functions/api";
+import { sendOrder, sendPrime } from "./Functions/api";
 import Loading from "./Components/Loading"
 const theme = createTheme({
   palette: {
@@ -81,6 +81,13 @@ function App() {
     let thisModal = loadingRef.current
     thisModal.style.display = "block"
     const data = await sendOrder(cart);
+    try{
+      const payment = await sendPrime(cart);
+      console.log(payment)
+    }
+    catch{
+      console.log("error occur, please pay by cash")
+    }
     setShowAlert(data);
     thisModal.style.display = "none"
   };
