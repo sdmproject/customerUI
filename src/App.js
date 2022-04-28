@@ -2,13 +2,13 @@ import "./App.css";
 import axios from "axios";
 import Menu from "./Containers/Menu";
 import Home from "./Containers/Home";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sendOrder } from "./Functions/api";
-
+import Loading from "./Components/Loading"
 const theme = createTheme({
   palette: {
     type: "light",
@@ -39,7 +39,7 @@ function App() {
   const [resturants, setResturants] = useState([]);
   const [resturantID, setResturantID] = useState("1");
   const [showAlert, setShowAlert] = useState(null);
-
+  const loadingRef = useRef(null)
   useEffect(() => {
     const getMenuData = async () => {
       try {
@@ -78,8 +78,11 @@ function App() {
   }, [resturantID, dishes.length]);
 
   const sendorder = async () => {
+    let thisModal = loadingRef.current
+    thisModal.style.display = "block"
     const data = await sendOrder(cart);
     setShowAlert(data);
+    thisModal.style.display = "none"
   };
 
   return (
@@ -127,7 +130,9 @@ function App() {
           </Routes>
           <BottomNav />
         </BrowserRouter>
+        <Loading modalRef={loadingRef}></Loading>
       </div>
+
     </ThemeProvider>
   );
 }
