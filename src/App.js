@@ -7,9 +7,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Fab} from "@mui/material";
+import NavigationIcon from "@mui/icons-material/Navigation";
 import { sendOrder, sendPrime } from "./Functions/api";
 import Loading from "./Components/Loading"
 import Cookies from "js-cookie"
+
 
 const theme = createTheme({
   palette: {
@@ -45,6 +48,15 @@ function App() {
   const [linePayUrl, setLinePayUrl] = useState(null)
 
   const loadingRef = useRef(null)
+  
+  useEffect(()=>{
+    let url
+    url = Cookies.get("linePayUrl")
+    if(url){
+      setLinePayUrl(url)
+    }
+  }, [])
+
   useEffect(() => {
     const getMenuData = async () => {
       try {
@@ -59,7 +71,6 @@ function App() {
     };
     if (resturants.length === 0) {
       // console.log("into get resturants");
-
       getMenuData();
     }
   }, [resturants.length]);
@@ -94,13 +105,19 @@ function App() {
       const payment = await sendPrime(cart);
       // expire in 5 minute 
       Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1/ 288})
+      setLinePayUrl(payment.data.payment_url)
     }
+
     catch{
       console.log("error occur, please pay by cash")
     }
     setShowAlert(data);
     thisModal.style.display = "none"
   };
+
+  const onClick_openLinePay = () => {
+    const newWindow = window.open(linePayUrl, '_blank')
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -149,7 +166,25 @@ function App() {
         </BrowserRouter>
         <Loading modalRef={loadingRef}></Loading>
       </div>
+      {linePayUrl !== null
+      ?
+        <Fab
+          variant="extended"
+          color="primary"
+          sx={{ position: "fixed", bottom: 70, 
 
+        left: "50%",
+        transform: "translate(-50%,-50%)", zIndex: 101 }}
+          onClick={onClick_openLinePay}
+        >
+          <NavigationIcon sx={{ mr: 1 }} />
+            使用LinePay付款
+        </Fab>
+      : 
+        null
+      }
+
+      
     </ThemeProvider>
   );
 }

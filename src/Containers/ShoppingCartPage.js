@@ -103,7 +103,9 @@ const ShoppingCartPage = ({
             <AlertTitle>
               {showAlert === "success" ? "Success" : "Error"}
             </AlertTitle>
-            {showAlert === "success" ? "已送出訂單" : "error"}
+            {showAlert === "success" ? <AlertTitle>已送出訂單，請選擇：</AlertTitle> : <AlertTitle>請稍後重試</AlertTitle>}
+            {showAlert === "success" ?   <AlertTitle>1.十分鐘內，利用網頁上的Linepay按鈕付款，付款後會立即出餐 </AlertTitle>:<></>}
+            {showAlert === "success" ?   <AlertTitle>2.於櫃檯付款，付款後會立即出餐 </AlertTitle>:<></>}
           </Alert>
         </Backdrop>
       )}
