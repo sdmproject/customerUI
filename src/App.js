@@ -9,6 +9,8 @@ import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sendOrder, sendPrime } from "./Functions/api";
 import Loading from "./Components/Loading"
+import Cookies from "js-cookie"
+
 const theme = createTheme({
   palette: {
     type: "light",
@@ -39,6 +41,9 @@ function App() {
   const [resturants, setResturants] = useState([]);
   const [resturantID, setResturantID] = useState("1");
   const [showAlert, setShowAlert] = useState(null);
+  const [commentAble, setCommentAble] = useState(false)
+  const [linePayUrl, setLinePayUrl] = useState(null)
+
   const loadingRef = useRef(null)
   useEffect(() => {
     const getMenuData = async () => {
@@ -60,6 +65,10 @@ function App() {
   }, [resturants.length]);
 
   useEffect(() => {
+    const haveOrdered = Cookies.get("orderID")
+    if(haveOrdered){
+      setCommentAble(true)
+    }
     const getMenuData = async (resturantID) => {
       try {
         const { data } = await axios.get(
@@ -83,7 +92,8 @@ function App() {
     const data = await sendOrder(cart);
     try{
       const payment = await sendPrime(cart);
-      console.log(payment)
+      // expire in 5 minute 
+      Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1/ 288})
     }
     catch{
       console.log("error occur, please pay by cash")
