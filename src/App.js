@@ -8,6 +8,8 @@ import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sendOrder } from "./Functions/api";
+import { Loginpage } from "./Containers/Loginpage";
+import RequireAuth from "./Components/RequireAuth";
 
 const theme = createTheme({
   palette: {
@@ -39,6 +41,7 @@ function App() {
   const [resturants, setResturants] = useState([]);
   const [resturantID, setResturantID] = useState("1");
   const [showAlert, setShowAlert] = useState(null);
+  const [authed, setAuthed] = useState(false);
 
   useEffect(() => {
     const getMenuData = async () => {
@@ -88,44 +91,57 @@ function App() {
         <BrowserRouter>
           {/* basename={process.env.PUBLIC_URL} */}
           <Routes>
-            {/* <Route
+            <Route
               exact
               path="/"
-              element={<Navigate to="" replace={true} />}
-            /> */}
+              element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+            />
             <Route
               exact
               path="/customerUI"
-              element={<Navigate to="/customerUI/home" replace={true} />}
+              element={
+                <RequireAuth authed={authed}>
+                  <Navigate to="/customerUI/home" replace={true} />
+                </RequireAuth>
+              }
             />
             <Route
               exact
               path="/customerUI/home"
               element={
-                <Home resturants={resturants} setResturantID={setResturantID} />
+                <RequireAuth authed={authed}>
+                  <Home
+                    resturants={resturants}
+                    setResturantID={setResturantID}
+                  />
+                </RequireAuth>
               }
             />
             <Route
               exact
               path="/customerUI/menu"
               element={
-                <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                <RequireAuth authed={authed}>
+                  <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                </RequireAuth>
               }
             />
             <Route
               path="/customerUI/cart"
               element={
-                <ShoppingCartPage
-                  cart={cart}
-                  setCart={setCart}
-                  sendorder={sendorder}
-                  showAlert={showAlert}
-                  setShowAlert={setShowAlert}
-                />
+                <RequireAuth authed={authed}>
+                  <ShoppingCartPage
+                    cart={cart}
+                    setCart={setCart}
+                    sendorder={sendorder}
+                    showAlert={showAlert}
+                    setShowAlert={setShowAlert}
+                  />
+                </RequireAuth>
               }
             />
           </Routes>
-          <BottomNav />
+          <BottomNav authed={authed} />
         </BrowserRouter>
       </div>
     </ThemeProvider>
