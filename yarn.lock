@@ -8423,6 +8423,11 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
+tocas@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/tocas/-/tocas-4.0.3.tgz#7291d13eea38e768db10be4361e3176077457cc5"
+  integrity sha512-OMTMSM/0GudOeK2L4RWzdyKEhr7KNhWLLrOeK4+sac0zJC4dx+MRMm0rgijsRgCrKE+vu29EAijuR3d9sKhWJw==
+
 toidentifier@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.1.tgz"

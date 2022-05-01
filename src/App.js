@@ -8,6 +8,8 @@ import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { getMenuData, sendOrder, getNearbyResturants } from "./Functions/api";
+import 'tocas/dist/tocas.min.css';
+import 'tocas/dist/tocas.min.js';
 
 const theme = createTheme({
   palette: {
