@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { sendOrder } from "./Functions/api";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { getMenuData, sendOrder, getNearbyResturants } from "./Functions/api";
+import 'tocas/dist/tocas.min.css';
+import 'tocas/dist/tocas.min.js';
 import { Loginpage } from "./Containers/Loginpage";
 import RequireAuth from "./Components/RequireAuth";
 
