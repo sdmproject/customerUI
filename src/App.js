@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData, sendOrder, getNearbyResturants } from "./Functions/api";
+import { getMenuApi, sendOrderApi, getResturantsApi } from "./Functions/api";
 import 'tocas/dist/tocas.min.css';
 import 'tocas/dist/tocas.min.js';
 
@@ -43,9 +43,10 @@ function App() {
   const [showAlert, setShowAlert] = useState(null);
 
   useEffect(() => {
-    const getMenuData = async () => {
+    const getResturantsData = async () => {
       try {
-        const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
+        // const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
+        const data = await getResturantsApi();
         if (data) {
           setResturants(data);
           // console.log("set resturants");
@@ -56,17 +57,15 @@ function App() {
     };
     if (resturants.length === 0) {
       // console.log("into get resturants");
-
-      getMenuData();
+      getResturantsData();
     }
   }, []);
 
   useEffect(() => {
     const getMenuData = async (resturantID) => {
       try {
-        const { data } = await axios.get(
-          `https://api.eatba.tk/menu/${resturantID}`
-        );
+        // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
+        const data = await getMenuApi(resturantID);
         if (data) {
           setDishes(data);
         }
@@ -80,7 +79,7 @@ function App() {
   }, [resturantID]);
 
   const sendorder = async () => {
-    const data = await sendOrder(cart);
+    const data = await sendOrderApi(cart);
     setShowAlert(data);
   };
 

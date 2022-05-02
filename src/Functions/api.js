@@ -6,25 +6,28 @@ const createitem = (url, item) => axios.post(url, item);
 var orderid = 0;
 const table = "7A";
 
-export const getMenuData = async (resturantID) => {
+// const baseUrl = "https://api.eatba.tk";
+const baseUrl = "https://2621-150-117-240-26.ngrok.io";
+
+export const getMenuApi = async (resturantID) => {
   try {
-    const { data } = await getitems(`https://api.eatba.tk/menu/${resturantID}`);
+    const { data } = await getitems(`${baseUrl}/menu/${resturantID}`);
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getNearbyResturants = async () => {
+export const getResturantsApi = async () => {
   try {
-    const { data } = await getitems(`https://api.eatba.tk/restaurants`);
+    const { data } = await getitems(`${baseUrl}/restaurants`);
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const sendOrder = async (cart) => {
+export const sendOrderApi = async (cart) => {
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
@@ -39,7 +42,7 @@ export const sendOrder = async (cart) => {
     let isoDateTime = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
     ).toISOString();
-    const { data } = await createitem(`https://api.eatba.tk/order`, {
+    const { data } = await createitem(`${baseUrl}/order`, {
       id: nanoid(),
       tableNo: table,
       totalPrice: gettotalprice(),

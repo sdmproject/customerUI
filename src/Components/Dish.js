@@ -139,11 +139,11 @@ const Dish = ({ dish, cart, setCart }) => {
                 onChange={onChange_notes}
               />
             </div>
-            <div class="ts-row is-evenly-divided">
-              <div class="column">
+            <div className="ts-row is-evenly-divided">
+              <div className="column">
                 <button className="ts-button" onClick={() => setCommentModalOpen(!commentModalOpen)}>{!commentModalOpen ? "查看評論" : "收起評論"}</button>
               </div>
-              <div class="column">
+              <div className="column">
                 {/* <Button
                   variant="contained"
                   size="small"

@@ -47,7 +47,7 @@ const DishComment = ({ show }) => {
                 show ?
                     (<>
                         <div className="ts-space"></div>
-                        <div class="ts-row">{/* meta bar */}
+                        <div className="ts-row">{/* meta bar */}
                             <div className="ts-selection">
                                 <label className="item">
                                     <input type="radio" name="comment_filter" defaultChecked />
@@ -62,23 +62,23 @@ const DishComment = ({ show }) => {
                                     <div className="text">差評</div>
                                 </label>
                             </div>
-                            <div class="column is-fluid"></div>
-                            <button class="ts-button is-icon is-small" onClick={() => setAddCommentModal(!addCommentModal)}>
-                                <span class="ts-icon is-comment-icon"></span>
+                            <div className="column is-fluid"></div>
+                            <button className="ts-button is-icon is-small" onClick={() => setAddCommentModal(!addCommentModal)}>
+                                <span className="ts-icon is-comment-icon"></span>
                             </button>
                         </div>
                         {
                             addCommentModal ?
                                 <>
                                     <div className="ts-space "></div>
-                                    <div class="ts-row"> {/*input bar*/}
-                                        <div class="column is-fluid">
-                                            <div class="ts-input is-fluid">
-                                                <input type="text" class="input" placeholder="輸入評論…" />
+                                    <div className="ts-row"> {/*input bar*/}
+                                        <div className="column is-fluid">
+                                            <div className="ts-input is-fluid">
+                                                <input type="text" className="input" placeholder="輸入評論…" />
                                             </div>
                                         </div>
-                                        <div class="column">
-                                            <button class="ts-button">送出</button>
+                                        <div className="column">
+                                            <button className="ts-button">送出</button>
                                         </div>
                                     </div>
                                 </>
