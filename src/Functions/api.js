@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-const payment = (item) => axios.post("http://localhost:4000/" + "payment", item);
+const payment = (item) => axios.post("https://2621-150-117-240-26.ngrok.io/" + "payment", item);
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
@@ -18,7 +18,8 @@ const gettotalprice = (cart) => {
 
 export const getMenuData = async (resturantID) => {
   try {
-    const { data } = await getitems(`https://api.eatba.tk/menu/${resturantID}`);
+    // const { data } = await getitems(`https://api.eatba.tk/menu/${resturantID}`);
+    const { data } = await getitems(`https://2621-150-117-240-26.ngrok.io/menu/${resturantID}`);
     return data;
   } catch (error) {
     console.log(error);
@@ -27,7 +28,8 @@ export const getMenuData = async (resturantID) => {
 
 export const getNearbyResturants = async () => {
   try {
-    const { data } = await getitems(`https://api.eatba.tk/restaurants`);
+    // const { data } = await getitems(`https://api.eatba.tk/restaurants`);
+    const { data } = await getitems(`https://2621-150-117-240-26.ngrok.io/restaurants`);
     return data;
   } catch (error) {
     console.log(error);
@@ -73,8 +75,8 @@ export const sendPrime = async  (cart) => {
     var data; 
     window.TPDirect.linePay.getPrime(async (result)=> {
       prime = result.prime
-      // const { data } = await payment({prime:prime, cart:cart});
       data = await payment({prime:prime, cart:cart});
+      console.log(data)
       window.payment = data
     }) 
     return window.payment; 
@@ -82,37 +84,3 @@ export const sendPrime = async  (cart) => {
     console.log(error);
   }
 };
-
-// export const sendPrime = async (prime, cart) => {
-//   let details = ""
-//   for (let i = 0; i < cart.length; i++){
-//     details += cart[i].name + " X " + cart[i].dishesNum + "\n" 
-//   }
-
-//   const post_data = {
-//       // prime from front-end
-//       "prime": prime,
-//       "partner_key": process.env.PARENT_KEY,
-//       "merchant_id": process.env.MERCHANT_ID,
-//       // 金額
-//       "amount": gettotalprice(cart),
-//       "currency": "TWD",
-//       "details": details,
-//       // 會員可以打這些資訊
-//       "cardholder": {
-//           "phone_number": "+886923456789",
-//           "name": "hello",
-//           "email": "example@gmail.com"
-//       },
-//       // 分期付款
-//       "instalment": 0,
-//       "remember": false
-//   }
-//   const { data } = await axios.post("https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime", post_data, {
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'x-api-key': process.env.X_API_KEY
-//     }
-//   });
-//   return data
-// }

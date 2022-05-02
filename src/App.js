@@ -60,7 +60,8 @@ function App() {
   useEffect(() => {
     const getMenuData = async () => {
       try {
-        const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
+        // const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
+        const { data } = await axios.get(`https://2621-150-117-240-26.ngrok.io/restaurants`);
         if (data) {
           setResturants(data);
           // console.log("set resturants");
@@ -83,7 +84,8 @@ function App() {
     const getMenuData = async (resturantID) => {
       try {
         const { data } = await axios.get(
-          `https://api.eatba.tk/menu/${resturantID}`
+          // `https://api.eatba.tk/menu/${resturantID}`
+          `https://2621-150-117-240-26.ngrok.io/menu/${resturantID}`
         );
         if (data) {
           setDishes(data);
@@ -103,6 +105,7 @@ function App() {
     const data = await sendOrder(cart);
     try{
       const payment = await sendPrime(cart);
+      console.log(payment)
       // expire in 5 minute 
       Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1/ 288})
       setLinePayUrl(payment.data.payment_url)
