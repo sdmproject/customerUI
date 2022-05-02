@@ -14,7 +14,6 @@ import NumberSelector from "./NumberSelector";
 // import { useTheme } from "@mui/material/styles";
 import DishComment from "./DishComment";
 
-
 const Dish = ({ dish, cart, setCart }) => {
   // const theme = useTheme();
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -140,11 +139,16 @@ const Dish = ({ dish, cart, setCart }) => {
                 onChange={onChange_notes}
               />
             </div>
-            <div class="ts-row is-evenly-divided">
-              <div class="column">
-                <button className="ts-button" onClick={() => setCommentModalOpen(!commentModalOpen)}>{!commentModalOpen ? "查看評論" : "收起評論"}</button>
+            <div className="ts-row is-evenly-divided">
+              <div className="column">
+                <button
+                  className="ts-button"
+                  onClick={() => setCommentModalOpen(!commentModalOpen)}
+                >
+                  {!commentModalOpen ? "查看評論" : "收起評論"}
+                </button>
               </div>
-              <div class="column">
+              <div className="column">
                 {/* <Button
                   variant="contained"
                   size="small"
@@ -153,12 +157,16 @@ const Dish = ({ dish, cart, setCart }) => {
                 >
                   加到購物車
                 </Button> */}
-                {dishNum > 0 ?
-                  <button className="ts-button" onClick={onClick_addToCart_withNotes}>加到購物車</button>
-                  :
+                {dishNum > 0 ? (
+                  <button
+                    className="ts-button"
+                    onClick={onClick_addToCart_withNotes}
+                  >
+                    加到購物車
+                  </button>
+                ) : (
                   <button className="ts-button is-disabled">加到購物車</button>
-
-                }
+                )}
               </div>
             </div>
             <DishComment show={commentModalOpen} />
