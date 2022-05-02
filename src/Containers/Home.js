@@ -8,6 +8,7 @@ const Home = ({ resturants, setResturantID }) => {
   const [hintText, setHintText] = useState("Select ypur resturant");
   const [ratingValue, setRatingValue] = useState(3);
 
+  console.log(resturants);
   return (
     <>
       <Box
@@ -60,8 +61,8 @@ const Home = ({ resturants, setResturantID }) => {
           />
         </div>
       ))} */}
-      <Typography component="legend">rate this resturant!</Typography>
-
+      {/* <Typography component="legend">rate this resturant!</Typography> */}
+      <div>rate this resturant!</div>
       <Rating
         name="simple-controlled"
         value={ratingValue}

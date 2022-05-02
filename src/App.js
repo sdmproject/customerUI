@@ -6,13 +6,16 @@ import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Fab} from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
-import { sendOrder, sendPrime } from "./Functions/api";
 import Loading from "./Components/Loading"
 import Cookies from "js-cookie"
-
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { getMenuData, sendOrder, getNearbyResturants, sendPrime } from "./Functions/api";
+import 'tocas/dist/tocas.min.css';
+import 'tocas/dist/tocas.min.js';
+import { Loginpage } from "./Containers/Loginpage";
+import RequireAuth from "./Components/RequireAuth";
 
 const theme = createTheme({
   palette: {
@@ -46,6 +49,7 @@ function App() {
   const [showAlert, setShowAlert] = useState(null);
   const [commentAble, setCommentAble] = useState(false)
   const [linePayUrl, setLinePayUrl] = useState(null)
+  const [authed, setAuthed] = useState(false);
 
   const loadingRef = useRef(null)
   
@@ -128,44 +132,57 @@ function App() {
         <BrowserRouter>
           {/* basename={process.env.PUBLIC_URL} */}
           <Routes>
-            {/* <Route
+            <Route
               exact
               path="/"
-              element={<Navigate to="" replace={true} />}
-            /> */}
+              element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+            />
             <Route
               exact
               path="/customerUI"
-              element={<Navigate to="/customerUI/home" replace={true} />}
+              element={
+                <RequireAuth authed={authed}>
+                  <Navigate to="/customerUI/home" replace={true} />
+                </RequireAuth>
+              }
             />
             <Route
               exact
               path="/customerUI/home"
               element={
-                <Home resturants={resturants} setResturantID={setResturantID} />
+                <RequireAuth authed={authed}>
+                  <Home
+                    resturants={resturants}
+                    setResturantID={setResturantID}
+                  />
+                </RequireAuth>
               }
             />
             <Route
               exact
               path="/customerUI/menu"
               element={
-                <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                <RequireAuth authed={authed}>
+                  <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                </RequireAuth>
               }
             />
             <Route
               path="/customerUI/cart"
               element={
-                <ShoppingCartPage
-                  cart={cart}
-                  setCart={setCart}
-                  sendorder={sendorder}
-                  showAlert={showAlert}
-                  setShowAlert={setShowAlert}
-                />
+                <RequireAuth authed={authed}>
+                  <ShoppingCartPage
+                    cart={cart}
+                    setCart={setCart}
+                    sendorder={sendorder}
+                    showAlert={showAlert}
+                    setShowAlert={setShowAlert}
+                  />
+                </RequireAuth>
               }
             />
           </Routes>
-          <BottomNav />
+          <BottomNav authed={authed} />
         </BrowserRouter>
         <Loading modalRef={loadingRef}></Loading>
       </div>
