@@ -183,7 +183,7 @@ const DishComment = ({ show, commentData }) => {
                     : null
             }
         </>
-    );
+    )
 };
 
 export default DishComment;

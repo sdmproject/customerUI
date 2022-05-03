@@ -1,10 +1,21 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
 
+
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
+const payment = (item) => axios.post("https://api.eatba.tk/" + "payment", item);
 // var orderid = 0;
 const table = "7A";
+const gettotalprice = (cart) => {
+  let sum = 0;
+  cart.map((obj) => {
+    sum += obj.price * obj.dishesNum;
+  });
+  return sum;
+};
+
+
 
 // const baseUrl = "https://api.eatba.tk";
 const baseUrl = "https://2621-150-117-240-26.ngrok.io";
@@ -47,7 +58,7 @@ export const sendOrderApi = async (cart) => {
     const { data } = await createitem(`https://api.eatba.tk/order`, {
       id: nanoid(),
       tableNo: table,
-      totalPrice: gettotalprice(),
+      totalPrice: gettotalprice(cart),
       time: isoDateTime,
       items: cart.map((e) => {
         return {
@@ -61,6 +72,22 @@ export const sendOrderApi = async (cart) => {
       }),
     });
     return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendPrime = async (cart) => {
+  try {
+    let prime = ""
+    var data;
+    window.TPDirect.linePay.getPrime(async (result) => {
+      prime = result.prime
+      data = await payment({ prime: prime, cart: cart });
+      console.log(data)
+      window.payment = data
+    })
+    return window.payment;
   } catch (error) {
     console.log(error);
   }

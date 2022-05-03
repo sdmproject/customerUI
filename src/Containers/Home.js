@@ -8,6 +8,7 @@ const Home = ({ resturants, setResturantID }) => {
   const [hintText, setHintText] = useState("Select ypur resturant");
   const [ratingValue, setRatingValue] = useState(3);
 
+  console.log(resturants);
   return (
     <>
       <Box

@@ -10,6 +10,17 @@
       content="Web site created using create-react-app"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <script  src="https://js.tappaysdk.com/tpdirect/v5.9.0"></script>
+    <script>
+        // TPDirect.setupSDK(process.env.APP_ID,process.env.APP_KEY , 'sandbox')
+        TPDirect.setupSDK(124258, 'app_wuwZSjLQvuu0jpitL3o4REnFDYvAZsgWOsI3eqJ8rtqV62GklxBTNdUF2FES', 'sandbox')        
+        TPDirect.paymentRequestApi.checkAvailability()
+        // localStorage.setItem('TPDirect', TPDirect)
+        window.TPDirect = TPDirect
+    </script>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
