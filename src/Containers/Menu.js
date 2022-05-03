@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Tab from "../Components/Tab";
 import Dish from "../Components/Dish";
 import Box from "@mui/material/Box";
-import { Divider } from "@mui/material";
+// import { Divider } from "@mui/material";
 import shuffle from "../Functions/Shuffle";
 // import getRedirectUrl from "../Functions/Test";
 

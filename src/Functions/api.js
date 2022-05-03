@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-var orderid = 0;
+// var orderid = 0;
 const table = "7A";
 
 // const baseUrl = "https://api.eatba.tk";
@@ -37,12 +37,14 @@ export const sendOrderApi = async (cart) => {
   };
 
   try {
-    orderid += 1;
+    // orderid += 1;
     let date = new Date(); // Or the date you'd like converted.
     let isoDateTime = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
-    ).toISOString();
-    const { data } = await createitem(`${baseUrl}/order`, {
+    )
+      .toISOString()
+      .slice(0, -1);
+    const { data } = await createitem(`https://api.eatba.tk/order`, {
       id: nanoid(),
       tableNo: table,
       totalPrice: gettotalprice(),

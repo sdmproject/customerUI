@@ -5,14 +5,14 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, TextField } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 
 const Restaurant = ({ restaurant, setResturantID, setHintText }) => {
   let navigate = useNavigate();
   const onClick_chooseResturant = () => {
     setResturantID(restaurant.id);
     setHintText(`you are choosing "${restaurant.name}"`);
-    navigate("../customerUI/menu", { replace: true });
+    navigate("../menu", { replace: true });
   };
 
   return (
