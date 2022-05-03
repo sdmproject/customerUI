@@ -160,7 +160,7 @@ const Dish = ({ dish, cart, setCart }) => {
                 }
               </div>
             </div>
-            <DishComment show={commentModalOpen} />
+            <DishComment show={commentModalOpen} commentData={dish.comments} />
           </Box>
         </Fade>
       </Modal>
