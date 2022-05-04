@@ -103,15 +103,23 @@ function App() {
   }, [resturantID, dishes.length]);
 
   const sendorder = async () => {
+
+    setLinePayUrl(null)
     let thisModal = loadingRef.current
     thisModal.style.display = "block"
     const data = await sendOrderApi(cart);
+
     try {
-      const payment = await sendPrime(cart);
-      console.log(payment)
-      // expire in 5 minute 
-      Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1 / 288 })
-      setLinePayUrl(payment.data.payment_url)
+      // since I get the last payment 
+      const _ = await sendPrime(cart);
+
+      setTimeout(async () => {
+        const payment = await sendPrime(cart);
+        console.log(payment)
+          // expire in 5 minute 
+        Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1 / 288 })
+        setLinePayUrl(payment.data.payment_url)
+      }, 3000);
     }
 
     catch {
