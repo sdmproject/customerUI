@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 const baseUrl = "https://2621-150-117-240-26.ngrok.io";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-const payment = (item) => axios.post(`${baseUrl}` + "payment", item);
+const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
