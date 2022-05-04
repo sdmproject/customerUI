@@ -69,16 +69,16 @@ const Home = ({ resturants, setResturantID }) => {
         </div>
       ))} */}
       {/* <Typography component="legend">rate this resturant!</Typography> */}
-      <div>rate this resturant!</div>
-      <Rating
+      {/* <div>rate this resturant!</div> */}
+      {/* <Rating
         name="simple-controlled"
         value={ratingValue}
         onChange={(event, newValue) => {
           setRatingValue(newValue);
         }}
         size="large"
-      />
-      {/* <div class="ts-space is-small"></div> */}
+      /> */}
+      <div class="ts-space"></div>
       <div class="ts-grid">
         <div class="column is-2-wide"></div>
         <div class="column is-12-wide">
@@ -88,7 +88,7 @@ const Home = ({ resturants, setResturantID }) => {
                 <div class="ts-quote is-heading ">
                   高品質肉的沃土，消費者的餐桌之家。
 
-                  <div class="cite">meat place開業於二零一二年夏天。本店主要經營中式特色川菜。我們的川菜款式新穎，制材豐富，又不失傳統味道，開業至今一直受到廣大賓客的喜愛及好評。除此以外，我們也提供各式酒水配搭。餐廳環境優美衛生，更有充足停車位供應。我們將準備好美味的食物和優質的服務等待您的光臨！</div>
+                  <div class="cite">Meat Place開業於二零一二年夏天。本店主要經營中式特色川菜。我們的川菜款式新穎，制材豐富，又不失傳統味道，開業至今一直受到廣大賓客的喜愛及好評。除此以外，我們也提供各式酒水配搭。餐廳環境優美衛生，更有充足停車位供應。我們將準備好美味的食物和優質的服務等待您的光臨！</div>
                 </div>
               </div>
             </div>
