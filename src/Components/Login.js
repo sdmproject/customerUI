@@ -14,9 +14,7 @@ function Login({ setAuthed }) {
 
   const onSuccess = (res) => {
     console.log("Login Success: currentUser:", res.profileObj);
-    alert(
-      `Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
-    );
+    alert(`Logged in successfully welcome ${res.profileObj.name} 😍.`);
     refreshTokenSetup(res);
     setAuthed(true);
     navigate("/customerUI", { replace: true });
@@ -24,9 +22,7 @@ function Login({ setAuthed }) {
 
   const onFailure = (res) => {
     console.log("Login failed: res:", res);
-    alert(
-      `Failed to login. 😢 Please ping this to repo owner twitter.com/sivanesh_fiz`
-    );
+    alert(`Failed to login. 😢`);
   };
 
   const { signIn } = useGoogleLogin({

@@ -6,12 +6,12 @@ import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
-import { Fab} from "@mui/material";
+import { Fab } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import Loading from "./Components/Loading"
 import Cookies from "js-cookie"
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData, sendOrder, getNearbyResturants, sendPrime } from "./Functions/api";
+import { getMenuApi, sendOrderApi, getResturantsApi, sendPrime } from "./Functions/api";
 import 'tocas/dist/tocas.min.css';
 import 'tocas/dist/tocas.min.js';
 import { Loginpage } from "./Containers/Loginpage";
@@ -52,20 +52,20 @@ function App() {
   const [authed, setAuthed] = useState(false);
 
   const loadingRef = useRef(null)
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     let url
     url = Cookies.get("linePayUrl")
-    if(url){
+    if (url) {
       setLinePayUrl(url)
     }
   }, [])
 
   useEffect(() => {
-    const getMenuData = async () => {
+    const getResturantsData = async () => {
       try {
         // const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
-        const { data } = await axios.get(`https://2621-150-117-240-26.ngrok.io/restaurants`);
+        const data = await getResturantsApi();
         if (data) {
           setResturants(data);
           // console.log("set resturants");
@@ -76,21 +76,19 @@ function App() {
     };
     if (resturants.length === 0) {
       // console.log("into get resturants");
-      getMenuData();
+      getResturantsData();
     }
   }, [resturants.length]);
 
   useEffect(() => {
     const haveOrdered = Cookies.get("orderID")
-    if(haveOrdered){
+    if (haveOrdered) {
       setCommentAble(true)
     }
     const getMenuData = async (resturantID) => {
       try {
-        const { data } = await axios.get(
-          // `https://api.eatba.tk/menu/${resturantID}`
-          `https://2621-150-117-240-26.ngrok.io/menu/${resturantID}`
-        );
+        // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
+        const data = await getMenuApi(resturantID);
         if (data) {
           setDishes(data);
         }
@@ -106,16 +104,16 @@ function App() {
   const sendorder = async () => {
     let thisModal = loadingRef.current
     thisModal.style.display = "block"
-    const data = await sendOrder(cart);
-    try{
+    const data = await sendOrderApi(cart);
+    try {
       const payment = await sendPrime(cart);
       console.log(payment)
       // expire in 5 minute 
-      Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1/ 288})
+      Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1 / 288 })
       setLinePayUrl(payment.data.payment_url)
     }
 
-    catch{
+    catch {
       console.log("error occur, please pay by cash")
     }
     setShowAlert(data);
@@ -187,24 +185,26 @@ function App() {
         <Loading modalRef={loadingRef}></Loading>
       </div>
       {linePayUrl !== null
-      ?
+        ?
         <Fab
           variant="extended"
           color="primary"
-          sx={{ position: "fixed", bottom: 70, 
+          sx={{
+            position: "fixed", bottom: 70,
 
-        left: "50%",
-        transform: "translate(-50%,-50%)", zIndex: 101 }}
+            left: "50%",
+            transform: "translate(-50%,-50%)", zIndex: 101
+          }}
           onClick={onClick_openLinePay}
         >
           <NavigationIcon sx={{ mr: 1 }} />
-            使用LinePay付款
+          使用LinePay付款
         </Fab>
-      : 
+        :
         null
       }
 
-      
+
     </ThemeProvider>
   );
 }

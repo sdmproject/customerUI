@@ -141,12 +141,7 @@ const Dish = ({ dish, cart, setCart }) => {
             </div>
             <div className="ts-row is-evenly-divided">
               <div className="column">
-                <button
-                  className="ts-button"
-                  onClick={() => setCommentModalOpen(!commentModalOpen)}
-                >
-                  {!commentModalOpen ? "查看評論" : "收起評論"}
-                </button>
+                <button className="ts-button" onClick={() => setCommentModalOpen(!commentModalOpen)}>{!commentModalOpen ? "查看評論" : "收起評論"}</button>
               </div>
               <div className="column">
                 {/* <Button
@@ -169,7 +164,7 @@ const Dish = ({ dish, cart, setCart }) => {
                 )}
               </div>
             </div>
-            <DishComment show={commentModalOpen} />
+            <DishComment show={commentModalOpen} commentData={dish.comments} />
           </Box>
         </Fade>
       </Modal>
