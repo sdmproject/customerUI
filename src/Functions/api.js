@@ -2,9 +2,12 @@ import axios from "axios";
 import { nanoid } from "nanoid";
 
 
+
+// const baseUrl = "https://api.eatba.tk";
+const baseUrl = "https://2621-150-117-240-26.ngrok.io";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-const payment = (item) => axios.post("https://api.eatba.tk/" + "payment", item);
+const payment = (item) => axios.post(`${baseUrl}` + "payment", item);
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
@@ -15,10 +18,6 @@ const gettotalprice = (cart) => {
   return sum;
 };
 
-
-
-// const baseUrl = "https://api.eatba.tk";
-const baseUrl = "https://2621-150-117-240-26.ngrok.io";
 
 export const getMenuApi = async (resturantID) => {
   try {
@@ -55,7 +54,7 @@ export const sendOrderApi = async (cart) => {
     )
       .toISOString()
       .slice(0, -1);
-    const { data } = await createitem(`https://api.eatba.tk/order`, {
+    const { data } = await createitem(`${baseUrl}/order`, {
       id: nanoid(),
       tableNo: table,
       totalPrice: gettotalprice(cart),
