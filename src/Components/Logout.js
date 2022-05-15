@@ -3,6 +3,7 @@ import { useGoogleLogout } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
+import { FormattedMessage } from "react-intl";
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
@@ -29,7 +30,7 @@ function Logout({ setAuthed }) {
 
   return (
     <Button variant="contained" startIcon={<GoogleIcon />} onClick={signOut}>
-      Log out
+      <FormattedMessage id="logout.button" defaultMessage="Log out" />
     </Button>
   );
 }

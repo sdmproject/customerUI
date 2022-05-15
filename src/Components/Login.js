@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 // refresh token
 import { refreshTokenSetup } from "../Functions/refreshToken";
+import { FormattedMessage } from "react-intl";
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
@@ -37,7 +38,10 @@ function Login({ setAuthed }) {
 
   return (
     <Button variant="contained" startIcon={<GoogleIcon />} onClick={signIn}>
-      Sign in with Google
+      <FormattedMessage
+        id="login.button"
+        defaultMessage="Sign in with Google"
+      />
     </Button>
   );
 }

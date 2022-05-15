@@ -3,6 +3,7 @@ import GoodInCart from "../Components/GoodInCart";
 import { Box, Fab, Alert, AlertTitle, Backdrop } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import { FormattedMessage } from "react-intl";
 
 const ShoppingCartPage = ({
   cart,
@@ -49,7 +50,7 @@ const ShoppingCartPage = ({
         }}
       >
         <ShoppingCart color="primary.text" sx={{ position: "relative" }} />
-        Cart
+        <FormattedMessage id="bottomnav.cart" defaultMessage="Cart" />
       </Box>
       <Box
         sx={{
@@ -87,7 +88,10 @@ const ShoppingCartPage = ({
         )
       ) : (
         <div className="text-2xl text-emerald-400 overline top-20 relative">
-          購物車裡面沒東西喔~
+          <FormattedMessage
+            id="cart.empty"
+            defaultMessage="購物車裡面沒東西喔~"
+          />
         </div>
       )}
       {showAlert && (
@@ -103,9 +107,41 @@ const ShoppingCartPage = ({
             <AlertTitle>
               {showAlert === "success" ? "Success" : "Error"}
             </AlertTitle>
-            {showAlert === "success" ? <AlertTitle>已送出訂單，請選擇：</AlertTitle> : <AlertTitle>請稍後重試</AlertTitle>}
-            {showAlert === "success" ?   <AlertTitle>1.三秒後在畫面正下方會生成一個按鈕，十分鐘內，利用此按鈕付款，付款後會立即出餐 </AlertTitle>:<></>}
-            {showAlert === "success" ?   <AlertTitle>2.於櫃檯付款，付款後會立即出餐 </AlertTitle>:<></>}
+            {showAlert === "success" ? (
+              <AlertTitle>
+                <FormattedMessage
+                  id="cart.alert.choose"
+                  defaultMessage="已送出訂單，請選擇：~"
+                />
+              </AlertTitle>
+            ) : (
+              <AlertTitle>
+                <FormattedMessage
+                  id="cart.alert.failed"
+                  defaultMessage="請稍後重試~"
+                />
+              </AlertTitle>
+            )}
+            {showAlert === "success" ? (
+              <AlertTitle>
+                <FormattedMessage
+                  id="cart.alert.linepay"
+                  defaultMessage="1.三秒後在畫面正下方會生成一個按鈕，十分鐘內，利用此按鈕付款，付款後會立即出餐~"
+                />
+              </AlertTitle>
+            ) : (
+              <></>
+            )}
+            {showAlert === "success" ? (
+              <AlertTitle>
+                <FormattedMessage
+                  id="cart.alert.pay"
+                  defaultMessage="2.於櫃檯付款，付款後會立即出餐~"
+                />
+              </AlertTitle>
+            ) : (
+              <></>
+            )}
           </Alert>
         </Backdrop>
       )}
@@ -118,10 +154,9 @@ const ShoppingCartPage = ({
           onClick={sendorder}
         >
           <NavigationIcon sx={{ mr: 1 }} />
-          送出訂單
+          <FormattedMessage id="cart.sendorder" defaultMessage="送出訂單" />
         </Fab>
       ) : null}
-
     </>
   );
 };
