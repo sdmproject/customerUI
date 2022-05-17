@@ -13,7 +13,7 @@ import { CardActionArea, TextField } from "@mui/material";
 import NumberSelector from "./NumberSelector";
 // import { useTheme } from "@mui/material/styles";
 import DishComment from "./DishComment";
-
+import { FormattedMessage } from "react-intl";
 
 const Dish = ({ dish, cart, setCart }) => {
   // const theme = useTheme();
@@ -129,8 +129,15 @@ const Dish = ({ dish, cart, setCart }) => {
             <div className="pt-5 pb-5">
               <TextField
                 id="outlined-textarea"
-                label="備註欄"
-                placeholder="若您有特殊需求，像是火鍋不要芋頭或是香菜加倍，可於此備註"
+                label={
+                  <FormattedMessage id="dish.note" defaultMessage="備註欄" />
+                }
+                placeholder={
+                  <FormattedMessage
+                    id="dish.note.placeholder"
+                    defaultMessage="若您有特殊需求，像是火鍋不要芋頭或是香菜加倍，可於此備註"
+                  />
+                }
                 multiline
                 className="text-xs"
                 size="small"
@@ -140,11 +147,26 @@ const Dish = ({ dish, cart, setCart }) => {
                 onChange={onChange_notes}
               />
             </div>
-            <div class="ts-row is-evenly-divided">
-              <div class="column">
-                <button className="ts-button" onClick={() => setCommentModalOpen(!commentModalOpen)}>{!commentModalOpen ? "查看評論" : "收起評論"}</button>
+            <div className="ts-row is-evenly-divided">
+              <div className="column">
+                <button
+                  className="ts-button"
+                  onClick={() => setCommentModalOpen(!commentModalOpen)}
+                >
+                  {!commentModalOpen ? (
+                    <FormattedMessage
+                      id="dish.comment.open"
+                      defaultMessage="查看評論"
+                    />
+                  ) : (
+                    <FormattedMessage
+                      id="dish.comment.close"
+                      defaultMessage="收起評論"
+                    />
+                  )}
+                </button>
               </div>
-              <div class="column">
+              <div className="column">
                 {/* <Button
                   variant="contained"
                   size="small"
@@ -153,15 +175,27 @@ const Dish = ({ dish, cart, setCart }) => {
                 >
                   加到購物車
                 </Button> */}
-                {dishNum > 0 ?
-                  <button className="ts-button" onClick={onClick_addToCart_withNotes}>加到購物車</button>
-                  :
-                  <button className="ts-button is-disabled">加到購物車</button>
-
-                }
+                {dishNum > 0 ? (
+                  <button
+                    className="ts-button"
+                    onClick={onClick_addToCart_withNotes}
+                  >
+                    <FormattedMessage
+                      id="dish.addtocart"
+                      defaultMessage="加到購物車"
+                    />
+                  </button>
+                ) : (
+                  <button className="ts-button is-disabled">
+                    <FormattedMessage
+                      id="dish.addtocart"
+                      defaultMessage="加到購物車"
+                    />
+                  </button>
+                )}
               </div>
             </div>
-            <DishComment show={commentModalOpen} />
+            <DishComment show={commentModalOpen} commentData={dish.comments} />
           </Box>
         </Fade>
       </Modal>

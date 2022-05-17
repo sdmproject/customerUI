@@ -9,6 +9,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { Paper } from "@mui/material";
+import { FormattedMessage } from "react-intl";
 
 export default function BottomNav({ authed }) {
   let location = useLocation();
@@ -32,31 +33,40 @@ export default function BottomNav({ authed }) {
         }}
       >
         <BottomNavigationAction
-          label="Home"
-          value="/customerUI/home"
+          key="home"
+          label={
+            <FormattedMessage id="bottomnav.home" defaultMessage="Restaurant" />
+          }
+          value="/home"
           icon={<HomeIcon />}
           component={Link}
-          to="/customerUI/home"
+          to="/home"
         />
         <BottomNavigationAction
           key="menu"
-          label="Menu"
-          value="/customerUI/menu"
+          label={<FormattedMessage id="bottomnav.menu" defaultMessage="Menu" />}
+          value="/menu"
           icon={<MenuIcon />}
           component={Link}
-          to="/customerUI/menu"
+          to="/menu"
         />
         <BottomNavigationAction
           key="cart"
-          label="Cart"
-          value="/customerUI/cart"
+          label={<FormattedMessage id="bottomnav.cart" defaultMessage="Cart" />}
+          value="/cart"
           icon={<ShoppingCart />}
           component={Link}
-          to="/customerUI/cart"
+          to="/cart"
         />
         <BottomNavigationAction
           key={authed ? "logout" : "login"}
-          label={authed ? "Logout" : "Login"}
+          label={
+            authed ? (
+              <FormattedMessage id="bottomnav.logout" defaultMessage="Logout" />
+            ) : (
+              <FormattedMessage id="bottomnav.login" defaultMessage="Login" />
+            )
+          }
           value="/"
           icon={authed ? <LogoutIcon /> : <LoginIcon />}
           component={Link}

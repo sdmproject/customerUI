@@ -1,9 +1,11 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
 
+// const baseUrl = "https://api.eatba.tk";
+const baseUrl = "https://api.eatba.tk";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
-const payment = (item) => axios.post("https://2621-150-117-240-26.ngrok.io/" + "payment", item);
+const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
@@ -14,30 +16,32 @@ const gettotalprice = (cart) => {
   return sum;
 };
 
-
-
-export const getMenuData = async (resturantID) => {
+export const getMenuApi = async (resturantID) => {
   try {
-    // const { data } = await getitems(`https://api.eatba.tk/menu/${resturantID}`);
-    const { data } = await getitems(`https://2621-150-117-240-26.ngrok.io/menu/${resturantID}`);
+    const { data } = await getitems(`${baseUrl}/menu/${resturantID}`);
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getNearbyResturants = async () => {
+export const getResturantsApi = async () => {
   try {
-    // const { data } = await getitems(`https://api.eatba.tk/restaurants`);
-    const { data } = await getitems(`https://2621-150-117-240-26.ngrok.io/restaurants`);
+    const { data } = await getitems(`${baseUrl}/restaurants`);
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const sendOrder = async (cart) => {
-
+export const sendOrderApi = async (cart) => {
+  const gettotalprice = () => {
+    let sum = 0;
+    cart.map((obj) => {
+      sum += obj.price * obj.dishesNum;
+    });
+    return sum;
+  };
 
   try {
     // orderid += 1;
@@ -47,7 +51,7 @@ export const sendOrder = async (cart) => {
     )
       .toISOString()
       .slice(0, -1);
-    const { data } = await createitem(`https://api.eatba.tk/order`, {
+    const { data } = await createitem(`${baseUrl}/order`, {
       id: nanoid(),
       tableNo: table,
       totalPrice: gettotalprice(cart),
@@ -69,17 +73,17 @@ export const sendOrder = async (cart) => {
   }
 };
 
-export const sendPrime = async  (cart) => {
+export const sendPrime = async (cart) => {
   try {
-    let prime =""
-    var data; 
-    window.TPDirect.linePay.getPrime(async (result)=> {
-      prime = result.prime
-      data = await payment({prime:prime, cart:cart});
-      console.log(data)
-      window.payment = data
-    }) 
-    return window.payment; 
+    let prime = "";
+    var data;
+    window.TPDirect.linePay.getPrime(async (result) => {
+      prime = result.prime;
+      data = await payment({ prime: prime, cart: cart });
+      console.log(data);
+      window.payment = data;
+    });
+    return window.payment;
   } catch (error) {
     console.log(error);
   }

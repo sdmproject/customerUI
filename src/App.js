@@ -6,16 +6,26 @@ import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
 import BottomNav from "./Components/BottomNav";
-import { Fab} from "@mui/material";
+import { Fab } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
-import Loading from "./Components/Loading"
-import Cookies from "js-cookie"
+import Loading from "./Components/Loading";
+import Cookies from "js-cookie";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { getMenuData, sendOrder, getNearbyResturants, sendPrime } from "./Functions/api";
-import 'tocas/dist/tocas.min.css';
-import 'tocas/dist/tocas.min.js';
+import {
+  getMenuApi,
+  sendOrderApi,
+  getResturantsApi,
+  sendPrime,
+} from "./Functions/api";
+import "tocas/dist/tocas.min.css";
+import "tocas/dist/tocas.min.js";
 import { Loginpage } from "./Containers/Loginpage";
 import RequireAuth from "./Components/RequireAuth";
+import { IntlProvider, FormattedMessage } from "react-intl";
+import Intl from "./Components/Intl";
+import message_zh from "./lang/zh.json";
+import message_en from "./lang/en.json";
+// test commit for deploy
 
 const theme = createTheme({
   palette: {
@@ -47,25 +57,31 @@ function App() {
   const [resturants, setResturants] = useState([]);
   const [resturantID, setResturantID] = useState("1");
   const [showAlert, setShowAlert] = useState(null);
-  const [commentAble, setCommentAble] = useState(false)
-  const [linePayUrl, setLinePayUrl] = useState(null)
+  const [commentAble, setCommentAble] = useState(false);
+  const [linePayUrl, setLinePayUrl] = useState(null);
   const [authed, setAuthed] = useState(false);
+  const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
 
-  const loadingRef = useRef(null)
-  
-  useEffect(()=>{
-    let url
-    url = Cookies.get("linePayUrl")
-    if(url){
-      setLinePayUrl(url)
-    }
-  }, [])
+  const messages = {
+    zh: message_zh,
+    en: message_en,
+  };
+
+  const loadingRef = useRef(null);
 
   useEffect(() => {
-    const getMenuData = async () => {
+    let url;
+    url = Cookies.get("linePayUrl");
+    if (url) {
+      setLinePayUrl(url);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getResturantsData = async () => {
       try {
         // const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
-        const { data } = await axios.get(`https://2621-150-117-240-26.ngrok.io/restaurants`);
+        const data = await getResturantsApi();
         if (data) {
           setResturants(data);
           // console.log("set resturants");
@@ -76,21 +92,19 @@ function App() {
     };
     if (resturants.length === 0) {
       // console.log("into get resturants");
-      getMenuData();
+      getResturantsData();
     }
   }, [resturants.length]);
 
   useEffect(() => {
-    const haveOrdered = Cookies.get("orderID")
-    if(haveOrdered){
-      setCommentAble(true)
+    const haveOrdered = Cookies.get("orderID");
+    if (haveOrdered) {
+      setCommentAble(true);
     }
     const getMenuData = async (resturantID) => {
       try {
-        const { data } = await axios.get(
-          // `https://api.eatba.tk/menu/${resturantID}`
-          `https://2621-150-117-240-26.ngrok.io/menu/${resturantID}`
-        );
+        // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
+        const data = await getMenuApi(resturantID);
         if (data) {
           setDishes(data);
         }
@@ -104,107 +118,120 @@ function App() {
   }, [resturantID, dishes.length]);
 
   const sendorder = async () => {
-    let thisModal = loadingRef.current
-    thisModal.style.display = "block"
-    const data = await sendOrder(cart);
-    try{
-      const payment = await sendPrime(cart);
-      console.log(payment)
-      // expire in 5 minute 
-      Cookies.set("linePayUrl", payment.data.payment_url, { secure: true, expires: 1/ 288})
-      setLinePayUrl(payment.data.payment_url)
-    }
+    setLinePayUrl(null);
+    let thisModal = loadingRef.current;
+    thisModal.style.display = "block";
+    const data = await sendOrderApi(cart);
 
-    catch{
-      console.log("error occur, please pay by cash")
+    try {
+      // since I get the last payment
+      const _ = await sendPrime(cart);
+
+      setTimeout(async () => {
+        const payment = await sendPrime(cart);
+        console.log(payment);
+        // expire in 5 minute
+        Cookies.set("linePayUrl", payment.data.payment_url, {
+          secure: true,
+          expires: 1 / 288,
+        });
+        setLinePayUrl(payment.data.payment_url);
+      }, 3000);
+    } catch {
+      console.log("error occur, please pay by cash");
     }
     setShowAlert(data);
-    thisModal.style.display = "none"
+    thisModal.style.display = "none";
   };
 
   const onClick_openLinePay = () => {
-    const newWindow = window.open(linePayUrl, '_blank')
-  }
+    const newWindow = window.open(linePayUrl, "_blank");
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <BrowserRouter>
-          {/* basename={process.env.PUBLIC_URL} */}
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={<Loginpage authed={authed} setAuthed={setAuthed} />}
-            />
-            <Route
-              exact
-              path="/customerUI"
-              element={
-                <RequireAuth authed={authed}>
-                  <Navigate to="/customerUI/home" replace={true} />
-                </RequireAuth>
-              }
-            />
-            <Route
-              exact
-              path="/customerUI/home"
-              element={
-                <RequireAuth authed={authed}>
-                  <Home
-                    resturants={resturants}
-                    setResturantID={setResturantID}
-                  />
-                </RequireAuth>
-              }
-            />
-            <Route
-              exact
-              path="/customerUI/menu"
-              element={
-                <RequireAuth authed={authed}>
-                  <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/customerUI/cart"
-              element={
-                <RequireAuth authed={authed}>
-                  <ShoppingCartPage
-                    cart={cart}
-                    setCart={setCart}
-                    sendorder={sendorder}
-                    showAlert={showAlert}
-                    setShowAlert={setShowAlert}
-                  />
-                </RequireAuth>
-              }
-            />
-          </Routes>
-          <BottomNav authed={authed} />
-        </BrowserRouter>
-        <Loading modalRef={loadingRef}></Loading>
-      </div>
-      {linePayUrl !== null
-      ?
-        <Fab
-          variant="extended"
-          color="primary"
-          sx={{ position: "fixed", bottom: 70, 
+      <IntlProvider locale={lang} messages={messages[lang]} defaultLocale="zh">
+        <div className="App">
+          <BrowserRouter>
+            {/* basename={process.env.PUBLIC_URL} */}
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+              />
+              <Route
+                exact
+                path="/"
+                element={
+                  <RequireAuth authed={authed}>
+                    <Navigate to="/home" replace={true} />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                exact
+                path="/home"
+                element={
+                  <RequireAuth authed={authed}>
+                    <Home
+                      resturants={resturants}
+                      setResturantID={setResturantID}
+                    />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                exact
+                path="/menu"
+                element={
+                  <RequireAuth authed={authed}>
+                    <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <RequireAuth authed={authed}>
+                    <ShoppingCartPage
+                      cart={cart}
+                      setCart={setCart}
+                      sendorder={sendorder}
+                      showAlert={showAlert}
+                      setShowAlert={setShowAlert}
+                    />
+                  </RequireAuth>
+                }
+              />
+            </Routes>
+            <BottomNav authed={authed} />
+          </BrowserRouter>
+          <Loading modalRef={loadingRef}></Loading>
+        </div>
+        {linePayUrl !== null ? (
+          <Fab
+            variant="extended"
+            color="primary"
+            sx={{
+              position: "fixed",
+              bottom: 70,
 
-        left: "50%",
-        transform: "translate(-50%,-50%)", zIndex: 101 }}
-          onClick={onClick_openLinePay}
-        >
-          <NavigationIcon sx={{ mr: 1 }} />
-            使用LinePay付款
-        </Fab>
-      : 
-        null
-      }
-
-      
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              zIndex: 101,
+            }}
+            onClick={onClick_openLinePay}
+          >
+            <NavigationIcon sx={{ mr: 1 }} />
+            <FormattedMessage
+              id="app.uselinepay"
+              defaultMessage="使用LinePay付款"
+            />
+          </Fab>
+        ) : null}
+        <Intl setLang={setLang} />
+      </IntlProvider>
     </ThemeProvider>
   );
 }
