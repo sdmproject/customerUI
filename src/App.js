@@ -16,6 +16,7 @@ import {
   sendOrderApi,
   getResturantsApi,
   sendPrime,
+  getTradeResult
 } from "./Functions/api";
 import "tocas/dist/tocas.min.css";
 import "tocas/dist/tocas.min.js";
@@ -62,6 +63,7 @@ function App() {
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
 
+  const [waitToPay, setWaitToPay] = useState([]); 
   const messages = {
     zh: message_zh,
     en: message_en,
@@ -70,12 +72,33 @@ function App() {
   const loadingRef = useRef(null);
 
   useEffect(() => {
-    let url;
-    url = Cookies.get("linePayUrl");
-    if (url) {
-      setLinePayUrl(url);
+    // let waitToPayList = JSON.parse(Cookies.get("waitToPay"));
+    const waitToPayList =  JSON.parse(localStorage.getItem('waitToPay'));
+    console.log(waitToPayList)
+    if (waitToPayList) {
+      setWaitToPay(waitToPayList);
     }
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval( async() => {
+      let temp = waitToPay
+      console.log("start update")
+      for (let i = 0; i < waitToPay.length; i++){
+        // const tradeStatus = await getTradeResult(waitToPay[i]["rec_trade_id"])
+          // console.log(tradeStatus)
+        const now = new Date()
+        if(now.getTime() > waitToPay[i]["expire"])
+          temp = temp.splice(temp.findIndex(x => x === waitToPay[i]), 1)
+      }
+      setWaitToPay(temp)
+      localStorage.setItem('waitToPay', JSON.stringify(temp));
+    }, 5000); 
+    return () => {
+      console.log(`clearing interval`);
+      clearInterval(interval);
+    };
+  }, [waitToPay]);
 
   useEffect(() => {
     const getResturantsData = async () => {
@@ -117,30 +140,39 @@ function App() {
     }
   }, [resturantID, dishes.length]);
 
+
+
   const sendorder = async () => {
-    setLinePayUrl(null);
+     setLinePayUrl(null);
     let thisModal = loadingRef.current;
     thisModal.style.display = "block";
-    const data = await sendOrderApi(cart);
-
-    try {
-      // since I get the last payment
+    // change to sendOrder after pay
+    // const data = await sendOrderApi(cart);
+    // try {
+    console.log(waitToPay)
+    // since I get the last payment
       const _ = await sendPrime(cart);
-
+      console.log(cart)
       setTimeout(async () => {
         const payment = await sendPrime(cart);
-        console.log(payment);
+        const now = new Date()
+        let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 600000}
+        let WaitToPayList = [...waitToPay, newWaitToPay]
+        setWaitToPay(WaitToPayList)
+
         // expire in 5 minute
-        Cookies.set("linePayUrl", payment.data.payment_url, {
-          secure: true,
-          expires: 1 / 288,
-        });
+        // Cookies.set("waitToPay", JSON.stringify(waitToPay), {
+        //   secure: true,
+        //   expires: 1 / 288,
+        // });
+        localStorage.setItem('waitToPay', JSON.stringify(WaitToPayList));
         setLinePayUrl(payment.data.payment_url);
-      }, 3000);
-    } catch {
-      console.log("error occur, please pay by cash");
-    }
-    setShowAlert(data);
+      }, 5000);
+    // } catch {
+      // console.log("error occur, please pay by cash");
+    // }
+
+    setShowAlert("success");
     thisModal.style.display = "none";
   };
 
