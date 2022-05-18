@@ -15,7 +15,7 @@ import NumberSelector from "./NumberSelector";
 import DishComment from "./DishComment";
 import { FormattedMessage } from "react-intl";
 
-const Dish = ({ dish, cart, setCart }) => {
+const Dish = ({ dish, cart, setCart, loginUserProfile }) => {
   // const theme = useTheme();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [commentModalOpen, setCommentModalOpen] = React.useState(false);
@@ -195,7 +195,7 @@ const Dish = ({ dish, cart, setCart }) => {
                 )}
               </div>
             </div>
-            <DishComment show={commentModalOpen} commentData={dish.comments} />
+            <DishComment show={commentModalOpen} commentData={dish.comments} dishId={dish.id} loginUserProfile={loginUserProfile} />
           </Box>
         </Fade>
       </Modal>

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
 
+const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
 // const baseUrl = "https://api.eatba.tk";
-const baseUrl = "https://api.eatba.tk";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
 const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
@@ -19,6 +19,7 @@ const gettotalprice = (cart) => {
 export const getMenuApi = async (resturantID) => {
   try {
     const { data } = await getitems(`${baseUrl}/menu/${resturantID}`);
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -85,6 +86,31 @@ export const sendPrime = async (cart) => {
     });
     return window.payment;
   } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendComment = async (commentInfo) => {
+  var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
+  try {
+    let date = new Date(); // Or the date you'd like converted.
+    let isoDateTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, -1);
+    console.log('into send comment');
+    console.log(isoDateTime);
+    console.log(commentInfo);
+    const { data } = await createitem(`${tmpApi}/comment`, {
+      // const { data } = await createitem(`${baseUrl}/order`, {
+      itemId: commentInfo.itemId,
+      name: commentInfo.name,
+      content: commentInfo.content,
+      time: isoDateTime,
+      rate: commentInfo.rate,
+      imgUrl: commentInfo.imgUrl,
+
+    });
+
+  }
+  catch (error) {
     console.log(error);
   }
 };

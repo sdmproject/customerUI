@@ -61,6 +61,7 @@ function App() {
   const [linePayUrl, setLinePayUrl] = useState(null);
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
+  const [loginUserProfile, setLoginUserProfile] = useState(null);
 
   const messages = {
     zh: message_zh,
@@ -158,7 +159,7 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+                element={<Loginpage authed={authed} setAuthed={setAuthed} setLoginUserProfile={setLoginUserProfile} />}
               />
               <Route
                 exact
@@ -186,7 +187,7 @@ function App() {
                 path="/menu"
                 element={
                   <RequireAuth authed={authed}>
-                    <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                    <Menu dishes={dishes} cart={cart} setCart={setCart} loginUserProfile={loginUserProfile}></Menu>
                   </RequireAuth>
                 }
               />
