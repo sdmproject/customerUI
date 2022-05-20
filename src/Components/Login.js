@@ -6,6 +6,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 // refresh token
 import { refreshTokenSetup } from "../Functions/refreshToken";
 import { FormattedMessage } from "react-intl";
+import { ReactSession } from 'react-client-session';
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
@@ -20,6 +21,10 @@ function Login({ setAuthed, setLoginUserProfile }) {
     setAuthed(true);
     // setLoginUserProfile(res.currentUser.get().getBasicProfile());
     setLoginUserProfile(res.profileObj);
+    ReactSession.set("username", res.profileObj.name);
+    ReactSession.set("image_URL", res.profileObj.imageUrl);
+    ReactSession.set("email", res.profileObj.email);
+    ReactSession.set("google_ID", res.profileObj.googleId);
     navigate("/customerUI", { replace: true });
     // if (res.isSignedIn.get()) {
     //   var profile = res.currentUser.get().getBasicProfile();

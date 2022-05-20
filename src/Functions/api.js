@@ -1,5 +1,6 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
+import { ReactSession } from 'react-client-session';
 
 const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
 // const baseUrl = "https://api.eatba.tk";
@@ -65,6 +66,9 @@ export const sendOrderApi = async (cart) => {
           quantity: e.dishesNum,
           note: e.customization,
           status: "RAW",
+          // googleID: ReactSession.get("google_ID"),
+          // name: ReactSession.get("username"),
+          // takeOut: true,
         };
       }),
     });
@@ -93,6 +97,7 @@ export const sendPrime = async (cart) => {
 export const sendComment = async (commentInfo) => {
   var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
   try {
+    console.log("session name", ReactSession.get("username"));
     let date = new Date(); // Or the date you'd like converted.
     let isoDateTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, -1);
     console.log('into send comment');
@@ -101,11 +106,11 @@ export const sendComment = async (commentInfo) => {
     const { data } = await createitem(`${tmpApi}/comment`, {
       // const { data } = await createitem(`${baseUrl}/order`, {
       itemId: commentInfo.itemId,
-      name: commentInfo.name,
+      name: ReactSession.get("username"),
       content: commentInfo.content,
       time: isoDateTime,
       rate: commentInfo.rate,
-      imgUrl: commentInfo.imgUrl,
+      imgUrl: ReactSession.get("image_URL"),
 
     });
 

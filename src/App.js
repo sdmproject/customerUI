@@ -25,7 +25,7 @@ import { IntlProvider, FormattedMessage } from "react-intl";
 import Intl from "./Components/Intl";
 import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
-// test commit for deploy
+import { ReactSession } from 'react-client-session';
 
 const theme = createTheme({
   palette: {
@@ -62,6 +62,8 @@ function App() {
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
   const [loginUserProfile, setLoginUserProfile] = useState(null);
+  ReactSession.setStoreType("localStorage");
+
 
   const messages = {
     zh: message_zh,

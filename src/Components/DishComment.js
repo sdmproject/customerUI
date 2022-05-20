@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import Rating from "@mui/material/Rating";
-import $ from 'jquery';
 import { sendComment } from "../Functions/api";
 
 
@@ -47,18 +46,6 @@ const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
 
     sendComment(commentInfo);
   }
-  // var dateDiff = function (timestamp) {
-  //   // 补全为13位
-  //   var arrTimestamp = (timestamp + '').split('');
-  //   for (var start = 0; start < 13; start++) {
-  //     if (!arrTimestamp[start]) {
-  //       arrTimestamp[start] = '0';
-  //     }
-  //   }
-  //   timestamp = arrTimestamp.join('') * 1;
-
-
-  // };
 
   const dateConverter = (isoDateString) => {
     const targetDate = new Date(isoDateString);
@@ -107,11 +94,11 @@ const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
     } else if (dayC >= 1) {
       return parseInt(dayC) + "天前";
     } else if (hourC >= 1) {
-      return parseInt(hourC) + "小时前";
+      return parseInt(hourC) + "小時前";
     } else if (minC >= 1) {
-      return parseInt(minC) + "分钟前";
+      return parseInt(minC) + "分鐘前";
     }
-    return '刚刚';
+    return '剛剛';
   }
 
   // console.log(commentData);
