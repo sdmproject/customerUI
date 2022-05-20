@@ -7,6 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import HomeIcon from "@mui/icons-material/Home";
+import ArticleIcon from '@mui/icons-material/Article';
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { Paper } from "@mui/material";
 import { FormattedMessage } from "react-intl";
@@ -57,6 +58,14 @@ export default function BottomNav({ authed }) {
           icon={<ShoppingCart />}
           component={Link}
           to="/cart"
+        />
+        <BottomNavigationAction
+          key="orders"
+          label={<FormattedMessage id="bottomnav.orders" defaultMessage="Orders" />}
+          value="/orders"
+          icon={<ArticleIcon />}
+          component={Link}
+          to="/orders"
         />
         <BottomNavigationAction
           key={authed ? "logout" : "login"}

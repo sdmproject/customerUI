@@ -5,6 +5,7 @@
   "bottomnav.cart": "購物車",
   "bottomnav.login": "登入",
   "bottomnav.logout": "登出",
+  "bottomnav.orders": "訂單紀錄", 
   "dish.note": "備註欄",
   "dish.note.placeholder": "若您有特殊需求，像是火鍋不要芋頭或是香菜加倍，可於此備註",
   "dish.comment.open": "查看評論",

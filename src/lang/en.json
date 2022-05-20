@@ -5,6 +5,7 @@
   "bottomnav.cart": "Cart",
   "bottomnav.login": "Login",
   "bottomnav.logout": "Logout",
+  "bottomnav.orders": "Orders", 
   "dish.note": "Notes",
   "dish.note.placeholder": "If you have special needs, such as hot pot without taro or cilantro double, please note here",
   "dish.comment.open": "View Comments",
