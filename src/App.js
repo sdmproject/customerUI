@@ -65,6 +65,7 @@ function App() {
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
 
   const [orders, setOrders] = useState([]); 
+  const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0)
   const messages = {
     zh: message_zh,
     en: message_en,
@@ -72,34 +73,81 @@ function App() {
 
   const loadingRef = useRef(null);
 
-  useEffect(() => {
+  useEffect(async() => {
     // let waitToPayList = JSON.parse(Cookies.get("waitToPay"));
-    const waitToPayList =  JSON.parse(localStorage.getItem('orders'));
-    console.log(waitToPayList)
-    if (waitToPayList) {
-      setOrders(waitToPayList);
-    }
+    // const waitToPayList =  JSON.parse(localStorage.getItem('orders'));
+    // console.log(waitToPayList)
+    // let temp = waitToPayList
+    // let toRemove = []
+    // if (waitToPayList) {
+      // setOrders(waitToPayList)
+    //   for (let i = 0; i < waitToPayList.length; i++){
+    //     if(waitToPayList[i]["havePayed"] === false){
+    //       const tradeStatus = await getTradeResult(waitToPayList[i]["rec_trade_id"])
+    //       // console.log(tradeStatus)
+    //       if (tradeStatus.data.trade_history[0]["action"] !== 4){
+    //         waitToPayList[i]["expire"] += 86400 * 1000
+    //         waitToPayList[i]["havePayed"] = true
+    //         sendOrderApi(waitToPayList[i]["cart"])
+    //       }
+          
+    //       const now = new Date()
+    //       if(now.getTime() > waitToPayList[i]["expire"])
+    //         toRemove.push(i)  
+    //     }
+    //   }
+      
+    //   for (let i = 0; i < toRemove.length; i++){
+    //     temp = temp.splice(temp.findIndex(x => x === waitToPayList[toRemove[i]]), 1)
+    //   }
+
+    //   setOrders(temp);
+    // }
+
+    // localStorage.setItem('orders', JSON.stringify(temp));
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval( async() => {
-      let temp = orders
-      console.log("start update")
-      for (let i = 0; i < orders.length; i++){
-        const tradeStatus = await getTradeResult(orders[i]["rec_trade_id"])
-        console.log(tradeStatus)
-        const now = new Date()
-        if(now.getTime() > orders[i]["expire"])
-          temp = temp.splice(temp.findIndex(x => x === orders[i]), 1)
-      }
-      setOrders(temp)
-      localStorage.setItem('orders', JSON.stringify(temp));
-    }, 5000); 
-    return () => {
-      console.log(`clearing interval`);
-      clearInterval(interval);
-    };
-  }, [orders]);
+  // useEffect(() => {
+  //   let interval
+  //   // setTimeout(() => {
+  //     interval = setInterval( async() => {
+  //       let temp = orders
+  //       // console.log("start update")
+  //       let toRemove = []
+  //       // console.log(orders)
+  //       for (let i = 0; i < orders.length; i++){
+  //           const tradeStatus = await getTradeResult(temp[i]["rec_trade_id"])
+  //           // console.log(tradeStatus)
+  //           // 
+  //           if (tradeStatus.data.trade_history.length > 1){
+  //             // f = temp.slice(0, i)
+  //             // b = temp.slice(i + 1, temp.length)
+  //             temp[i]["expire"] += 86400 * 1000
+  //             temp[i]["havePayed"] = true
+  //             sendOrderApi(temp[i]["cart"])
+  //             localStorage.setItem('orders', JSON.stringify(temp));
+  //             setOrders(temp) 
+  //           }
+            
+  //           // const now = new Date()
+  //           // if(now.getTime() > orders[i]["expire"])
+  //           //   toRemove.push(i)  
+  //         // }
+  //       }
+  //       // for (let i = 0; i < toRemove.length; i++){
+  //       //   temp = temp.splice(temp.findIndex(x => x === orders[toRemove[i]]), 1)
+  //       // }
+
+
+  //       setForceIntervalUpdate((x) => x+1)
+  //     }, 5000); 
+  //   // }, 5000);
+
+  //   return () => {
+  //     console.log(`clearing interval`);
+  //     clearInterval(interval);
+  //   };
+  // }, [forceIntervalUpdate]);
 
   useEffect(() => {
     const getResturantsData = async () => {
@@ -150,23 +198,20 @@ function App() {
     // change to sendOrder after pay
     // const data = await sendOrderApi(cart);
     // try {
-    console.log(orders)
     // since I get the last payment
+      // const waitToPayList =  JSON.parse(localStorage.getItem('orders'));
+      // if(waitToPayList)
+        // setOrders(waitToPayList)
       const _ = await sendPrime(cart);
-      console.log(cart)
       setTimeout(async () => {
         const payment = await sendPrime(cart);
         const now = new Date()
-        let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 600000, "havePayed":false}
+
+        let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
+        // console.log(newWaitToPay)
         let WaitToPayList = [...orders, newWaitToPay]
         setOrders(WaitToPayList)
-
-        // expire in 5 minute
-        // Cookies.set("waitToPay", JSON.stringify(waitToPay), {
-        //   secure: true,
-        //   expires: 1 / 288,
-        // });
-        localStorage.setItem('orders', JSON.stringify(WaitToPayList));
+        // localStorage.setItem('orders', JSON.stringify(WaitToPayList));
         setLinePayUrl(payment.data.payment_url);
       }, 5000);
     // } catch {
@@ -240,11 +285,11 @@ function App() {
               <Route
                 path="/orders"
                 element={
-                  // <RequireAuth authed={authed}>
+                  <RequireAuth authed={authed}>
                     <OrdersPage
                       orders={orders}
                     />
-                  // </RequireAuth>
+                   </RequireAuth>
                 }
               />
             </Routes>
@@ -252,7 +297,7 @@ function App() {
           </BrowserRouter>
           <Loading modalRef={loadingRef}></Loading>
         </div>
-        {linePayUrl !== null ? (
+        {/* {linePayUrl !== null ? (
           <Fab
             variant="extended"
             color="primary"
@@ -272,7 +317,8 @@ function App() {
               defaultMessage="使用LinePay付款"
             />
           </Fab>
-        ) : null}
+        ) : null} */}
+        {/* <button onClick={()=> console.log(orders)}>test</button> */}
         <Intl setLang={setLang} />
       </IntlProvider>
     </ThemeProvider>

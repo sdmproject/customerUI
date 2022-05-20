@@ -99,7 +99,6 @@ export const sendPrime = async (cart) => {
     window.TPDirect.linePay.getPrime(async (result) => {
       prime = result.prime;
       data = await payment({ prime: prime, cart: cart });
-      console.log(data);
       window.payment = data;
     });
     return window.payment;
