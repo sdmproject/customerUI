@@ -17,8 +17,8 @@ const Order = ({order}) => {
 			setOpen("is-section")
 		}
 	}
-	const onClickOpenLinePay = (linePayUrl) =>{
-		const newWindow = window.open(linePayUrl, "_blank");
+	const onClickOpenLinePay = (event) =>{
+		const newWindow = window.open(event.target.value, "_blank");
 	}
 
 	return (
@@ -28,7 +28,7 @@ const Order = ({order}) => {
 					<h1 style={{}}>order</h1>
 					<div> $ 1254 </div>
 				</div>
-				<div onClick={onClickOpenLinePay}>
+				<div onClick={onClickOpenLinePay} value={url}>
 					<button class="ts-button" >使用LinePay付款</button>		
 				</div>
 			</div>
