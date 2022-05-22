@@ -22,5 +22,11 @@
   "cart.alert.failed": "Please try again later.",
   "cart.alert.linepay": "1.Three seconds later, a button will be generated at the bottom of the screen, within ten minutes, use this button to pay, the meal will be issued immediately after payment.",
   "cart.alert.pay": "2.Please pay at the counter, meals will be served immediately after payment.",
-  "cart.sendorder": "Send order"
+  "home.inside": "Inside",
+  "home.takeout": "Takeout",
+  "home.approximate": "Pick up in about",
+  "home.getMeal": "minutes later.  ",
+  "home.orderNow": "Order Now→",
+  "home.people1": "People",
+  "home.peo2ple": ""
 }

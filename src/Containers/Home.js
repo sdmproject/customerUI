@@ -68,9 +68,9 @@ const Home = ({ resturants, setResturantID }) => {
                 </div> */}
                 <div className="column">
                   <label className="ts-switch is-large" >
-                    外帶
+                    <FormattedMessage id="home.takeout" defaultMessage="外帶" />
                     <input type="checkbox" onClick={switchTakeOut} />
-                    內用
+                    <FormattedMessage id="home.inside" defaultMessage="內用" />
                   </label>
                 </div>
               </div>
@@ -79,7 +79,7 @@ const Home = ({ resturants, setResturantID }) => {
 
 
             <label>
-              大約
+              <FormattedMessage id="home.approximate" defaultMessage="大約" />
               <div className="ts-select is-small is-dense">
                 <select defaultValue={15} onChange={(e) => ReactSession.set("minutesLater", e.target.value)}>
                   <option value={5}>5</option>
@@ -90,13 +90,14 @@ const Home = ({ resturants, setResturantID }) => {
                   <option value={45}>45</option>
                 </select>
               </div>
-              分鐘後到餐廳取餐
+              <FormattedMessage id="home.getMeal" defaultMessage="分鐘後到餐廳取餐" />
             </label>
             {
               //內用
               !isTakeOut ? (
                 <label>
-                  ，內用人數
+                  <FormattedMessage id="home.people1" defaultMessage="，內用人數" />
+
                   <div className="ts-select is-small is-dense">
                     <select defaultValue={1} onChange={(e) => ReactSession.set("herePeople", e.target.value)}>
                       <option value={1}>1</option>
@@ -107,7 +108,7 @@ const Home = ({ resturants, setResturantID }) => {
                       <option value={6}>6</option>
                     </select>
                   </div>
-                  人
+                  <FormattedMessage id="home.people2" defaultMessage="." />
                 </label>
 
               ) : null

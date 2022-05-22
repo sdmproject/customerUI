@@ -6,6 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import { FormattedMessage } from "react-intl";
+
 
 const Restaurant = ({ restaurant, setResturantID, setHintText }) => {
   let navigate = useNavigate();
@@ -43,7 +45,7 @@ const Restaurant = ({ restaurant, setResturantID, setHintText }) => {
                 {restaurant.rates_ave}⭐
               </Typography>
               <Typography color="text.secondary">
-                立刻點餐→
+                <FormattedMessage id="home.orderNow" defaultMessage="立刻點餐→" />
               </Typography>
             </CardContent>
           </CardActionArea>
