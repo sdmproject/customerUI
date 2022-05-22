@@ -2,7 +2,7 @@ import axios from "axios";
 import { nanoid } from "nanoid";
 
 // const baseUrl = "https://api.eatba.tk";
-const baseUrl = "https://api.eatba.tk";
+const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
 const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
