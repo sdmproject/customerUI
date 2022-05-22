@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 
 import { FormattedMessage } from "react-intl";
 
-export default function BottomNav({ authed }) {
+export default function BottomNav({ authed, cart }) {
   let location = useLocation();
   const [value, setValue] = useState(location.pathname);
 
@@ -67,7 +67,7 @@ export default function BottomNav({ authed }) {
           key="cart"
           label={<FormattedMessage id="bottomnav.cart" defaultMessage="Cart" />}
           value="/cart"
-          icon={<StyledBadge badgeContent={4} color="primary">
+          icon={<StyledBadge badgeContent={cart.length} color="primary">
             <ShoppingCart />
           </StyledBadge>}
           component={Link}

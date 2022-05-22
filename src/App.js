@@ -64,6 +64,8 @@ function App() {
   const [loginUserProfile, setLoginUserProfile] = useState(null);
   ReactSession.setStoreType("localStorage");
   ReactSession.set("isTakeOut", true);
+  ReactSession.set("minutesLater", 15);
+  ReactSession.set("herePeople", 1);
 
   const messages = {
     zh: message_zh,
@@ -208,7 +210,7 @@ function App() {
                 }
               />
             </Routes>
-            <BottomNav authed={authed} />
+            <BottomNav authed={authed} cart={cart} />
           </BrowserRouter>
           <Loading modalRef={loadingRef}></Loading>
         </div>

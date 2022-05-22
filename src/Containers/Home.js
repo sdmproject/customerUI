@@ -15,12 +15,16 @@ const Home = ({ resturants, setResturantID }) => {
   console.log(resturants);
 
   const switchTakeOut = () => {
-
     var current = ReactSession.get("isTakeOut");
     // console.log(`local is ${isTakeOut},global is ${current}`);
+    if (!current) {
+      ReactSession.set("herePeople", 1);
+    };
     setIsTakeOut(prev => !prev);
     ReactSession.set("isTakeOut", !current);
+
   }
+
   return (
     <>
       <div style={{ alignItems: "center" }}>
@@ -48,22 +52,22 @@ const Home = ({ resturants, setResturantID }) => {
             alt="Background"
           />
         </div>
-        <div class="ts-space" />
+        <div className="ts-space" />
         <div className="ts-center">
 
-          <div class="ts-box is-elevated" style={{ margin: "10px", maxWidth: "500px" }}>
-            <div class="ts-space" />
+          <div className="ts-box is-elevated" style={{ margin: "10px", maxWidth: "500px" }}>
+            <div className="ts-space" />
             <div className="ts-row is-center-aligned">
               <div className="ts-wrap">
-                <div class="column">
-                  <label class="ts-switch is-large">
+                <div className="column">
+                  <label className="ts-switch is-large">
                     中文
                     <input type="checkbox" />
                     English
                   </label>
                 </div>
-                <div class="column">
-                  <label class="ts-switch is-large" >
+                <div className="column">
+                  <label className="ts-switch is-large" >
                     外帶
                     <input type="checkbox" onClick={switchTakeOut} />
                     內用
@@ -71,19 +75,19 @@ const Home = ({ resturants, setResturantID }) => {
                 </div>
               </div>
             </div>
-            <div class="ts-space" />
+            <div className="ts-space" />
 
 
             <label>
               大約
-              <div class="ts-select is-small is-dense">
-                <select>
-                  <option>5</option>
-                  <option>10</option>
-                  <option>15</option>
-                  <option>20</option>
-                  <option>30</option>
-                  <option>45</option>
+              <div className="ts-select is-small is-dense">
+                <select defaultValue={15} onChange={(e) => ReactSession.set("minutesLater", e.target.value)}>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
+                  <option value={45}>45</option>
                 </select>
               </div>
               分鐘後到餐廳取餐
@@ -93,14 +97,14 @@ const Home = ({ resturants, setResturantID }) => {
               !isTakeOut ? (
                 <label>
                   ，內用人數
-                  <div class="ts-select is-small is-dense">
-                    <select>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
+                  <div className="ts-select is-small is-dense">
+                    <select defaultValue={1} onChange={(e) => ReactSession.set("herePeople", e.target.value)}>
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                      <option value={6}>6</option>
                     </select>
                   </div>
                   人
@@ -124,7 +128,7 @@ const Home = ({ resturants, setResturantID }) => {
               </div>
               <div className="column is-1-wide"></div>
             </div>
-            <div class="ts-space" />
+            <div className="ts-space" />
           </div>
         </div>
         {/* <div key={0}>

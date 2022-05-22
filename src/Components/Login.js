@@ -20,7 +20,7 @@ function Login({ setAuthed, setLoginUserProfile }) {
     refreshTokenSetup(res);
     setAuthed(true);
     // setLoginUserProfile(res.currentUser.get().getBasicProfile());
-    setLoginUserProfile(res.profileObj);
+    // setLoginUserProfile(res.profileObj);
     ReactSession.set("username", res.profileObj.name);
     ReactSession.set("image_URL", res.profileObj.imageUrl);
     ReactSession.set("email", res.profileObj.email);

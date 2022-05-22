@@ -47,21 +47,24 @@ export const sendOrderApi = async (cart) => {
 
   try {
     // orderid += 1;
-    let date = new Date(); // Or the date you'd like converted.
-    let isoDateTime = new Date(
-      date.getTime() - date.getTimezoneOffset() * 60000
-    )
-      .toISOString()
-      .slice(0, -1);
+    let nowDate = new Date(); // Or the date you'd like converted.
+    let nowDateUTC8 = new Date(nowDate.getTime() - nowDate.getTimezoneOffset() * 60000);
+    let isoNowTime = nowDateUTC8.toISOString().slice(0, -1);
+
+    let durationInMinutes = ReactSession.get("minutesLater");
+    let arrivedTime = new Date(nowDateUTC8.getTime() + durationInMinutes * 60000);
+    let isoArrivedTime = arrivedTime.toISOString().slice(0, -1);
+
     const { data } = await createitem(`${baseUrl}/order`, {
       id: nanoid(),
       tableNo: table,
       totalPrice: gettotalprice(cart),
-      time: isoDateTime,
-      // googleID: ReactSession.get("google_ID"),
-      // userName: ReactSession.get("username"),
-      // isTakeOut: ReactSession.get("isTakeOut"),
-      // arrivedTime: ReactSession.get("arrivedTime"),
+      time: isoNowTime,
+      customerId: ReactSession.get("google_ID"),
+      customerName: ReactSession.get("username"),
+      isTakeOut: ReactSession.get("isTakeOut").toString(),
+      arrivedTime: isoArrivedTime,
+      herePeople: ReactSession.get("herePeople"),
       items: cart.map((e) => {
         return {
           id: e.id,
@@ -73,6 +76,7 @@ export const sendOrderApi = async (cart) => {
         };
       }),
     });
+    console.log("sendOrderApi", data);
     return data;
   } catch (error) {
     console.log(error);
