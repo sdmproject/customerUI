@@ -69,7 +69,7 @@ export default function Intl({ setLang }) {
       direction="row"
       spacing={1}
       alignItems="center"
-      sx={{ position: "fixed", bottom: 70, right: 12, zIndex: 101 }}
+      sx={{ position: "fixed", bottom: 70, left: 12, zIndex: 101 }}
     >
       <Typography>中文</Typography>
       <AntSwitch
