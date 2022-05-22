@@ -63,7 +63,7 @@ function App() {
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
   const [loginUserProfile, setLoginUserProfile] = useState(null);
   ReactSession.setStoreType("localStorage");
-
+  ReactSession.set("isTakeOut", true);
 
   const messages = {
     zh: message_zh,

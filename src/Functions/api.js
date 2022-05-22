@@ -58,6 +58,10 @@ export const sendOrderApi = async (cart) => {
       tableNo: table,
       totalPrice: gettotalprice(cart),
       time: isoDateTime,
+      // googleID: ReactSession.get("google_ID"),
+      // userName: ReactSession.get("username"),
+      // isTakeOut: ReactSession.get("isTakeOut"),
+      // arrivedTime: ReactSession.get("arrivedTime"),
       items: cart.map((e) => {
         return {
           id: e.id,
@@ -66,9 +70,6 @@ export const sendOrderApi = async (cart) => {
           quantity: e.dishesNum,
           note: e.customization,
           status: "RAW",
-          // googleID: ReactSession.get("google_ID"),
-          // name: ReactSession.get("username"),
-          // takeOut: true,
         };
       }),
     });

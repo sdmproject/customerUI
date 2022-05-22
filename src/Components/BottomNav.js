@@ -9,11 +9,24 @@ import LoginIcon from "@mui/icons-material/Login";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { Paper } from "@mui/material";
+import { Badge } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
 import { FormattedMessage } from "react-intl";
 
 export default function BottomNav({ authed }) {
   let location = useLocation();
   const [value, setValue] = useState(location.pathname);
+
+
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      right: -3,
+      top: 13,
+      border: `2px solid ${theme.palette.background.paper}`,
+      padding: '0 4px',
+    },
+  }));
 
   useEffect(() => {
     console.log(location.pathname);
@@ -54,7 +67,9 @@ export default function BottomNav({ authed }) {
           key="cart"
           label={<FormattedMessage id="bottomnav.cart" defaultMessage="Cart" />}
           value="/cart"
-          icon={<ShoppingCart />}
+          icon={<StyledBadge badgeContent={4} color="primary">
+            <ShoppingCart />
+          </StyledBadge>}
           component={Link}
           to="/cart"
         />
