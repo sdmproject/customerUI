@@ -59,13 +59,13 @@ const Home = ({ resturants, setResturantID }) => {
             <div className="ts-space" />
             <div className="ts-row is-center-aligned">
               <div className="ts-wrap">
-                <div className="column">
+                {/* <div className="column">
                   <label className="ts-switch is-large">
                     中文
                     <input type="checkbox" />
                     English
                   </label>
-                </div>
+                </div> */}
                 <div className="column">
                   <label className="ts-switch is-large" >
                     外帶
