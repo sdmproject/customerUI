@@ -5,6 +5,7 @@ import Home from "./Containers/Home";
 import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
+import OrdersPage from "./Containers/OrdersPage"
 import BottomNav from "./Components/BottomNav";
 import { Fab } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
@@ -16,6 +17,8 @@ import {
   sendOrderApi,
   getResturantsApi,
   sendPrime,
+  getTradeResult,
+  getOrderById
 } from "./Functions/api";
 import "tocas/dist/tocas.min.css";
 import "tocas/dist/tocas.min.js";
@@ -25,7 +28,8 @@ import { IntlProvider, FormattedMessage } from "react-intl";
 import Intl from "./Components/Intl";
 import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
-// test commit for deploy
+import { ReactSession } from 'react-client-session';
+import { InitMixpanel, AuthListener } from "./Mixpanel/mixpanel";
 
 const theme = createTheme({
   palette: {
@@ -61,7 +65,16 @@ function App() {
   const [linePayUrl, setLinePayUrl] = useState(null);
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
+  const [loginUserProfile, setLoginUserProfile] = useState(null);
+  const [historyOrders, setHistoryOrders] = useState([]);
 
+  ReactSession.setStoreType("localStorage");
+  ReactSession.set("isTakeOut", true);
+  ReactSession.set("minutesLater", 15);
+  ReactSession.set("herePeople", 1);
+
+  const [orders, setOrders] = useState([]); 
+  const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0)
   const messages = {
     zh: message_zh,
     en: message_en,
@@ -69,13 +82,14 @@ function App() {
 
   const loadingRef = useRef(null);
 
-  useEffect(() => {
-    let url;
-    url = Cookies.get("linePayUrl");
-    if (url) {
-      setLinePayUrl(url);
-    }
+  useEffect(async() => {
+    console.log("sd")
+    // InitMixpanel();
+    const {data} = await getOrderById();
+    console.log(data)
+    setHistoryOrders(data)
   }, []);
+
 
   useEffect(() => {
     const getResturantsData = async () => {
@@ -117,30 +131,30 @@ function App() {
     }
   }, [resturantID, dishes.length]);
 
+
+
   const sendorder = async () => {
-    setLinePayUrl(null);
+     setLinePayUrl(null);
     let thisModal = loadingRef.current;
     thisModal.style.display = "block";
-    const data = await sendOrderApi(cart);
-
+    // change to sendOrder after pay
+    // const data = await sendOrderApi(cart);
     try {
-      // since I get the last payment
-      const _ = await sendPrime(cart);
-
-      setTimeout(async () => {
+      // const _ = await sendPrime(cart);
+      // console.log(_)
+      // setTimeout(async () => {
         const payment = await sendPrime(cart);
-        console.log(payment);
-        // expire in 5 minute
-        Cookies.set("linePayUrl", payment.data.payment_url, {
-          secure: true,
-          expires: 1 / 288,
-        });
+        const now = new Date()
+        let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
+        let WaitToPayList = [...orders, newWaitToPay]
+        setOrders(WaitToPayList)
         setLinePayUrl(payment.data.payment_url);
-      }, 3000);
+      // }, 8000);
     } catch {
       console.log("error occur, please pay by cash");
     }
-    setShowAlert(data);
+
+    setShowAlert("success");
     thisModal.style.display = "none";
   };
 
@@ -158,7 +172,7 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+                element={<Loginpage authed={authed} setAuthed={setAuthed} setLoginUserProfile={setLoginUserProfile} />}
               />
               <Route
                 exact
@@ -186,7 +200,7 @@ function App() {
                 path="/menu"
                 element={
                   <RequireAuth authed={authed}>
-                    <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                    <Menu dishes={dishes} cart={cart} setCart={setCart} loginUserProfile={loginUserProfile}></Menu>
                   </RequireAuth>
                 }
               />
@@ -204,32 +218,21 @@ function App() {
                   </RequireAuth>
                 }
               />
+              <Route
+                path="/orders"
+                element={
+                  <RequireAuth authed={authed}>
+                    <OrdersPage
+                      orders={orders} historyOrders={historyOrders}
+                    />
+                   </RequireAuth>
+                }
+              />
             </Routes>
-            <BottomNav authed={authed} />
+            <BottomNav authed={authed} cart={cart} />
           </BrowserRouter>
           <Loading modalRef={loadingRef}></Loading>
         </div>
-        {linePayUrl !== null ? (
-          <Fab
-            variant="extended"
-            color="primary"
-            sx={{
-              position: "fixed",
-              bottom: 70,
-
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              zIndex: 101,
-            }}
-            onClick={onClick_openLinePay}
-          >
-            <NavigationIcon sx={{ mr: 1 }} />
-            <FormattedMessage
-              id="app.uselinepay"
-              defaultMessage="使用LinePay付款"
-            />
-          </Fab>
-        ) : null}
         <Intl setLang={setLang} />
       </IntlProvider>
     </ThemeProvider>
