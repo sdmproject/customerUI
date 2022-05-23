@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
 import Divider from '@mui/material/Divider';
 import {getTradeResult, sendOrderApi} from "../Functions/api"
-
+import { FormattedMessage } from "react-intl";
 const getTotalPrice = (cart) => {
   let sum = 0;
   cart.map((obj) => {
@@ -13,7 +13,8 @@ const getTotalPrice = (cart) => {
 
 
 
-const Order = ({order, index,orders}) => {
+const Order = ({order, index}) => {
+	
 
 	const [open, setOpen]  = useState("is-section")
 	const [totalPrice, setTotalPrice] = useState(0)
@@ -27,22 +28,18 @@ const Order = ({order, index,orders}) => {
   useEffect(() => {
     let interval
 	interval = setInterval( async() => {
-	let temp = orders
-	const tradeStatus = await getTradeResult(order["rec_trade_id"])
-	// console.log(tradeStatus)
-	for (let i = 0; i < tradeStatus.data.trade_history.length; i ++){
-		if (tradeStatus.data.trade_history[i]["action"] == 0 || tradeStatus.data.trade_history[i]["action"] == 1){
-			setHavePayed(true)
-			sendOrderApi(order["cart"])
-			let i = temp.findIndex(x => x === order)
-			temp[i]["havePayed"] = true
-			temp[i]["expire"] += 86400 * 1000
-			// localStorage.setItem('orders', JSON.stringify(temp));
-			break
-		}
-		}   
-	}, 5000); 
-
+	if(!havePayed){
+		const tradeStatus = await getTradeResult(order["rec_trade_id"])
+		// console.log(tradeStatus)
+		for (let i = 0; i < tradeStatus.data.trade_history.length; i ++){
+			
+			if (tradeStatus.data.trade_history[i]["action"] == 0 || tradeStatus.data.trade_history[i]["action"] == 1){
+				setHavePayed(true)
+				sendOrderApi(order["cart"])
+				break
+			}
+			}   
+	}}, 5000); 
 
     return () => {
       console.log(`clearing interval`);
@@ -65,25 +62,51 @@ const Order = ({order, index,orders}) => {
 	}
 
 	return (
+		<>
 		<div style={{"margin":"auto", "marginBottom":"40px", "marginTop":"30px", "marginLeft":"40px"}} onClick={onClickOpen} >
 			<div style={{"display":"flex"}}>
-				<div style={{"size":"20px", "fontWeight":"500", "marginRight":"100px"}}># {index}</div>
-				<div  style={{"marginRight":"300px"}}> $ {totalPrice}</div>
+				<div>
+					<div style={{"fontSize":"20px", "fontWeight":"500"}}>          
+					<FormattedMessage
+            		id="order.toPay"
+            		defaultMessage="待付款訂單# "/>
+					{index + 1}</div>
+					<div  style={{"fontSize":"20px"}}>
+					<FormattedMessage
+            		id="order.amount"
+            		defaultMessage="訂單金額 $ "/>
+					 {totalPrice}</div>
+				</div>
 				{havePayed
 				?
-					<button class="ts-button is-disabled">您已付款</button>		
+					<button class="ts-button is-disabled" style={{"marginLeft":"20%"}}> 					
+					<FormattedMessage
+            		id="order.havePayed"
+            		defaultMessage="此訂單已付款 "/>
+					</button>		
 				:
 				<div onClick={onClickOpenLinePay}>
-					<button class="ts-button" >使用LinePay付款</button>		
+					<button class="ts-button" style={{"marginLeft":"20%"}}>
+					<FormattedMessage
+            		id="order.payWithLinePay"
+            		defaultMessage="使用LinePay付款 "/>
+					</button>		
 				</div>
 				}
 			</div>
+		<Divider style={{"margin":"20px" }}/>
 		<div class={`ts-accordion ${open}`}>
-			<div class="title">訂單詳細內容</div>
-			{<div class="content" style={{"backgroundColor":"#DDDDDD", "padding":"20px"}}>{order.cart.map((good) => <div>{good.name} X {good.dishesNum}</div>)}</div>}
+			<div class="title"  style={{"fontSize":"20px"}}>
+					<FormattedMessage
+            		id="order.details"
+            		defaultMessage="訂單詳細內容"/>
+			</div>
+			{/* {<div class="content" style={{"backgroundColor":"#DDDDDD", "padding":"50px", "fontSize":"25px"}}>{historyOrder.items.map((good) => <div>{good.name} X {good.orderItemInfo.quantity} 的備餐狀態 : {good.orderItemInfo.state}</div>)}</div>} */}
+			{<div class="content" style={{"backgroundColor":"#DDDDDD", "padding":"50px", "fontSize":"25px"}}>{order.cart.map((good) => <div>{good.name} X {good.dishesNum}</div>)}</div>}
 		</div>
 		<Divider style={{"marginTop":"40px"}}/>
 		</div>
+		</>
 	)
 }
 

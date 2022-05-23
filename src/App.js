@@ -18,7 +18,7 @@ import {
   getResturantsApi,
   sendPrime,
   getTradeResult,
-  test
+  getOrderById
 } from "./Functions/api";
 import "tocas/dist/tocas.min.css";
 import "tocas/dist/tocas.min.js";
@@ -29,6 +29,7 @@ import Intl from "./Components/Intl";
 import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
 import { ReactSession } from 'react-client-session';
+import { InitMixpanel, AuthListener } from "./Mixpanel/mixpanel";
 
 const theme = createTheme({
   palette: {
@@ -65,6 +66,8 @@ function App() {
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
   const [loginUserProfile, setLoginUserProfile] = useState(null);
+  const [historyOrders, setHistoryOrders] = useState([]);
+
   ReactSession.setStoreType("localStorage");
   ReactSession.set("isTakeOut", true);
   ReactSession.set("minutesLater", 15);
@@ -80,50 +83,13 @@ function App() {
   const loadingRef = useRef(null);
 
   useEffect(async() => {
-    test()
+    console.log("sd")
+    // InitMixpanel();
+    const {data} = await getOrderById();
+    console.log(data)
+    setHistoryOrders(data)
   }, []);
 
-  // useEffect(() => {
-  //   let interval
-  //   // setTimeout(() => {
-  //     interval = setInterval( async() => {
-  //       let temp = orders
-  //       // console.log("start update")
-  //       let toRemove = []
-  //       // console.log(orders)
-  //       for (let i = 0; i < orders.length; i++){
-  //           const tradeStatus = await getTradeResult(temp[i]["rec_trade_id"])
-  //           // console.log(tradeStatus)
-  //           // 
-  //           if (tradeStatus.data.trade_history.length > 1){
-  //             // f = temp.slice(0, i)
-  //             // b = temp.slice(i + 1, temp.length)
-  //             temp[i]["expire"] += 86400 * 1000
-  //             temp[i]["havePayed"] = true
-  //             sendOrderApi(temp[i]["cart"])
-  //             localStorage.setItem('orders', JSON.stringify(temp));
-  //             setOrders(temp) 
-  //           }
-            
-  //           // const now = new Date()
-  //           // if(now.getTime() > orders[i]["expire"])
-  //           //   toRemove.push(i)  
-  //         // }
-  //       }
-  //       // for (let i = 0; i < toRemove.length; i++){
-  //       //   temp = temp.splice(temp.findIndex(x => x === orders[toRemove[i]]), 1)
-  //       // }
-
-
-  //       setForceIntervalUpdate((x) => x+1)
-  //     }, 5000); 
-  //   // }, 5000);
-
-  //   return () => {
-  //     console.log(`clearing interval`);
-  //     clearInterval(interval);
-  //   };
-  // }, [forceIntervalUpdate]);
 
   useEffect(() => {
     const getResturantsData = async () => {
@@ -174,24 +140,16 @@ function App() {
     // change to sendOrder after pay
     // const data = await sendOrderApi(cart);
     try {
-    // since I get the last payment
-      // const waitToPayList =  JSON.parse(localStorage.getItem('orders'));
-      // if(waitToPayList)
-        // setOrders(waitToPayList)
-      const _ = await sendPrime(cart);
-      console.log(_)
-      setTimeout(async () => {
+      // const _ = await sendPrime(cart);
+      // console.log(_)
+      // setTimeout(async () => {
         const payment = await sendPrime(cart);
-        console.log(payment)
         const now = new Date()
-
         let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
-        // console.log(newWaitToPay)
         let WaitToPayList = [...orders, newWaitToPay]
         setOrders(WaitToPayList)
-        // localStorage.setItem('orders', JSON.stringify(WaitToPayList));
         setLinePayUrl(payment.data.payment_url);
-      }, 3000);
+      // }, 8000);
     } catch {
       console.log("error occur, please pay by cash");
     }
@@ -265,7 +223,7 @@ function App() {
                 element={
                   <RequireAuth authed={authed}>
                     <OrdersPage
-                      orders={orders}
+                      orders={orders} historyOrders={historyOrders}
                     />
                    </RequireAuth>
                 }
@@ -275,28 +233,6 @@ function App() {
           </BrowserRouter>
           <Loading modalRef={loadingRef}></Loading>
         </div>
-        {/* {linePayUrl !== null ? (
-          <Fab
-            variant="extended"
-            color="primary"
-            sx={{
-              position: "fixed",
-              bottom: 70,
-
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              zIndex: 101,
-            }}
-            onClick={onClick_openLinePay}
-          >
-            <NavigationIcon sx={{ mr: 1 }} />
-            <FormattedMessage
-              id="app.uselinepay"
-              defaultMessage="使用LinePay付款"
-            />
-          </Fab>
-        ) : null} */}
-        {/* <button onClick={()=> console.log(orders)}>test</button> */}
         <Intl setLang={setLang} />
       </IntlProvider>
     </ThemeProvider>

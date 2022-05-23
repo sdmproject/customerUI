@@ -110,6 +110,7 @@ export const sendPrime = async (cart) => {
       prime = result.prime;
       data = await payment({ prime: prime, cart: cart });
       window.payment = data;
+      console.log("Check your order")
     });
     return window.payment;
   } catch (error) {
@@ -125,11 +126,14 @@ export const getTradeResult = async (trade_id) => {
 }
 
 
-export const test = async() => {
-  const data = await createitem(`${baseUrl}/orderById`, {
-      "customerId":"customerId"
-    });
+export const getOrderById = async() => {
+  console.log("sd")
+  const data = await axios.post(`${baseUrl}/orderById`, { 
+      // "customerId":"103600190401282656299"
+      "customerId":ReactSession.get("google_ID")
+  })  
   console.log(data)
+  return data
 }
 export const sendComment = async (commentInfo) => {
   var tmpApi = "https://49e6-150-117-240-26.ngrok.io";

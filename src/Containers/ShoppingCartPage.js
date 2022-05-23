@@ -126,7 +126,7 @@ const ShoppingCartPage = ({
               <AlertTitle>
                 <FormattedMessage
                   id="cart.alert.linepay"
-                  defaultMessage="1.三秒後在畫面正下方會生成一個按鈕，十分鐘內，利用此按鈕付款，付款後會立即出餐~"
+                  defaultMessage="1.於'訂單紀錄'中利用Linepay付款，付款後會立即出餐~"
                 />
               </AlertTitle>
             ) : (
