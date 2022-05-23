@@ -5,7 +5,7 @@
   "bottomnav.cart": "Cart",
   "bottomnav.login": "Login",
   "bottomnav.logout": "Logout",
-  "bottomnav.orders": "Orders", 
+  "bottomnav.orders": "Orders",
   "dish.note": "Notes",
   "dish.note.placeholder": "If you have special needs, such as hot pot without taro or cilantro double, please note here",
   "dish.comment.open": "View Comments",
@@ -30,10 +30,12 @@
   "home.orderNow": "Order Now→",
   "home.people1": "People",
   "home.peo2ple": "",
-  "order.toPay":"To Pay# ",
-  "order.amount":"$ ",
-  "order.havePayed":"Have payed ",
-  "order.details":"Details of the order",
-  "order.payWithLinePay":"Pay with LinePay ",
-  "order.historyOrder":"History # "
+  "home.resturant.title": "Fertile ground for high-quality meat, home to the consumer's table.",
+  "home.resturant.description": "Meat Place opened in the summer of 2012. The restaurant mainly deals in Chinese-style Sichuan cuisine. Our Sichuan cuisine is novel in style, rich in ingredients, and yet traditional in taste. Since its opening, it has been loved and praised by the majority of guests. In addition, we also provide a variety of wine pairings. The restaurant has a beautiful and hygienic environment, and there is ample supply of parking spaces. We will prepare delicious food and excellent service waiting for you!",
+  "order.toPay": "To Pay# ",
+  "order.amount": "$ ",
+  "order.havePayed": "Have payed ",
+  "order.details": "Details of the order",
+  "order.payWithLinePay": "Pay with LinePay ",
+  "order.historyOrder": "History # "
 }

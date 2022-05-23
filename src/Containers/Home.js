@@ -166,10 +166,9 @@ const Home = ({ resturants, setResturantID }) => {
               <div className="ts-box">
                 <div className="ts-content is-padded">
                   <div className="ts-quote is-heading ">
-                    高品質肉的沃土，消費者的餐桌之家。
+                    <FormattedMessage id="home.resturant.title" defaultMessage="Order Now!" />
                     <div className="cite">
-                      Meat
-                      Place開業於二零一二年夏天。本店主要經營中式特色川菜。我們的川菜款式新穎，制材豐富，又不失傳統味道，開業至今一直受到廣大賓客的喜愛及好評。除此以外，我們也提供各式酒水配搭。餐廳環境優美衛生，更有充足停車位供應。我們將準備好美味的食物和優質的服務等待您的光臨！
+                      <FormattedMessage id="home.resturant.description" defaultMessage="Good resturant don't wait." />
                     </div>
                   </div>
                 </div>

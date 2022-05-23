@@ -8,7 +8,7 @@ const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
 const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
-const tradeHistory = (item) => axios.post(`${baseUrl}/tradeHistory`, item )
+const tradeHistory = (item) => axios.post(`${baseUrl}/tradeHistory`, item)
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
@@ -111,6 +111,7 @@ export const sendPrime = async (cart) => {
       data = await payment({ prime: prime, cart: cart });
       window.payment = data;
       console.log("Check your order")
+      var _ = result;
     });
     return window.payment;
   } catch (error) {
@@ -126,12 +127,12 @@ export const getTradeResult = async (trade_id) => {
 }
 
 
-export const getOrderById = async() => {
+export const getOrderById = async () => {
   console.log("sd")
-  const data = await axios.post(`${baseUrl}/orderById`, { 
-      // "customerId":"103600190401282656299"
-      "customerId":ReactSession.get("google_ID")
-  })  
+  const data = await axios.post(`${baseUrl}/orderById`, {
+    // "customerId":"103600190401282656299"
+    "customerId": ReactSession.get("google_ID")
+  })
   console.log(data)
   return data
 }
@@ -144,8 +145,8 @@ export const sendComment = async (commentInfo) => {
     console.log('into send comment');
     console.log(isoDateTime);
     console.log(commentInfo);
-    const { data } = await createitem(`${tmpApi}/comment`, {
-      // const { data } = await createitem(`${baseUrl}/order`, {
+    // const { data } = await createitem(`${tmpApi}/comment`, {
+    const { data } = await createitem(`${baseUrl}/order`, {
       itemId: commentInfo.itemId,
       name: ReactSession.get("username"),
       content: commentInfo.content,
