@@ -8,13 +8,14 @@ import { FormattedMessage } from "react-intl";
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
 
-function Logout({ setAuthed }) {
+function Logout({ setAuthed, setLoginUserProfile }) {
   let navigate = useNavigate();
 
   const onLogoutSuccess = (res) => {
     console.log("Logged out Success");
     alert("Logged out Successfully ✌");
     setAuthed(false);
+    setLoginUserProfile(null);
     navigate("../../", { replace: true });
   };
 

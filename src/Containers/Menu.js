@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import shuffle from "../Functions/Shuffle";
 // import getRedirectUrl from "../Functions/Test";
 
-const Menu = ({ dishes, cart, setCart }) => {
+const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
   const [dishType, setDishType] = useState("");
   const [allTypeName, setAllTypeName] = useState([]);
   const [allTypeImage, setAllTypeImage] = useState([]);
@@ -21,6 +21,7 @@ const Menu = ({ dishes, cart, setCart }) => {
         setAllTypeImage((all) => [...all, dishes[i].img]);
       }
     }
+    console.log(typeTemp);
     setAllTypeName(typeTemp);
   }, [dishes]);
 
@@ -65,6 +66,7 @@ const Menu = ({ dishes, cart, setCart }) => {
                   dish={dish}
                   cart={cart}
                   setCart={setCart}
+                  loginUserProfile={loginUserProfile}
                 />
               ) : null
             )}

@@ -6,11 +6,12 @@ import GoogleIcon from "@mui/icons-material/Google";
 // refresh token
 import { refreshTokenSetup } from "../Functions/refreshToken";
 import { FormattedMessage } from "react-intl";
+import { ReactSession } from 'react-client-session';
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
 
-function Login({ setAuthed }) {
+function Login({ setAuthed, setLoginUserProfile }) {
   let navigate = useNavigate();
 
   const onSuccess = (res) => {
@@ -18,7 +19,22 @@ function Login({ setAuthed }) {
     alert(`Logged in successfully welcome ${res.profileObj.name} 😍.`);
     refreshTokenSetup(res);
     setAuthed(true);
+    // setLoginUserProfile(res.currentUser.get().getBasicProfile());
+    // setLoginUserProfile(res.profileObj);
+    ReactSession.set("username", res.profileObj.name);
+    ReactSession.set("image_URL", res.profileObj.imageUrl);
+    ReactSession.set("email", res.profileObj.email);
+    ReactSession.set("google_ID", res.profileObj.googleId);
     navigate("/customerUI", { replace: true });
+    // if (res.isSignedIn.get()) {
+    //   var profile = res.currentUser.get().getBasicProfile();
+    //   console.log('ID: ' + profile.getId());
+    //   console.log('Full Name: ' + profile.getName());
+    //   console.log('Given Name: ' + profile.getGivenName());
+    //   console.log('Family Name: ' + profile.getFamilyName());
+    //   console.log('Image URL: ' + profile.getImageUrl());
+    //   console.log('Email: ' + profile.getEmail());
+    // }
   };
 
   const onFailure = (res) => {

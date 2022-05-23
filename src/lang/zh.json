@@ -23,5 +23,12 @@
   "cart.alert.failed": "請稍後重試",
   "cart.alert.linepay": "1.三秒後在畫面正下方會生成一個按鈕，十分鐘內，利用此按鈕付款，付款後會立即出餐",
   "cart.alert.pay": "2.於櫃檯付款，付款後會立即出餐",
-  "cart.sendorder": "送出訂單"
+  "cart.sendorder": "送出訂單",
+  "home.inside": "內用",
+  "home.takeout": "外帶",
+  "home.approximate": "大約",
+  "home.getMeal": "分鐘後到餐廳取餐 ",
+  "home.orderNow": "立即點餐→",
+  "home.people1": "，內用人數",
+  "home.peo2ple": "人"
 }

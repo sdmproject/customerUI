@@ -1,9 +1,16 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
+import Rating from "@mui/material/Rating";
+import { sendComment } from "../Functions/api";
 
-const DishComment = ({ show, commentData }) => {
+
+
+const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
   const [addCommentModal, setAddCommentModal] = React.useState(false);
   const [rateFilter, setRateFilter] = React.useState([1, 2, 3, 4, 5]);
+  const [ratingValue, setRatingValue] = React.useState(3);
+  const [inputComment, setInputComment] = React.useState('');
+
 
   const selectBadComment = () => {
     setRateFilter([1, 2, 3]);
@@ -27,7 +34,85 @@ const DishComment = ({ show, commentData }) => {
     return <div className="ts-rating is-small is-yellow">{starList}</div>;
   };
 
+  const clickSendComment = (loginUserProfile, content, rating) => {
+    console.log({ loginUserProfile, content, rating });
+    var commentInfo = {
+      itemId: dishId,
+      name: loginUserProfile.name,
+      content: content,
+      rate: rating,
+      imgUrl: loginUserProfile.imageUrl,
+    }
+
+    sendComment(commentInfo);
+  }
+
+  const dateConverter = (isoDateString) => {
+    const targetDate = new Date(isoDateString);
+    console.log(targetDate);
+    // return date.toLocaleDateString();
+
+    var minute = 1000 * 60;
+    var hour = minute * 60;
+    var day = hour * 24;
+    // var halfamonth = day * 15;
+    var month = day * 30;
+    var now = new Date().getTime();
+    var diffValue = now - targetDate.getTime();
+
+    // 如果本地时间反而小于变量时间
+    if (diffValue < 0) {
+      return '不久前';
+    }
+
+    // 计算差异时间的量级
+    var monthC = diffValue / month;
+    var weekC = diffValue / (7 * day);
+    var dayC = diffValue / day;
+    var hourC = diffValue / hour;
+    var minC = diffValue / minute;
+
+    // 数值补0方法
+    var zero = function (value) {
+      if (value < 10) {
+        return '0' + value;
+      }
+      return value;
+    };
+
+    // 使用
+    if (monthC > 12) {
+      // 超过1年，直接显示年月日
+      return (function () {
+        var date = new Date(isoDateString);
+        return date.getFullYear() + '年' + zero(date.getMonth() + 1) + '月' + zero(date.getDate()) + '日';
+      })();
+    } else if (monthC >= 1) {
+      return parseInt(monthC) + "月前";
+    } else if (weekC >= 1) {
+      return parseInt(weekC) + "周前";
+    } else if (dayC >= 1) {
+      return parseInt(dayC) + "天前";
+    } else if (hourC >= 1) {
+      return parseInt(hourC) + "小時前";
+    } else if (minC >= 1) {
+      return parseInt(minC) + "分鐘前";
+    }
+    return '剛剛';
+  }
+
   // console.log(commentData);
+
+  const commentSample = [
+    {
+      content: "裡面有蟑螂指甲....",
+      id: "3333",
+      imgUrl: "https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI",
+      name: "fathoward_chiman",
+      rate: 1,
+      time: "2022-04-11T14:02:18",
+    }
+  ]
 
   const fakeComment = [
     {
@@ -38,24 +123,6 @@ const DishComment = ({ show, commentData }) => {
       time: "2021-2-2",
       like_num: 21,
       dislike_num: 8,
-    },
-    {
-      name: "佐藤不理人",
-      userid: "--anonymous",
-      content: "裡面有蟑螂腳....",
-      rate: 1,
-      time: "2021-2-3",
-      like_num: 1,
-      dislike_num: 25,
-    },
-    {
-      name: "翔哥",
-      userid: "evan123@ntu.edu.tw",
-      content: "好吃，有媽媽的味道",
-      rate: 5,
-      time: "2021-2-4",
-      like_num: 32,
-      dislike_num: 3,
     },
   ];
 
@@ -107,6 +174,17 @@ const DishComment = ({ show, commentData }) => {
             <>
               <div className="ts-space "></div>
               <div className="ts-row">
+                <Rating
+                  name="simple-controlled"
+                  value={ratingValue}
+                  onChange={(event, newValue) => {
+                    setRatingValue(newValue);
+                  }}
+                />
+              </div >
+
+              <div className="ts-row">
+
                 {" "}
                 {/*input bar*/}
                 <div className="column is-fluid">
@@ -120,16 +198,28 @@ const DishComment = ({ show, commentData }) => {
                           defaultMessage="輸入評論…"
                         />
                       }
+                      value={inputComment}
+                      onChange={(event) => setInputComment(event.target.value)}
                     />
                   </div>
                 </div>
                 <div className="column">
-                  <button className="ts-button">
-                    <FormattedMessage
-                      id="dishcomment.send"
-                      defaultMessage="送出"
-                    />
-                  </button>
+                  {
+                    (inputComment == '') ?
+                      < button className="ts-button is-disabled" >
+                        <FormattedMessage
+                          id="dishcomment.send"
+                          defaultMessage="送出"
+                        />
+                      </button>
+                      :
+                      <button className="ts-button" onClick={() => clickSendComment(loginUserProfile, inputComment, ratingValue)}>
+                        <FormattedMessage
+                          id="dishcomment.send"
+                          defaultMessage="送出"
+                        />
+                      </button>
+                  }
                 </div>
               </div>
             </>
@@ -144,69 +234,82 @@ const DishComment = ({ show, commentData }) => {
               // {console.log(commentData)}
               // {commentData.map((comment, i) => (
               <div key={i}>
-                <div className="ts-conversation">
-                  <div className="avatar">
-                    <img
-                      src={process.env.PUBLIC_URL + "/user.png"}
-                      alt="userAvatar"
-                    />
-                  </div>
+                <span>
+                  <div className="ts-conversation">
+                    {/* <span> */}
 
-                  <div className="content">
-                    <div className="bubble ">
-                      {/* first row of the bubble */}
-                      <div className="ts-grid">
-                        {/* <div className="ts-grid is-2-columns"> */}
-                        <div className="column is-10-wide">
-                          <div className="author">
-                            <div className="ts-meta is-start-aligned">
-                              <div
-                                style={{
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                {comment.name}
+                    <div className="ts-avatar is-small is-not-minimal">
+                      {
+                        comment.imgUrl == '' ?
+                          <img
+                            src={process.env.PUBLIC_URL + "/user.png"}
+                            alt="userAvatar"
+                          /> :
+                          <img
+                            src={comment.imgUrl}
+                            alt="userAvatar"
+                          />
+                      }
+                    </div>
+
+                    <div className="content">
+                      <div className="bubble ">
+                        {/* first row of the bubble */}
+                        <div className="ts-grid">
+                          {/* <div className="ts-grid is-2-columns"> */}
+                          <div className="column is-10-wide">
+                            <div className="author">
+                              <div className="ts-meta is-start-aligned">
+                                <div
+                                  style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                  }}
+                                >
+                                  {comment.name}
+                                </div>
                               </div>
                             </div>
                           </div>
+                          <div className="column is-6-wide">
+                            <div className="ts-meta is-end-aligned">
+                              {ratingIconBuilder(comment.rate)}
+                            </div>
+                          </div>
                         </div>
-                        <div className="column is-6-wide">
-                          <div className="ts-meta is-end-aligned">
-                            {ratingIconBuilder(comment.rate)}
+                        {/* second row of the bubble */}
+                        <div className="ts-grid">
+                          <div className="column is-10-wide">
+                            <div className="ts-meta is-start-aligned">
+                              {comment.content}
+                            </div>
+                          </div>
+                          <div className="column is-6-wide">
+                            <div className="meta">
+                              <div className="item">{dateConverter(comment.time)}</div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      {/* second row of the bubble */}
-                      <div className="ts-grid">
-                        <div className="column is-10-wide">
-                          <div className="ts-meta is-start-aligned">
-                            {comment.content}
-                          </div>
-                        </div>
-                        <div className="column is-6-wide">
-                          <div className="meta">
-                            <div className="item">下午 11:58</div>
-                          </div>
-                        </div>
+                      <div className="ts-space is-small"></div>
+                      <div className="ts-wrap is-compact">
+                        <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
+                          <input type="checkbox" defaultChecked="" />
+                          {/* <div className="content">👌 {comment.like_num}</div> */}
+                          <div className="content">👌 95</div>
+                        </label>
+                        <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
+                          <input type="checkbox" />
+                          {/* <div className="content">👀 {comment.dislike_num}</div> */}
+                          <div className="content">👀 27</div>
+                        </label>
                       </div>
                     </div>
-                    <div className="ts-space is-small"></div>
-                    <div className="ts-wrap is-compact">
-                      <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
-                        <input type="checkbox" defaultChecked="" />
-                        {/* <div className="content">👌 {comment.like_num}</div> */}
-                        <div className="content">👌 95</div>
-                      </label>
-                      <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
-                        <input type="checkbox" />
-                        {/* <div className="content">👀 {comment.dislike_num}</div> */}
-                        <div className="content">👀 27</div>
-                      </label>
-                    </div>
+                    {/* </span> */}
+
                   </div>
-                </div>
+                </span>
               </div>
             ))}
         </>

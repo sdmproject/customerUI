@@ -13,9 +13,9 @@ import { CardActionArea, TextField } from "@mui/material";
 import NumberSelector from "./NumberSelector";
 // import { useTheme } from "@mui/material/styles";
 import DishComment from "./DishComment";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
-const Dish = ({ dish, cart, setCart }) => {
+const Dish = ({ dish, cart, setCart, loginUserProfile }) => {
   // const theme = useTheme();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [commentModalOpen, setCommentModalOpen] = React.useState(false);
@@ -23,6 +23,8 @@ const Dish = ({ dish, cart, setCart }) => {
   const [dishNum, setDishNum] = React.useState(0);
   const onClick_open = () => setModalOpen(true);
   const onClick_close = () => setModalOpen(false);
+
+  const intl = useIntl();
 
   const onClick_addToCart_withNotes = () => {
     let idx = cart.map((e, index) => {
@@ -133,10 +135,11 @@ const Dish = ({ dish, cart, setCart }) => {
                   <FormattedMessage id="dish.note" defaultMessage="備註欄" />
                 }
                 placeholder={
-                  <FormattedMessage
-                    id="dish.note.placeholder"
-                    defaultMessage="若您有特殊需求，像是火鍋不要芋頭或是香菜加倍，可於此備註"
-                  />
+                  intl.formatMessage({ id: "dish.note.placeholder" })
+                  // <FormattedMessage
+                  //   id="dish.note.placeholder"
+                  //   defaultMessage="若您有特殊需求，像是火鍋不要芋頭或是香菜加倍，可於此備註"
+                  // />
                 }
                 multiline
                 className="text-xs"
@@ -195,7 +198,7 @@ const Dish = ({ dish, cart, setCart }) => {
                 )}
               </div>
             </div>
-            <DishComment show={commentModalOpen} commentData={dish.comments} />
+            <DishComment show={commentModalOpen} commentData={dish.comments} dishId={dish.id} loginUserProfile={loginUserProfile} />
           </Box>
         </Fade>
       </Modal>

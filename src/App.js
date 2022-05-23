@@ -28,7 +28,7 @@ import { IntlProvider, FormattedMessage } from "react-intl";
 import Intl from "./Components/Intl";
 import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
-// test commit for deploy
+import { ReactSession } from 'react-client-session';
 
 const theme = createTheme({
   palette: {
@@ -64,6 +64,11 @@ function App() {
   const [linePayUrl, setLinePayUrl] = useState(null);
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
+  const [loginUserProfile, setLoginUserProfile] = useState(null);
+  ReactSession.setStoreType("localStorage");
+  ReactSession.set("isTakeOut", true);
+  ReactSession.set("minutesLater", 15);
+  ReactSession.set("herePeople", 1);
 
   const [orders, setOrders] = useState([]); 
   const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0)
@@ -209,7 +214,7 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+                element={<Loginpage authed={authed} setAuthed={setAuthed} setLoginUserProfile={setLoginUserProfile} />}
               />
               <Route
                 exact
@@ -237,7 +242,7 @@ function App() {
                 path="/menu"
                 element={
                   <RequireAuth authed={authed}>
-                    <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                    <Menu dishes={dishes} cart={cart} setCart={setCart} loginUserProfile={loginUserProfile}></Menu>
                   </RequireAuth>
                 }
               />
@@ -266,7 +271,7 @@ function App() {
                 }
               />
             </Routes>
-            <BottomNav authed={authed} />
+            <BottomNav authed={authed} cart={cart} />
           </BrowserRouter>
           <Loading modalRef={loadingRef}></Loading>
         </div>
