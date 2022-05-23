@@ -5,6 +5,7 @@
   "bottomnav.cart": "Cart",
   "bottomnav.login": "Login",
   "bottomnav.logout": "Logout",
+  "bottomnav.orders": "Orders", 
   "dish.note": "Notes",
   "dish.note.placeholder": "If you have special needs, such as hot pot without taro or cilantro double, please note here",
   "dish.comment.open": "View Comments",
@@ -20,7 +21,7 @@
   "cart.empty": "There's nothing inside your shopping cart.",
   "cart.alert.choose": "Orders have been sent out, please select：",
   "cart.alert.failed": "Please try again later.",
-  "cart.alert.linepay": "1.Three seconds later, a button will be generated at the bottom of the screen, within ten minutes, use this button to pay, the meal will be issued immediately after payment.",
+  "cart.alert.linepay": "1.Check your order in 'Order Page', and pay with linePay. Meals will be served immediately after payment.",
   "cart.alert.pay": "2.Please pay at the counter, meals will be served immediately after payment.",
   "home.inside": "Inside",
   "home.takeout": "Takeout",
@@ -28,5 +29,11 @@
   "home.getMeal": "minutes later.  ",
   "home.orderNow": "Order Now→",
   "home.people1": "People",
-  "home.peo2ple": ""
+  "home.peo2ple": "",
+  "order.toPay":"To Pay# ",
+  "order.amount":"$ ",
+  "order.havePayed":"Have payed ",
+  "order.details":"Details of the order",
+  "order.payWithLinePay":"Pay with LinePay ",
+  "order.historyOrder":"History # "
 }

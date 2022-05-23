@@ -4,9 +4,11 @@ import { ReactSession } from 'react-client-session';
 
 const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
 // const baseUrl = "https://api.eatba.tk";
+// const baseUrl = "https://api.eatba.tk";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
 const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
+const tradeHistory = (item) => axios.post(`${baseUrl}/tradeHistory`, item )
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
@@ -83,6 +85,23 @@ export const sendOrderApi = async (cart) => {
   }
 };
 
+// export const getPrime = () => {
+//   window.TPDirect.linePay.getPrime((result) => {
+//     let prime = result.prime;
+//     console.log(prime)
+//     window.prime = prime;
+//   });  
+// }
+
+// export const sendPrime = async (prime, cart) => {
+//   let data = await payment({ prime: prime, cart: cart });
+
+//   window.payment = data;
+//   return data;
+// } 
+
+
+
 export const sendPrime = async (cart) => {
   try {
     let prime = "";
@@ -90,8 +109,8 @@ export const sendPrime = async (cart) => {
     window.TPDirect.linePay.getPrime(async (result) => {
       prime = result.prime;
       data = await payment({ prime: prime, cart: cart });
-      console.log(data);
       window.payment = data;
+      console.log("Check your order")
     });
     return window.payment;
   } catch (error) {
@@ -99,6 +118,23 @@ export const sendPrime = async (cart) => {
   }
 };
 
+
+export const getTradeResult = async (trade_id) => {
+  const tradeResult = await tradeHistory({ trade_id: trade_id });
+  // console.log(tradeResult)
+  return tradeResult
+}
+
+
+export const getOrderById = async() => {
+  console.log("sd")
+  const data = await axios.post(`${baseUrl}/orderById`, { 
+      // "customerId":"103600190401282656299"
+      "customerId":ReactSession.get("google_ID")
+  })  
+  console.log(data)
+  return data
+}
 export const sendComment = async (commentInfo) => {
   var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
   try {
