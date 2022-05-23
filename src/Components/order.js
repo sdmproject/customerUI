@@ -26,28 +26,29 @@ const Order = ({order, index,orders}) => {
 	}, []);
   useEffect(() => {
     let interval
-	if(havePayed){
-      interval = setInterval( async() => {
-        let temp = orders
-        const tradeStatus = await getTradeResult(order["rec_trade_id"])
-
-		if (tradeStatus.data.trade_history[0]["action"] !== 4){
+	interval = setInterval( async() => {
+	let temp = orders
+	const tradeStatus = await getTradeResult(order["rec_trade_id"])
+	// console.log(tradeStatus)
+	for (let i = 0; i < tradeStatus.data.trade_history.length; i ++){
+		if (tradeStatus.data.trade_history[i]["action"] == 0 || tradeStatus.data.trade_history[i]["action"] == 1){
 			setHavePayed(true)
 			sendOrderApi(order["cart"])
 			let i = temp.findIndex(x => x === order)
 			temp[i]["havePayed"] = true
 			temp[i]["expire"] += 86400 * 1000
 			// localStorage.setItem('orders', JSON.stringify(temp));
+			break
 		}
-            
-    	}, 5000); 
-	}
+		}   
+	}, 5000); 
+
 
     return () => {
       console.log(`clearing interval`);
       clearInterval(interval);
     };
-  }, [havePayed]);
+  }, []);
 
 
 

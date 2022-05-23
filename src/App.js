@@ -17,7 +17,8 @@ import {
   sendOrderApi,
   getResturantsApi,
   sendPrime,
-  getTradeResult
+  getTradeResult,
+  test
 } from "./Functions/api";
 import "tocas/dist/tocas.min.css";
 import "tocas/dist/tocas.min.js";
@@ -74,37 +75,7 @@ function App() {
   const loadingRef = useRef(null);
 
   useEffect(async() => {
-    // let waitToPayList = JSON.parse(Cookies.get("waitToPay"));
-    // const waitToPayList =  JSON.parse(localStorage.getItem('orders'));
-    // console.log(waitToPayList)
-    // let temp = waitToPayList
-    // let toRemove = []
-    // if (waitToPayList) {
-      // setOrders(waitToPayList)
-    //   for (let i = 0; i < waitToPayList.length; i++){
-    //     if(waitToPayList[i]["havePayed"] === false){
-    //       const tradeStatus = await getTradeResult(waitToPayList[i]["rec_trade_id"])
-    //       // console.log(tradeStatus)
-    //       if (tradeStatus.data.trade_history[0]["action"] !== 4){
-    //         waitToPayList[i]["expire"] += 86400 * 1000
-    //         waitToPayList[i]["havePayed"] = true
-    //         sendOrderApi(waitToPayList[i]["cart"])
-    //       }
-          
-    //       const now = new Date()
-    //       if(now.getTime() > waitToPayList[i]["expire"])
-    //         toRemove.push(i)  
-    //     }
-    //   }
-      
-    //   for (let i = 0; i < toRemove.length; i++){
-    //     temp = temp.splice(temp.findIndex(x => x === waitToPayList[toRemove[i]]), 1)
-    //   }
-
-    //   setOrders(temp);
-    // }
-
-    // localStorage.setItem('orders', JSON.stringify(temp));
+    test()
   }, []);
 
   // useEffect(() => {
@@ -197,14 +168,16 @@ function App() {
     thisModal.style.display = "block";
     // change to sendOrder after pay
     // const data = await sendOrderApi(cart);
-    // try {
+    try {
     // since I get the last payment
       // const waitToPayList =  JSON.parse(localStorage.getItem('orders'));
       // if(waitToPayList)
         // setOrders(waitToPayList)
       const _ = await sendPrime(cart);
+      console.log(_)
       setTimeout(async () => {
         const payment = await sendPrime(cart);
+        console.log(payment)
         const now = new Date()
 
         let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
@@ -213,10 +186,10 @@ function App() {
         setOrders(WaitToPayList)
         // localStorage.setItem('orders', JSON.stringify(WaitToPayList));
         setLinePayUrl(payment.data.payment_url);
-      }, 5000);
-    // } catch {
-      // console.log("error occur, please pay by cash");
-    // }
+      }, 3000);
+    } catch {
+      console.log("error occur, please pay by cash");
+    }
 
     setShowAlert("success");
     thisModal.style.display = "none";

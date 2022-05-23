@@ -110,26 +110,14 @@ export const sendPrime = async (cart) => {
 
 export const getTradeResult = async (trade_id) => {
   const tradeResult = await tradeHistory({ trade_id: trade_id });
-  console.log(tradeResult)
+  // console.log(tradeResult)
   return tradeResult
 }
 
 
-// app.post("/trade_history", async (req, res) => {
-//   const trade_id = req.body.trade_id
-
-//   const tradeResult = await axios.post('https://sandbox.tappaysdk.com/tpc/transaction/trade-history',
-//    {
-//     "partner_key": "partner_wcxH5GX2HMLk9p2WpfOYSWseWOyn0mE0K1VwqjIZAgDGCsRZ4BEqMCaL",
-//     "rec_trade_id": trade_id
-//     },
-//     {
-//     headers: {
-//     'Content-Type': 'application/json',
-//     'x-api-key': "partner_wcxH5GX2HMLk9p2WpfOYSWseWOyn0mE0K1VwqjIZAgDGCsRZ4BEqMCaL"
-//     }
-//     }
-//   )
-
-//   return tradeResult
-// })
+export const test = async() => {
+  const data = await createitem(`${baseUrl}/orderById`, {
+      "customerId":"customerId"
+    });
+  console.log(data)
+}
