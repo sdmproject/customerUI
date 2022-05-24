@@ -7,6 +7,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { refreshTokenSetup } from "../Functions/refreshToken";
 import { FormattedMessage } from "react-intl";
 import { ReactSession } from 'react-client-session';
+import mixpanel from "mixpanel-browser";
+
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
@@ -25,6 +27,16 @@ function Login({ setAuthed, setLoginUserProfile }) {
     ReactSession.set("image_URL", res.profileObj.imageUrl);
     ReactSession.set("email", res.profileObj.email);
     ReactSession.set("google_ID", res.profileObj.googleId);
+    setLoginUserProfile({
+      "username": res.profileObj.name,
+      "image_URL": res.profileObj.imageUrl,
+      "email": res.profileObj.email,
+      "google_ID": res.profileObj.googleId,
+    })
+    mixpanel.track('login', {
+      customerId: ReactSession.get("google_ID"),
+      customerName: ReactSession.get("username"),
+    });
     navigate("/customerUI", { replace: true });
     // if (res.isSignedIn.get()) {
     //   var profile = res.currentUser.get().getBasicProfile();
@@ -39,6 +51,7 @@ function Login({ setAuthed, setLoginUserProfile }) {
 
   const onFailure = (res) => {
     console.log("Login failed: res:", res);
+    mixpanel.track('login_fail');
     alert(`Failed to login. 😢`);
   };
 

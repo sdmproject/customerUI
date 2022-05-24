@@ -4,6 +4,7 @@ import { Box, Fab, Alert, AlertTitle, Backdrop } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { FormattedMessage } from "react-intl";
+import mixpanel from "mixpanel-browser";
 
 const ShoppingCartPage = ({
   cart,

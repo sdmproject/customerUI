@@ -21,7 +21,7 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
         setAllTypeImage((all) => [...all, dishes[i].img]);
       }
     }
-    console.log(typeTemp);
+    console.log(dishes);
     setAllTypeName(typeTemp);
   }, [dishes]);
 

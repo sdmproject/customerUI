@@ -2,6 +2,8 @@ import {useState, useEffect} from "react"
 import Divider from '@mui/material/Divider';
 import {getTradeResult, sendOrderApi} from "../Functions/api"
 import { FormattedMessage } from "react-intl";
+import mixpanel from "mixpanel-browser"
+
 const getTotalPrice = (cart) => {
   let sum = 0;
   cart.map((obj) => {
@@ -28,6 +30,7 @@ const Order = ({order, index}) => {
   useEffect(() => {
     let interval
 	interval = setInterval( async() => {
+	
 	if(!havePayed){
 		const tradeStatus = await getTradeResult(order["rec_trade_id"])
 		// console.log(tradeStatus)
@@ -36,6 +39,15 @@ const Order = ({order, index}) => {
 			if (tradeStatus.data.trade_history[i]["action"] == 0 || tradeStatus.data.trade_history[i]["action"] == 1){
 				setHavePayed(true)
 				sendOrderApi(order["cart"])
+				let events = {
+					"rec_trade_id":order.rec_trade_id,
+					"total price": getTotalPrice(order.cart)
+				}
+				for (let i = 0; i < order.cart.length; i++){
+					events[order.cart[i].name] = order.cart[i].dishesNum
+				}
+				mixpanel.track("payment", events)
+
 				break
 			}
 			}   
@@ -45,7 +57,7 @@ const Order = ({order, index}) => {
       console.log(`clearing interval`);
       clearInterval(interval);
     };
-  }, []);
+  }, [havePayed]);
 
 
 

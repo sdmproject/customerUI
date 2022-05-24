@@ -38,7 +38,7 @@ const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
     console.log({ loginUserProfile, content, rating });
     var commentInfo = {
       itemId: dishId,
-      name: loginUserProfile.name,
+      name: loginUserProfile.username,
       content: content,
       rate: rating,
       imgUrl: loginUserProfile.imageUrl,

@@ -2,8 +2,8 @@ import axios from "axios";
 import { nanoid } from "nanoid";
 import { ReactSession } from 'react-client-session';
 
-const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
-// const baseUrl = "https://api.eatba.tk";
+// const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
+const baseUrl = "https://api.eatba.tk";
 // const baseUrl = "https://api.eatba.tk";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
@@ -110,7 +110,7 @@ export const sendPrime = async (cart) => {
       prime = result.prime;
       data = await payment({ prime: prime, cart: cart });
       window.payment = data;
-      console.log("Check your order")
+      console.log(`Check your order, ${data}`)
     });
     return window.payment;
   } catch (error) {
@@ -136,7 +136,8 @@ export const getOrderById = async() => {
   return data
 }
 export const sendComment = async (commentInfo) => {
-  var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
+  // var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
+  var tmpApi = "https://api.eatba.tk";
   try {
     console.log("session name", ReactSession.get("username"));
     let date = new Date(); // Or the date you'd like converted.
