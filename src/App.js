@@ -5,7 +5,7 @@ import Home from "./Containers/Home";
 import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
-import OrdersPage from "./Containers/OrdersPage"
+import OrdersPage from "./Containers/OrdersPage";
 import BottomNav from "./Components/BottomNav";
 import { Fab } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
@@ -18,7 +18,7 @@ import {
   getResturantsApi,
   sendPrime,
   getTradeResult,
-  getOrderById
+  getOrderById,
 } from "./Functions/api";
 import "tocas/dist/tocas.min.css";
 import "tocas/dist/tocas.min.js";
@@ -28,7 +28,7 @@ import { IntlProvider, FormattedMessage } from "react-intl";
 import Intl from "./Components/Intl";
 import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 import { InitMixpanel, AuthListener } from "./Mixpanel/mixpanel";
 import mixpanel from "mixpanel-browser";
 
@@ -74,8 +74,8 @@ function App() {
   ReactSession.set("minutesLater", 15);
   ReactSession.set("herePeople", 1);
 
-  const [orders, setOrders] = useState([]); 
-  const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0)
+  const [orders, setOrders] = useState([]);
+  const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0);
   const messages = {
     zh: message_zh,
     en: message_en,
@@ -91,14 +91,13 @@ function App() {
     return sum;
   };
 
-  useEffect(async() => {
-    console.log("sd")
+  useEffect(async () => {
+    console.log("sd");
     InitMixpanel();
-    const {data} = await getOrderById();
-    console.log(data)
-    setHistoryOrders(data)
+    const { data } = await getOrderById();
+    console.log(data);
+    setHistoryOrders(data);
   }, []);
-
 
   useEffect(() => {
     const getResturantsData = async () => {
@@ -127,7 +126,7 @@ function App() {
     const getMenuData = async (resturantID) => {
       try {
         // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
-        const data = await getMenuApi(resturantID);
+        const data = await getMenuApi(resturantID, lang);
         if (data) {
           setDishes(data);
         }
@@ -140,36 +139,40 @@ function App() {
     }
   }, [resturantID, dishes.length]);
 
-
-
   const sendorder = async () => {
-     setLinePayUrl(null);
+    setLinePayUrl(null);
     let thisModal = loadingRef.current;
     thisModal.style.display = "block";
     // change to sendOrder after pay
     // const data = await sendOrderApi(cart);
     // try {
-      const _ = await sendPrime(cart);
-      console.log(_)
-      setTimeout(async () => {
-        const payment = await sendPrime(cart);
-        console.log(payment)
-        console.log(window.payment)
-        const now = new Date()
-        let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
-        let WaitToPayList = [...orders, newWaitToPay]
-        setOrders(WaitToPayList)
-        let events = {
-          // "cart":cart,
-          "rec_trade_id":payment.data.rec_trade_id,
-          "total price": getTotalPrice(cart)
-        }
-        for (let i = 0; i < cart.length; i++){
-          events[cart[i].name] = cart[i].dishesNum
-        }
-        mixpanel.track("send order", events)
-        setLinePayUrl(payment.data.payment_url);
-      }, 5000);
+    const _ = await sendPrime(cart);
+    console.log(_);
+    setTimeout(async () => {
+      const payment = await sendPrime(cart);
+      console.log(payment);
+      console.log(window.payment);
+      const now = new Date();
+      let newWaitToPay = {
+        cart: cart,
+        rec_trade_id: payment.data.rec_trade_id,
+        linePayUrl: payment.data.payment_url,
+        expire: now.getTime() + 60 * 1000,
+        havePayed: false,
+      };
+      let WaitToPayList = [...orders, newWaitToPay];
+      setOrders(WaitToPayList);
+      let events = {
+        // "cart":cart,
+        rec_trade_id: payment.data.rec_trade_id,
+        "total price": getTotalPrice(cart),
+      };
+      for (let i = 0; i < cart.length; i++) {
+        events[cart[i].name] = cart[i].dishesNum;
+      }
+      mixpanel.track("send order", events);
+      setLinePayUrl(payment.data.payment_url);
+    }, 5000);
     // } catch {
     //   console.log("error occur, please pay by cash");
     // }
@@ -192,7 +195,13 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<Loginpage authed={authed} setAuthed={setAuthed} setLoginUserProfile={setLoginUserProfile} />}
+                element={
+                  <Loginpage
+                    authed={authed}
+                    setAuthed={setAuthed}
+                    setLoginUserProfile={setLoginUserProfile}
+                  />
+                }
               />
               <Route
                 exact
@@ -220,7 +229,12 @@ function App() {
                 path="/menu"
                 element={
                   <RequireAuth authed={authed}>
-                    <Menu dishes={dishes} cart={cart} setCart={setCart} loginUserProfile={loginUserProfile}></Menu>
+                    <Menu
+                      dishes={dishes}
+                      cart={cart}
+                      setCart={setCart}
+                      loginUserProfile={loginUserProfile}
+                    ></Menu>
                   </RequireAuth>
                 }
               />
@@ -242,10 +256,8 @@ function App() {
                 path="/orders"
                 element={
                   <RequireAuth authed={authed}>
-                    <OrdersPage
-                      orders={orders} historyOrders={historyOrders}
-                    />
-                   </RequireAuth>
+                    <OrdersPage orders={orders} historyOrders={historyOrders} />
+                  </RequireAuth>
                 }
               />
             </Routes>
