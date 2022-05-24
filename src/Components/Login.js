@@ -11,7 +11,7 @@ import { ReactSession } from 'react-client-session';
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
 
-function Login({ setAuthed, setLoginUserProfile }) {
+function Login({ setAuthed }) {
   let navigate = useNavigate();
 
   const onSuccess = (res) => {
@@ -19,8 +19,6 @@ function Login({ setAuthed, setLoginUserProfile }) {
     alert(`Logged in successfully welcome ${res.profileObj.name} 😍.`);
     refreshTokenSetup(res);
     setAuthed(true);
-    // setLoginUserProfile(res.currentUser.get().getBasicProfile());
-    // setLoginUserProfile(res.profileObj);
     ReactSession.set("username", res.profileObj.name);
     ReactSession.set("image_URL", res.profileObj.imageUrl);
     ReactSession.set("email", res.profileObj.email);

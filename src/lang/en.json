@@ -23,6 +23,8 @@
   "cart.alert.failed": "Please try again later.",
   "cart.alert.linepay": "1.Check your order in 'Order Page', and pay with linePay. Meals will be served immediately after payment.",
   "cart.alert.pay": "2.Please pay at the counter, meals will be served immediately after payment.",
+  "cart.sendorder1": "Send Order",
+  "cart.sendorder2": "Login to Send",
   "home.inside": "Inside",
   "home.takeout": "Takeout",
   "home.approximate": "Pick up in about",

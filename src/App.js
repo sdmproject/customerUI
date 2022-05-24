@@ -65,7 +65,6 @@ function App() {
   const [linePayUrl, setLinePayUrl] = useState(null);
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
-  const [loginUserProfile, setLoginUserProfile] = useState(null);
   const [historyOrders, setHistoryOrders] = useState([]);
 
   ReactSession.setStoreType("localStorage");
@@ -73,7 +72,12 @@ function App() {
   ReactSession.set("minutesLater", 15);
   ReactSession.set("herePeople", 1);
 
-  const [orders, setOrders] = useState([]); 
+  ReactSession.set("username", "--anonymous");
+  ReactSession.set("image_URL", "");
+  ReactSession.set("email", "");
+  ReactSession.set("google_ID", "");
+
+  const [orders, setOrders] = useState([]);
   const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0)
   const messages = {
     zh: message_zh,
@@ -82,10 +86,10 @@ function App() {
 
   const loadingRef = useRef(null);
 
-  useEffect(async() => {
+  useEffect(async () => {
     console.log("sd")
     // InitMixpanel();
-    const {data} = await getOrderById();
+    const { data } = await getOrderById();
     console.log(data)
     setHistoryOrders(data)
   }, []);
@@ -134,7 +138,7 @@ function App() {
 
 
   const sendorder = async () => {
-     setLinePayUrl(null);
+    setLinePayUrl(null);
     let thisModal = loadingRef.current;
     thisModal.style.display = "block";
     // change to sendOrder after pay
@@ -143,12 +147,12 @@ function App() {
       // const _ = await sendPrime(cart);
       // console.log(_)
       // setTimeout(async () => {
-        const payment = await sendPrime(cart);
-        const now = new Date()
-        let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
-        let WaitToPayList = [...orders, newWaitToPay]
-        setOrders(WaitToPayList)
-        setLinePayUrl(payment.data.payment_url);
+      const payment = await sendPrime(cart);
+      const now = new Date()
+      let newWaitToPay = { "cart": cart, "rec_trade_id": payment.data.rec_trade_id, "linePayUrl": payment.data.payment_url, "expire": now.getTime() + 60 * 1000, "havePayed": false }
+      let WaitToPayList = [...orders, newWaitToPay]
+      setOrders(WaitToPayList)
+      setLinePayUrl(payment.data.payment_url);
       // }, 8000);
     } catch {
       console.log("error occur, please pay by cash");
@@ -172,50 +176,51 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<Loginpage authed={authed} setAuthed={setAuthed} setLoginUserProfile={setLoginUserProfile} />}
+                element={<Loginpage authed={authed} setAuthed={setAuthed} />}
               />
               <Route
                 exact
                 path="/"
                 element={
-                  <RequireAuth authed={authed}>
-                    <Navigate to="/home" replace={true} />
-                  </RequireAuth>
+                  // <RequireAuth authed={authed}>
+                  <Navigate to="/home" replace={true} />
+                  // </RequireAuth>
                 }
               />
               <Route
                 exact
                 path="/home"
                 element={
-                  <RequireAuth authed={authed}>
-                    <Home
-                      resturants={resturants}
-                      setResturantID={setResturantID}
-                    />
-                  </RequireAuth>
+                  // <RequireAuth authed={authed}>
+                  <Home
+                    resturants={resturants}
+                    setResturantID={setResturantID}
+                  />
+                  // </RequireAuth>
                 }
               />
               <Route
                 exact
                 path="/menu"
                 element={
-                  <RequireAuth authed={authed}>
-                    <Menu dishes={dishes} cart={cart} setCart={setCart} loginUserProfile={loginUserProfile}></Menu>
-                  </RequireAuth>
+                  // <RequireAuth authed={authed}>
+                  <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/cart"
                 element={
-                  <RequireAuth authed={authed}>
-                    <ShoppingCartPage
-                      cart={cart}
-                      setCart={setCart}
-                      sendorder={sendorder}
-                      showAlert={showAlert}
-                      setShowAlert={setShowAlert}
-                    />
-                  </RequireAuth>
+                  // <RequireAuth authed={authed}>
+                  <ShoppingCartPage
+                    cart={cart}
+                    setCart={setCart}
+                    sendorder={sendorder}
+                    showAlert={showAlert}
+                    setShowAlert={setShowAlert}
+                    authed={authed}
+                  />
+                  // </RequireAuth>
                 }
               />
               <Route
@@ -225,7 +230,7 @@ function App() {
                     <OrdersPage
                       orders={orders} historyOrders={historyOrders}
                     />
-                   </RequireAuth>
+                  </RequireAuth>
                 }
               />
             </Routes>

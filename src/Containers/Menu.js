@@ -6,8 +6,10 @@ import Box from "@mui/material/Box";
 // import { Divider } from "@mui/material";
 import shuffle from "../Functions/Shuffle";
 // import getRedirectUrl from "../Functions/Test";
+import { ReactSession } from 'react-client-session';
 
-const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
+
+const Menu = ({ dishes, cart, setCart }) => {
   const [dishType, setDishType] = useState("");
   const [allTypeName, setAllTypeName] = useState([]);
   const [allTypeImage, setAllTypeImage] = useState([]);
@@ -23,6 +25,13 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
     }
     console.log(typeTemp);
     setAllTypeName(typeTemp);
+    // console.log("user info :",
+    //   ReactSession.get("username"),
+    //   ReactSession.get("image_URL"),
+    //   ReactSession.get("email"),
+    //   ReactSession.get("google_ID")
+    // );
+
   }, [dishes]);
 
   const onClick_dishType = (e, type) => {
@@ -66,7 +75,6 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
                   dish={dish}
                   cart={cart}
                   setCart={setCart}
-                  loginUserProfile={loginUserProfile}
                 />
               ) : null
             )}

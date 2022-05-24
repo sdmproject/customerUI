@@ -4,18 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { FormattedMessage } from "react-intl";
+import { ReactSession } from 'react-client-session';
+
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
 
-function Logout({ setAuthed, setLoginUserProfile }) {
+function Logout({ setAuthed }) {
   let navigate = useNavigate();
 
   const onLogoutSuccess = (res) => {
     console.log("Logged out Success");
     alert("Logged out Successfully ✌");
     setAuthed(false);
-    setLoginUserProfile(null);
+    ReactSession.set("username", "--anonymous");
+    ReactSession.set("image_URL", "");
+    ReactSession.set("email", "");
+    ReactSession.set("google_ID", "");
     navigate("../../", { replace: true });
   };
 

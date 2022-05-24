@@ -2,10 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import Rating from "@mui/material/Rating";
 import { sendComment } from "../Functions/api";
+import { ReactSession } from 'react-client-session';
 
 
 
-const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
+
+const DishComment = ({ show, commentData, dishId }) => {
   const [addCommentModal, setAddCommentModal] = React.useState(false);
   const [rateFilter, setRateFilter] = React.useState([1, 2, 3, 4, 5]);
   const [ratingValue, setRatingValue] = React.useState(3);
@@ -34,14 +36,14 @@ const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
     return <div className="ts-rating is-small is-yellow">{starList}</div>;
   };
 
-  const clickSendComment = (loginUserProfile, content, rating) => {
-    console.log({ loginUserProfile, content, rating });
+  const clickSendComment = (content, rating) => {
+    console.log({ content, rating });
     var commentInfo = {
       itemId: dishId,
-      name: loginUserProfile.name,
+      name: ReactSession.get("username"),
       content: content,
       rate: rating,
-      imgUrl: loginUserProfile.imageUrl,
+      imgUrl: ReactSession.get("image_URL"),
     }
 
     sendComment(commentInfo);
@@ -213,7 +215,7 @@ const DishComment = ({ show, commentData, dishId, loginUserProfile }) => {
                         />
                       </button>
                       :
-                      <button className="ts-button" onClick={() => clickSendComment(loginUserProfile, inputComment, ratingValue)}>
+                      <button className="ts-button" onClick={() => clickSendComment(inputComment, ratingValue)}>
                         <FormattedMessage
                           id="dishcomment.send"
                           defaultMessage="送出"

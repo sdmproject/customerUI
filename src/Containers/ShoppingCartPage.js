@@ -4,6 +4,9 @@ import { Box, Fab, Alert, AlertTitle, Backdrop } from "@mui/material";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { FormattedMessage } from "react-intl";
+import RequireAuth from "../Components/RequireAuth";
+import { useNavigate } from "react-router-dom";
+
 
 const ShoppingCartPage = ({
   cart,
@@ -11,7 +14,10 @@ const ShoppingCartPage = ({
   sendorder,
   showAlert,
   setShowAlert,
+  authed
 }) => {
+  const navigate = useNavigate();
+
   const gettotalprice = () => {
     let sum = 0;
     cart.map((obj) => {
@@ -147,15 +153,30 @@ const ShoppingCartPage = ({
       )}
       <Box sx={{ height: 80 }} />
       {cart.length > 0 ? (
-        <Fab
-          variant="extended"
-          color="primary"
-          sx={{ position: "fixed", bottom: 70, right: 12, zIndex: 101 }}
-          onClick={sendorder}
-        >
-          <NavigationIcon sx={{ mr: 1 }} />
-          <FormattedMessage id="cart.sendorder" defaultMessage="送出訂單" />
-        </Fab>
+        <>
+          {
+            authed === true ? (<Fab
+              variant="extended"
+              color="primary"
+              sx={{ position: "fixed", bottom: 70, right: 12, zIndex: 101 }}
+              onClick={sendorder}
+            >
+              <NavigationIcon sx={{ mr: 1 }} />
+              <FormattedMessage id="cart.sendorder1" defaultMessage="送出訂單" />
+            </Fab>)
+              : (
+                <Fab
+                  variant="extended"
+                  color="primary"
+                  sx={{ position: "fixed", bottom: 70, right: 12, zIndex: 101 }}
+                  onClick={() => { navigate("/"); }}
+                >
+                  <NavigationIcon sx={{ mr: 1 }} />
+                  <FormattedMessage id="cart.sendorder2" defaultMessage="登入送單" />
+                </Fab>)
+          }
+
+        </>
       ) : null}
     </>
   );
