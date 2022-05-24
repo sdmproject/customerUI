@@ -37,5 +37,6 @@
   "order.havePayed": "Have payed ",
   "order.details": "Details of the order",
   "order.payWithLinePay": "Pay with LinePay ",
-  "order.historyOrder": "History # "
+  "order.historyOrder": "History # ",
+  "order.refresh" : "Refresh status of orders"
 }

@@ -133,7 +133,6 @@ export const getTradeResult = async (trade_id) => {
 
 
 export const getOrderById = async () => {
-  console.log("sd")
   const data = await axios.post(`${baseUrl}/orderById`, {
     // "customerId":"103600190401282656299"
     "customerId": ReactSession.get("google_ID")
