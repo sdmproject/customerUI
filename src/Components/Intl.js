@@ -57,7 +57,6 @@ export default function Intl({ setLang }) {
     } else {
       setLang("zh");
     }
-    console.log(checked);
   }, [checked, setLang]);
 
   const handleChange = (event) => {

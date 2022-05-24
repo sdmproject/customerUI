@@ -4,17 +4,12 @@ import Rating from "@mui/material/Rating";
 import { sendComment, getResturantsApi } from "../Functions/api";
 import { ReactSession } from 'react-client-session';
 
-
-
-
 const DishComment = ({ show, commentData, dishId, setDishes }) => {
   const [addCommentModal, setAddCommentModal] = React.useState(false);
   const [rateFilter, setRateFilter] = React.useState([1, 2, 3, 4, 5]);
   const [ratingValue, setRatingValue] = React.useState(3);
-  const [inputComment, setInputComment] = React.useState('');
+  const [inputComment, setInputComment] = React.useState("");
   const [localCommentData, setLocalCommentData] = React.useState(commentData);
-
-
 
   const selectBadComment = () => {
     setRateFilter([1, 2, 3]);
@@ -70,8 +65,6 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
     ReactSession.set("dishData", dishData);
     setDishes(dishData);
 
-
-
   }
 
   const clickSendComment = async (content, rating) => {
@@ -101,7 +94,7 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
 
     // 如果本地时间反而小于变量时间
     if (diffValue < 0) {
-      return '不久前';
+      return "不久前";
     }
 
     // 计算差异时间的量级
@@ -114,7 +107,7 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
     // 数值补0方法
     var zero = function (value) {
       if (value < 10) {
-        return '0' + value;
+        return "0" + value;
       }
       return value;
     };
@@ -124,7 +117,14 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
       // 超过1年，直接显示年月日
       return (function () {
         var date = new Date(isoDateString);
-        return date.getFullYear() + '年' + zero(date.getMonth() + 1) + '月' + zero(date.getDate()) + '日';
+        return (
+          date.getFullYear() +
+          "年" +
+          zero(date.getMonth() + 1) +
+          "月" +
+          zero(date.getDate()) +
+          "日"
+        );
       })();
     } else if (monthC >= 1) {
       return parseInt(monthC) + "月前";
@@ -137,8 +137,8 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
     } else if (minC >= 1) {
       return parseInt(minC) + "分鐘前";
     }
-    return '剛剛';
-  }
+    return "剛剛";
+  };
 
   // console.log(commentData);
 
@@ -146,12 +146,13 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
     {
       content: "裡面有蟑螂指甲....",
       id: "3333",
-      imgUrl: "https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI",
+      imgUrl:
+        "https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI",
       name: "fathoward_chiman",
       rate: 1,
       time: "2022-04-11T14:02:18",
-    }
-  ]
+    },
+  ];
 
   const fakeComment = [
     {
@@ -220,10 +221,9 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
                     setRatingValue(newValue);
                   }}
                 />
-              </div >
+              </div>
 
               <div className="ts-row">
-
                 {" "}
                 {/*input bar*/}
                 <div className="column is-fluid">
@@ -243,114 +243,123 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
                   </div>
                 </div>
                 <div className="column">
-                  {
-                    (inputComment == '') ?
-                      < button className="ts-button is-disabled" >
-                        <FormattedMessage
-                          id="dishcomment.send"
-                          defaultMessage="送出"
-                        />
-                      </button>
-                      :
-                      <button className="ts-button" onClick={() => clickSendComment(inputComment, ratingValue)}>
-                        <FormattedMessage
-                          id="dishcomment.send"
-                          defaultMessage="送出"
-                        />
-                      </button>
-                  }
-                </div>
-              </div>
+                  {inputComment == "" ? (
+                    <button className="ts-button is-disabled">
+                      <FormattedMessage
+                        id="dishcomment.send"
+                        defaultMessage="送出"
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      className="ts-button"
+                      onClick={() =>
+                        clickSendComment(
+                          inputComment,
+                          ratingValue
+                        )
+                      }
+                    >
+                      <FormattedMessage
+                        id="dishcomment.send"
+                        defaultMessage="送出"
+                      />
+                    </button>
+                  )}
+                </div >
+              </div >
             </>
           ) : null}
 
           <div className="ts-space is-large"></div>
 
           {/* 餐點頻論串 */}
-          {localCommentData
-            .filter((comment) => rateFilter.includes(comment.rate))
-            .map((comment, i) => (
-              // {console.log(commentData)}
-              // {commentData.map((comment, i) => (
-              <div key={i}>
-                <span>
-                  <div className="ts-conversation">
-                    {/* <span> */}
+          {
+            localCommentData
+              .filter((comment) => rateFilter.includes(comment.rate))
+              .map((comment, i) => (
+                // {console.log(commentData)}
+                // {commentData.map((comment, i) => (
+                <div key={i}>
+                  <span>
+                    <div className="ts-conversation">
+                      {/* <span> */}
 
-                    <div className="ts-avatar is-small is-not-minimal">
-                      {
-                        comment.imgUrl == '' ?
+                      <div className="ts-avatar is-small is-not-minimal">
+                        {comment.imgUrl == "" ? (
                           <img
                             src={process.env.PUBLIC_URL + "/user.png"}
                             alt="userAvatar"
-                          /> :
-                          <img
-                            src={comment.imgUrl}
-                            alt="userAvatar"
                           />
-                      }
-                    </div>
+                        ) : (
+                          <img src={comment.imgUrl} alt="userAvatar" />
+                        )}
+                      </div>
 
-                    <div className="content">
-                      <div className="bubble ">
-                        {/* first row of the bubble */}
-                        <div className="ts-grid">
-                          {/* <div className="ts-grid is-2-columns"> */}
-                          <div className="column is-10-wide">
-                            <div className="author">
+                      <div className="content">
+                        <div className="bubble ">
+                          {/* first row of the bubble */}
+                          <div className="ts-grid">
+                            {/* <div className="ts-grid is-2-columns"> */}
+                            <div className="column is-10-wide">
+                              <div className="author">
+                                <div className="ts-meta is-start-aligned">
+                                  <div
+                                    style={{
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      whiteSpace: "nowrap",
+                                    }}
+                                  >
+                                    {comment.name}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="column is-6-wide">
+                              <div className="ts-meta is-end-aligned">
+                                {ratingIconBuilder(comment.rate)}
+                              </div>
+                            </div>
+                          </div>
+                          {/* second row of the bubble */}
+                          <div className="ts-grid">
+                            <div className="column is-10-wide">
                               <div className="ts-meta is-start-aligned">
-                                <div
-                                  style={{
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap",
-                                  }}
-                                >
-                                  {comment.name}
+                                {comment.content}
+                              </div>
+                            </div>
+                            <div className="column is-6-wide">
+                              <div className="meta">
+                                <div className="item">
+                                  {dateConverter(comment.time)}
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="column is-6-wide">
-                            <div className="ts-meta is-end-aligned">
-                              {ratingIconBuilder(comment.rate)}
-                            </div>
-                          </div>
                         </div>
-                        {/* second row of the bubble */}
-                        <div className="ts-grid">
-                          <div className="column is-10-wide">
-                            <div className="ts-meta is-start-aligned">
-                              {comment.content}
-                            </div>
-                          </div>
-                          <div className="column is-6-wide">
-                            <div className="meta">
-                              <div className="item">{dateConverter(comment.time)}</div>
-                            </div>
-                          </div>
+                        <div className="ts-space is-small"></div>
+                        <div className="ts-wrap is-compact">
+                          <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
+                            <input type="checkbox" defaultChecked="" />
+                            {/* <div className="content">👌 {comment.like_num}</div> */}
+                            {/* <div className="content">👌 {generateRandomNum()}</div> */}
+                            <div className="content">👌 999+</div>
+                          </label>
+                          <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
+                            <input type="checkbox" />
+                            {/* <div className="content">👀 {comment.dislike_num}</div> */}
+                            {/* <div className="content">👀 {generateRandomNum()}</div> */}
+                            <div className="content">👀 999+</div>
+                          </label>
                         </div>
                       </div>
-                      <div className="ts-space is-small"></div>
-                      <div className="ts-wrap is-compact">
-                        <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
-                          <input type="checkbox" defaultChecked="" />
-                          {/* <div className="content">👌 {comment.like_num}</div> */}
-                          <div className="content">👌 {generateRandomNum()}</div>
-                        </label>
-                        <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
-                          <input type="checkbox" />
-                          {/* <div className="content">👀 {comment.dislike_num}</div> */}
-                          <div className="content">👀 {generateRandomNum()}</div>
-                        </label>
-                      </div>
+                      {/* </span> */}
                     </div>
-                    {/* </span> */}
-
-                  </div>
-                </span>
-              </div>
-            ))}
+                  </span>
+                </div>
+              ))
+          }
         </>
       ) : null}
     </>

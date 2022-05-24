@@ -1,14 +1,14 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
-const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
-// const baseUrl = "https://api.eatba.tk";
+// const baseUrl = "https://49e6-150-117-240-26.ngrok.io";
+const baseUrl = "https://api.eatba.tk";
 // const baseUrl = "https://api.eatba.tk";
 const getitems = (url) => axios.get(url);
 const createitem = (url, item) => axios.post(url, item);
 const payment = (item) => axios.post(`${baseUrl}/` + "payment", item);
-const tradeHistory = (item) => axios.post(`${baseUrl}/tradeHistory`, item)
+const tradeHistory = (item) => axios.post(`${baseUrl}/tradeHistory`, item);
 // var orderid = 0;
 const table = "7A";
 const gettotalprice = (cart) => {
@@ -19,10 +19,14 @@ const gettotalprice = (cart) => {
   return sum;
 };
 
-export const getMenuApi = async (resturantID) => {
+export const getMenuApi = async (resturantID, value = "zh") => {
   try {
-    const { data } = await getitems(`${baseUrl}/menu/${resturantID}`);
-    console.log(data);
+    const { data } = await axios.get(`${baseUrl}/menu/${resturantID}`, {
+      headers: {
+        "Content-Language": value,
+      },
+    });
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -50,11 +54,15 @@ export const sendOrderApi = async (cart) => {
   try {
     // orderid += 1;
     let nowDate = new Date(); // Or the date you'd like converted.
-    let nowDateUTC8 = new Date(nowDate.getTime() - nowDate.getTimezoneOffset() * 60000);
+    let nowDateUTC8 = new Date(
+      nowDate.getTime() - nowDate.getTimezoneOffset() * 60000
+    );
     let isoNowTime = nowDateUTC8.toISOString().slice(0, -1);
 
     let durationInMinutes = ReactSession.get("minutesLater");
-    let arrivedTime = new Date(nowDateUTC8.getTime() + durationInMinutes * 60000);
+    let arrivedTime = new Date(
+      nowDateUTC8.getTime() + durationInMinutes * 60000
+    );
     let isoArrivedTime = arrivedTime.toISOString().slice(0, -1);
 
     const { data } = await createitem(`${baseUrl}/order`, {
@@ -78,7 +86,7 @@ export const sendOrderApi = async (cart) => {
         };
       }),
     });
-    console.log("sendOrderApi", data);
+    // console.log("sendOrderApi", data);
     return data;
   } catch (error) {
     console.log(error);
@@ -90,7 +98,7 @@ export const sendOrderApi = async (cart) => {
 //     let prime = result.prime;
 //     console.log(prime)
 //     window.prime = prime;
-//   });  
+//   });
 // }
 
 // export const sendPrime = async (prime, cart) => {
@@ -98,9 +106,7 @@ export const sendOrderApi = async (cart) => {
 
 //   window.payment = data;
 //   return data;
-// } 
-
-
+// }
 
 export const sendPrime = async (cart) => {
   try {
@@ -110,8 +116,7 @@ export const sendPrime = async (cart) => {
       prime = result.prime;
       data = await payment({ prime: prime, cart: cart });
       window.payment = data;
-      console.log("Check your order")
-      var _ = result;
+      console.log(`Check your order, ${result}`);
     });
     return window.payment;
   } catch (error) {
@@ -119,27 +124,26 @@ export const sendPrime = async (cart) => {
   }
 };
 
-
 export const getTradeResult = async (trade_id) => {
   const tradeResult = await tradeHistory({ trade_id: trade_id });
   // console.log(tradeResult)
-  return tradeResult
-}
-
+  return tradeResult;
+};
 
 export const getOrderById = async () => {
-  console.log("sd")
+  // console.log("sd");
   const data = await axios.post(`${baseUrl}/orderById`, {
     // "customerId":"103600190401282656299"
-    "customerId": ReactSession.get("google_ID")
-  })
-  console.log(data)
-  return data
-}
+    customerId: ReactSession.get("google_ID"),
+  });
+  // console.log(data);
+  return data;
+};
 export const sendComment = async (commentInfo) => {
-  var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
+  // var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
+  var tmpApi = "https://api.eatba.tk";
   try {
-    console.log("session name", ReactSession.get("username"));
+    // console.log("session name", ReactSession.get("username"));
     let date = new Date(); // Or the date you'd like converted.
     let isoDateTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, -1);
     console.log('into send comment');

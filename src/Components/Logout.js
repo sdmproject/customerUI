@@ -14,7 +14,7 @@ function Logout({ setAuthed }) {
   let navigate = useNavigate();
 
   const onLogoutSuccess = (res) => {
-    console.log("Logged out Success");
+    // console.log("Logged out Success");
     alert("Logged out Successfully ✌");
     setAuthed(false);
     ReactSession.set("username", "--anonymous");

@@ -14,6 +14,7 @@ import NumberSelector from "./NumberSelector";
 // import { useTheme } from "@mui/material/styles";
 import DishComment from "./DishComment";
 import { FormattedMessage, useIntl } from "react-intl";
+import mixpanel from "mixpanel-browser";
 
 const Dish = ({ dish, cart, setCart, setDishes }) => {
   // const theme = useTheme();
@@ -21,7 +22,12 @@ const Dish = ({ dish, cart, setCart, setDishes }) => {
   const [commentModalOpen, setCommentModalOpen] = React.useState(false);
   const [notes, setNotes] = React.useState("");
   const [dishNum, setDishNum] = React.useState(0);
-  const onClick_open = () => setModalOpen(true);
+  const onClick_open = () => {
+    setModalOpen(true);
+    mixpanel.track("clickDish", {
+      "dish name": dish.name,
+    });
+  };
   const onClick_close = () => setModalOpen(false);
 
   const intl = useIntl();
@@ -30,10 +36,12 @@ const Dish = ({ dish, cart, setCart, setDishes }) => {
     let idx = cart.map((e, index) => {
       if (e.id === dish.id && e.customization.localeCompare(notes) === 0)
         return index;
+      else return null;
     });
-    if (idx.some((e) => e)) {
+    console.log(idx);
+    if (idx.some((e) => e !== null)) {
       idx.map((e) => {
-        if (e) {
+        if (e !== null) {
           let items = [...cart];
           items[e].dishesNum += 1;
           setCart(items);

@@ -5,7 +5,7 @@ import Home from "./Containers/Home";
 import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ShoppingCartPage from "./Containers/ShoppingCartPage";
-import OrdersPage from "./Containers/OrdersPage"
+import OrdersPage from "./Containers/OrdersPage";
 import BottomNav from "./Components/BottomNav";
 import { Fab } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
@@ -18,7 +18,7 @@ import {
   getResturantsApi,
   sendPrime,
   getTradeResult,
-  getOrderById
+  getOrderById,
 } from "./Functions/api";
 import "tocas/dist/tocas.min.css";
 import "tocas/dist/tocas.min.js";
@@ -28,8 +28,9 @@ import { IntlProvider, FormattedMessage } from "react-intl";
 import Intl from "./Components/Intl";
 import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 import { InitMixpanel, AuthListener } from "./Mixpanel/mixpanel";
+import mixpanel from "mixpanel-browser";
 
 const theme = createTheme({
   palette: {
@@ -94,6 +95,13 @@ function App() {
     setHistoryOrders(data)
   }, []);
 
+  useEffect(async () => {
+    // console.log("sd");
+    InitMixpanel();
+    const { data } = await getOrderById();
+    // console.log(data);
+    setHistoryOrders(data);
+  }, []);
 
   useEffect(() => {
     const getResturantsData = async () => {
@@ -119,11 +127,12 @@ function App() {
     if (haveOrdered) {
       setCommentAble(true);
     }
-    const getMenuData = async (resturantID) => {
+    const getMenuData = async (resturantID, lang) => {
       try {
         // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
-        const data = await getMenuApi(resturantID);
+        const data = await getMenuApi(resturantID, lang);
         if (data) {
+          // console.log(data);
           setDishes(data);
           ReactSession.set("dishData", data);
 
@@ -132,12 +141,10 @@ function App() {
         console.log(error);
       }
     };
-    if (dishes.length === 0) {
-      getMenuData(resturantID);
-    }
-  }, [resturantID, dishes.length]);
-
-
+    // if (dishes.length === 0) {
+    getMenuData(resturantID, lang);
+    // }
+  }, [resturantID, lang]);
 
   const sendorder = async () => {
     setLinePayUrl(null);
@@ -206,7 +213,7 @@ function App() {
                 path="/menu"
                 element={
                   // <RequireAuth authed={authed}>
-                  <Menu dishes={dishes} cart={cart} setCart={setCart} setDishes={setDishes}></Menu>
+                  <Menu dishes={dishes} cart={cart} setCart={setCart} setDishes={setDishes} lang={lang}></Menu>
                   // </RequireAuth>
                 }
               />
@@ -215,6 +222,7 @@ function App() {
                 element={
                   // <RequireAuth authed={authed}>
                   <ShoppingCartPage
+                    dishes={dishes}
                     cart={cart}
                     setCart={setCart}
                     sendorder={sendorder}
@@ -229,20 +237,18 @@ function App() {
                 path="/orders"
                 element={
                   <RequireAuth authed={authed}>
-                    <OrdersPage
-                      orders={orders} historyOrders={historyOrders}
-                    />
-                  </RequireAuth>
+                    <OrdersPage orders={orders} historyOrders={historyOrders} />
+                  </RequireAuth >
                 }
               />
-            </Routes>
+            </Routes >
             <BottomNav authed={authed} cart={cart} />
-          </BrowserRouter>
+          </BrowserRouter >
           <Loading modalRef={loadingRef}></Loading>
-        </div>
+        </div >
         <Intl setLang={setLang} />
-      </IntlProvider>
-    </ThemeProvider>
+      </IntlProvider >
+    </ThemeProvider >
   );
 }
 
