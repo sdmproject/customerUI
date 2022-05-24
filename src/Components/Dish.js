@@ -23,11 +23,10 @@ const Dish = ({ dish, cart, setCart, loginUserProfile }) => {
   const [notes, setNotes] = React.useState("");
   const [dishNum, setDishNum] = React.useState(0);
   const onClick_open = () => {
-    setModalOpen(true)
-    mixpanel.track("clickDish",{
-        "dish name" : dish.name
-      }
-    )
+    setModalOpen(true);
+    mixpanel.track("clickDish", {
+      "dish name": dish.name,
+    });
   };
   const onClick_close = () => setModalOpen(false);
 
@@ -37,10 +36,12 @@ const Dish = ({ dish, cart, setCart, loginUserProfile }) => {
     let idx = cart.map((e, index) => {
       if (e.id === dish.id && e.customization.localeCompare(notes) === 0)
         return index;
+      else return null;
     });
-    if (idx.some((e) => e)) {
+    console.log(idx);
+    if (idx.some((e) => e !== null)) {
       idx.map((e) => {
-        if (e) {
+        if (e !== null) {
           let items = [...cart];
           items[e].dishesNum += 1;
           setCart(items);
@@ -205,7 +206,12 @@ const Dish = ({ dish, cart, setCart, loginUserProfile }) => {
                 )}
               </div>
             </div>
-            <DishComment show={commentModalOpen} commentData={dish.comments} dishId={dish.id} loginUserProfile={loginUserProfile} />
+            <DishComment
+              show={commentModalOpen}
+              commentData={dish.comments}
+              dishId={dish.id}
+              loginUserProfile={loginUserProfile}
+            />
           </Box>
         </Fade>
       </Modal>

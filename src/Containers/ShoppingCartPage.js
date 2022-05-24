@@ -7,6 +7,7 @@ import { FormattedMessage } from "react-intl";
 import mixpanel from "mixpanel-browser";
 
 const ShoppingCartPage = ({
+  dishes,
   cart,
   setCart,
   sendorder,
@@ -78,7 +79,7 @@ const ShoppingCartPage = ({
             <GoodInCart
               key={idx}
               index={idx}
-              name={obj.name}
+              name={dishes.filter((e) => e.id === obj.id)[0].name}
               image={obj.img}
               note={obj.customization}
               number={obj.dishesNum}

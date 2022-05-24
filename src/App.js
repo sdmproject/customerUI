@@ -245,6 +245,7 @@ function App() {
                 element={
                   <RequireAuth authed={authed}>
                     <ShoppingCartPage
+                      dishes={dishes}
                       cart={cart}
                       setCart={setCart}
                       sendorder={sendorder}

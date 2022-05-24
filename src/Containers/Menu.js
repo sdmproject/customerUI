@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Tab from "../Components/Tab";
 import Dish from "../Components/Dish";
 import Box from "@mui/material/Box";
+import { TextField } from "@mui/material";
 // import { Divider } from "@mui/material";
 import shuffle from "../Functions/Shuffle";
 // import getRedirectUrl from "../Functions/Test";
@@ -11,6 +12,7 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile, lang }) => {
   const [dishType, setDishType] = useState("");
   const [allTypeName, setAllTypeName] = useState([]);
   const [allTypeImage, setAllTypeImage] = useState([]);
+  const [searchtext, setSearchtext] = useState("");
 
   useEffect(() => {
     shuffle(dishes);
@@ -29,6 +31,10 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile, lang }) => {
     setDishType(index);
   };
 
+  const handleChange = (event) => {
+    setSearchtext(event.target.value);
+  };
+
   return (
     <Box>
       {dishType === "" ? (
@@ -42,7 +48,7 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile, lang }) => {
               imageUrl={allTypeImage[index]}
               imageTitle={type}
               imageWidth={"100%"}
-            ></AnimateButton>
+            />
           </div>
         ))
       ) : (
@@ -59,18 +65,44 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile, lang }) => {
               imageTitle={allTypeName[dishType]}
               imageWidth={"100%"}
               clickAble="false"
-            ></AnimateButton>
-            {dishes.map((dish) =>
-              dish.type.toUpperCase() === allTypeName[dishType] ? (
-                <Dish
-                  // key={dish.name}
-                  dish={dish}
-                  cart={cart}
-                  setCart={setCart}
-                  loginUserProfile={loginUserProfile}
-                />
-              ) : null
-            )}
+            />
+            <TextField
+              fullWidth
+              variant="outlined"
+              size="small"
+              margin="dense"
+              color="primary"
+              label="Search"
+              value={searchtext}
+              onChange={handleChange}
+            />
+            {searchtext === null || searchtext.match(/^ *$/) !== null
+              ? dishes.map((dish) =>
+                  dish.type.toUpperCase() === allTypeName[dishType] ? (
+                    <Dish
+                      // key={dish.name}
+                      dish={dish}
+                      cart={cart}
+                      setCart={setCart}
+                      loginUserProfile={loginUserProfile}
+                    />
+                  ) : null
+                )
+              : dishes
+                  .filter((item) =>
+                    item.name.toLowerCase().includes(searchtext.toLowerCase())
+                  )
+                  .map((dish) =>
+                    dish.type.toUpperCase() === allTypeName[dishType] ? (
+                      <Dish
+                        // key={dish.name}
+                        dish={dish}
+                        cart={cart}
+                        setCart={setCart}
+                        loginUserProfile={loginUserProfile}
+                      />
+                    ) : null
+                  )}
           </Box>
           <Box sx={{ height: 80 }} />
         </Box>
