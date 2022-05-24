@@ -125,6 +125,8 @@ function App() {
         const data = await getMenuApi(resturantID);
         if (data) {
           setDishes(data);
+          ReactSession.set("dishData", data);
+
         }
       } catch (error) {
         console.log(error);
@@ -204,7 +206,7 @@ function App() {
                 path="/menu"
                 element={
                   // <RequireAuth authed={authed}>
-                  <Menu dishes={dishes} cart={cart} setCart={setCart}></Menu>
+                  <Menu dishes={dishes} cart={cart} setCart={setCart} setDishes={setDishes}></Menu>
                   // </RequireAuth>
                 }
               />

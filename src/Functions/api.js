@@ -145,18 +145,18 @@ export const sendComment = async (commentInfo) => {
     console.log('into send comment');
     console.log(isoDateTime);
     console.log(commentInfo);
-    // const { data } = await createitem(`${tmpApi}/comment`, {
-    const { data } = await createitem(`${baseUrl}/comment`, {
+    const sendData = {
       itemId: commentInfo.itemId,
       name: ReactSession.get("username"),
       content: commentInfo.content,
       time: isoDateTime,
       rate: commentInfo.rate,
       imgUrl: ReactSession.get("image_URL"),
-
-    });
+    };
+    // const { data } = await createitem(`${tmpApi}/comment`, sendData);
+    const { data } = await createitem(`${baseUrl}/comment`, sendData);
     console.log(data);
-
+    return sendData;
   }
   catch (error) {
     console.log(error);

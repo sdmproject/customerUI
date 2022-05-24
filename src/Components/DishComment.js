@@ -1,17 +1,19 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import Rating from "@mui/material/Rating";
-import { sendComment } from "../Functions/api";
+import { sendComment, getResturantsApi } from "../Functions/api";
 import { ReactSession } from 'react-client-session';
 
 
 
 
-const DishComment = ({ show, commentData, dishId }) => {
+const DishComment = ({ show, commentData, dishId, setDishes }) => {
   const [addCommentModal, setAddCommentModal] = React.useState(false);
   const [rateFilter, setRateFilter] = React.useState([1, 2, 3, 4, 5]);
   const [ratingValue, setRatingValue] = React.useState(3);
   const [inputComment, setInputComment] = React.useState('');
+  const [localCommentData, setLocalCommentData] = React.useState(commentData);
+
 
 
   const selectBadComment = () => {
@@ -23,6 +25,12 @@ const DishComment = ({ show, commentData, dishId }) => {
   const selectAllComment = () => {
     setRateFilter([1, 2, 3, 4, 5]);
   };
+
+  const generateRandomNum = () => {
+    var maxNumber = 15;
+    var randomNumber = Math.floor((Math.random() * maxNumber) + 1);
+    return randomNumber;
+  }
 
   const ratingIconBuilder = (rate) => {
     let starList = [];
@@ -36,7 +44,37 @@ const DishComment = ({ show, commentData, dishId }) => {
     return <div className="ts-rating is-small is-yellow">{starList}</div>;
   };
 
-  const clickSendComment = (content, rating) => {
+  const setNewCommentToDishData = (commentInfo) => {
+
+    const newComment = {
+      content: commentInfo.content,
+      id: commentInfo.time,//not sure what to use
+      imgUrl: commentInfo.imgUrl,
+      name: commentInfo.name,
+      rate: commentInfo.rate,
+      time: commentInfo.time,
+    }
+    // console.log("setNewCommentToDishData", commentData)
+    const newComments = [...localCommentData, newComment];
+    console.log("new commentData", newComments);
+
+    const dishData = ReactSession.get("dishData");
+
+    for (var i = 0; i < dishData.length; i++) {
+      if (dishData[i].id == dishId) {
+        dishData[i].comments = newComments;
+      }
+    }
+
+    setLocalCommentData(newComments);
+    ReactSession.set("dishData", dishData);
+    setDishes(dishData);
+
+
+
+  }
+
+  const clickSendComment = async (content, rating) => {
     console.log({ content, rating });
     var commentInfo = {
       itemId: dishId,
@@ -46,13 +84,12 @@ const DishComment = ({ show, commentData, dishId }) => {
       imgUrl: ReactSession.get("image_URL"),
     }
 
-    sendComment(commentInfo);
+    var sendData = await sendComment(commentInfo);
+    setNewCommentToDishData(sendData);
   }
 
   const dateConverter = (isoDateString) => {
     const targetDate = new Date(isoDateString);
-    console.log(targetDate);
-    // return date.toLocaleDateString();
 
     var minute = 1000 * 60;
     var hour = minute * 60;
@@ -230,7 +267,7 @@ const DishComment = ({ show, commentData, dishId }) => {
           <div className="ts-space is-large"></div>
 
           {/* 餐點頻論串 */}
-          {commentData
+          {localCommentData
             .filter((comment) => rateFilter.includes(comment.rate))
             .map((comment, i) => (
               // {console.log(commentData)}
@@ -299,12 +336,12 @@ const DishComment = ({ show, commentData, dishId }) => {
                         <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
                           <input type="checkbox" defaultChecked="" />
                           {/* <div className="content">👌 {comment.like_num}</div> */}
-                          <div className="content">👌 95</div>
+                          <div className="content">👌 {generateRandomNum()}</div>
                         </label>
                         <label className="ts-chip is-toggle is-small is-dense is-secondary is-circular is-outlined">
                           <input type="checkbox" />
                           {/* <div className="content">👀 {comment.dislike_num}</div> */}
-                          <div className="content">👀 27</div>
+                          <div className="content">👀 {generateRandomNum()}</div>
                         </label>
                       </div>
                     </div>
