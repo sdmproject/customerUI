@@ -154,16 +154,16 @@ function App() {
     // change to sendOrder after pay
     // const data = await sendOrderApi(cart);
     try {
-      // const _ = await sendPrime(cart);
-      // console.log(_)
-      // setTimeout(async () => {
-      const payment = await sendPrime(cart);
-      const now = new Date()
-      let newWaitToPay = { "cart": cart, "rec_trade_id": payment.data.rec_trade_id, "linePayUrl": payment.data.payment_url, "expire": now.getTime() + 60 * 1000, "havePayed": false }
-      let WaitToPayList = [...orders, newWaitToPay]
-      setOrders(WaitToPayList)
-      setLinePayUrl(payment.data.payment_url);
-      // }, 8000);
+      const _ = await sendPrime(cart);
+      console.log(_)
+      setTimeout(async () => {
+        const payment = await sendPrime(cart);
+        const now = new Date()
+        let newWaitToPay = { "cart": cart, "rec_trade_id": payment.data.rec_trade_id, "linePayUrl": payment.data.payment_url, "expire": now.getTime() + 60 * 1000, "havePayed": false }
+        let WaitToPayList = [...orders, newWaitToPay]
+        setOrders(WaitToPayList)
+        setLinePayUrl(payment.data.payment_url);
+      }, 6000);
     } catch {
       console.log("error occur, please pay by cash");
     }

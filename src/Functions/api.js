@@ -114,10 +114,16 @@ export const sendPrime = async (cart) => {
     var data;
     window.TPDirect.linePay.getPrime(async (result) => {
       prime = result.prime;
-      data = await payment({ prime: prime, cart: cart });
+      console.log("result 1", result);
+      const data = await payment({ prime: prime, cart: cart });
       window.payment = data;
       console.log(`Check your order, ${result}`);
+      console.log("data 1", data);
+      // ReactSession.set();
+
     });
+    console.log("data 2 out", data);
+
     return window.payment;
   } catch (error) {
     console.log(error);
