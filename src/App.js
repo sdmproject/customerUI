@@ -30,6 +30,7 @@ import message_zh from "./lang/zh.json";
 import message_en from "./lang/en.json";
 import { ReactSession } from 'react-client-session';
 import { InitMixpanel, AuthListener } from "./Mixpanel/mixpanel";
+import mixpanel from "mixpanel-browser";
 
 const theme = createTheme({
   palette: {
@@ -82,9 +83,17 @@ function App() {
 
   const loadingRef = useRef(null);
 
+  const getTotalPrice = (cart) => {
+    let sum = 0;
+    cart.map((obj) => {
+      sum += obj.price * obj.dishesNum;
+    });
+    return sum;
+  };
+
   useEffect(async() => {
     console.log("sd")
-    // InitMixpanel();
+    InitMixpanel();
     const {data} = await getOrderById();
     console.log(data)
     setHistoryOrders(data)
@@ -139,20 +148,31 @@ function App() {
     thisModal.style.display = "block";
     // change to sendOrder after pay
     // const data = await sendOrderApi(cart);
-    try {
-      // const _ = await sendPrime(cart);
-      // console.log(_)
-      // setTimeout(async () => {
+    // try {
+      const _ = await sendPrime(cart);
+      console.log(_)
+      setTimeout(async () => {
         const payment = await sendPrime(cart);
+        console.log(payment)
+        console.log(window.payment)
         const now = new Date()
         let newWaitToPay = {"cart":cart, "rec_trade_id":payment.data.rec_trade_id, "linePayUrl":payment.data.payment_url, "expire":now.getTime() + 60* 1000, "havePayed":false}
         let WaitToPayList = [...orders, newWaitToPay]
         setOrders(WaitToPayList)
+        let events = {
+          // "cart":cart,
+          "rec_trade_id":payment.data.rec_trade_id,
+          "total price": getTotalPrice(cart)
+        }
+        for (let i = 0; i < cart.length; i++){
+          events[cart[i].name] = cart[i].dishesNum
+        }
+        mixpanel.track("send order", events)
         setLinePayUrl(payment.data.payment_url);
-      // }, 8000);
-    } catch {
-      console.log("error occur, please pay by cash");
-    }
+      }, 5000);
+    // } catch {
+    //   console.log("error occur, please pay by cash");
+    // }
 
     setShowAlert("success");
     thisModal.style.display = "none";
