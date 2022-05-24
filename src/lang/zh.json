@@ -39,5 +39,6 @@
   "order.havePayed": "此訂單已付款 ",
   "order.details": "訂單詳細內容",
   "order.payWithLinePay": "使用LinePay付款 ",
-  "order.historyOrder": "歷史訂單 # "
+  "order.historyOrder": "歷史訂單 # ",
+  "order.refresh" : "更新訂單狀態"
 }

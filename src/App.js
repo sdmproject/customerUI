@@ -67,6 +67,8 @@ function App() {
   const [authed, setAuthed] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
   const [historyOrders, setHistoryOrders] = useState([]);
+  const [forceOrderUpdate, setForceOrderUpdate] = useState(0);
+
 
   ReactSession.setStoreType("localStorage");
   ReactSession.set("isTakeOut", true);
@@ -87,40 +89,40 @@ function App() {
 
   const loadingRef = useRef(null);
 
+  const getTotalPrice = (cart) => {
+    let sum = 0;
+    cart.map((obj) => {
+      sum += obj.price * obj.dishesNum;
+    });
+    return sum;
+  };
+
   useEffect(async () => {
-    console.log("sd")
-    // InitMixpanel();
+    InitMixpanel();
     const { data } = await getOrderById();
-    console.log(data)
     setHistoryOrders(data)
   }, []);
 
   useEffect(async () => {
-    // console.log("sd");
-    InitMixpanel();
     const { data } = await getOrderById();
-    // console.log(data);
-    setHistoryOrders(data);
-  }, []);
-
+    setHistoryOrders(data)
+  }, [forceOrderUpdate]);
   useEffect(() => {
     const getResturantsData = async () => {
       try {
-        // const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
-        const data = await getResturantsApi();
+        const data = await getResturantsApi(lang);
         if (data) {
           setResturants(data);
-          // console.log("set resturants");
         }
       } catch (error) {
         console.log(error);
       }
     };
-    if (resturants.length === 0) {
-      // console.log("into get resturants");
-      getResturantsData();
-    }
-  }, [resturants.length]);
+    // if (resturants.length === 0) {
+    // console.log("into get resturants");
+    getResturantsData(lang);
+    // }
+  }, [lang]);
 
   useEffect(() => {
     const haveOrdered = Cookies.get("orderID");
@@ -129,7 +131,6 @@ function App() {
     }
     const getMenuData = async (resturantID, lang) => {
       try {
-        // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
         const data = await getMenuApi(resturantID, lang);
         if (data) {
           // console.log(data);
@@ -237,8 +238,10 @@ function App() {
                 path="/orders"
                 element={
                   <RequireAuth authed={authed}>
-                    <OrdersPage orders={orders} historyOrders={historyOrders} />
-                  </RequireAuth >
+                    <OrdersPage
+                      orders={orders} setOrders={setOrders} historyOrders={historyOrders} getOrderById={getOrderById} forceOrderUpdate={forceOrderUpdate} setForceOrderUpdate={setForceOrderUpdate} setHistoryOrders={setHistoryOrders}
+                    />
+                  </RequireAuth>
                 }
               />
             </Routes >

@@ -33,7 +33,7 @@ export const getMenuApi = async (resturantID, value = "zh") => {
   }
 };
 
-export const getResturantsApi = async () => {
+export const getResturantsApi = async (lang) => {
   try {
     const { data } = await getitems(`${baseUrl}/restaurants`);
     return data;
@@ -131,7 +131,6 @@ export const getTradeResult = async (trade_id) => {
 };
 
 export const getOrderById = async () => {
-  // console.log("sd");
   const data = await axios.post(`${baseUrl}/orderById`, {
     // "customerId":"103600190401282656299"
     customerId: ReactSession.get("google_ID"),
