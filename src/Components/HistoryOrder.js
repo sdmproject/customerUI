@@ -13,7 +13,7 @@ const getTotalPrice = (cart) => {
 
 
 
-const HistoryOrder = ({historyOrder, index}) => {
+const HistoryOrder = ({historyOrder, index, getOrderById, forceOrderUpdate, setHistoryOrders}) => {
 
 	const [open, setOpen]  = useState("is-section")
 	const [totalPrice, setTotalPrice] = useState(0)
@@ -24,6 +24,13 @@ const HistoryOrder = ({historyOrder, index}) => {
 		setLinePayUrl("/")
 		setHavePayed(true)
 	}, []);
+
+	// useEffect(async() => {
+		// const data = await getOrderById()
+		// const {data} = await getOrderById();
+    	// setHistoryOrders(data) 
+	// }, [forceOrderUpdate]);
+
 
 	const onClickOpen = () => {
 		if (open === "is-section"){

@@ -15,7 +15,7 @@ const getTotalPrice = (cart) => {
 
 
 
-const Order = ({order, index}) => {
+const Order = ({order, index, forceOrderUpdate, setForceOrderUpdate, orders, setOrders}) => {
 	
 
 	const [open, setOpen]  = useState("is-section")
@@ -29,11 +29,12 @@ const Order = ({order, index}) => {
 	}, []);
   useEffect(() => {
     let interval
+	if(!havePayed){
 	interval = setInterval( async() => {
-	
+	// console.log(orders)
 	if(!havePayed){
 		const tradeStatus = await getTradeResult(order["rec_trade_id"])
-		// console.log(tradeStatus)
+		// console.log(orders)
 		for (let i = 0; i < tradeStatus.data.trade_history.length; i ++){
 			
 			if (tradeStatus.data.trade_history[i]["action"] == 0 || tradeStatus.data.trade_history[i]["action"] == 1){
@@ -47,17 +48,24 @@ const Order = ({order, index}) => {
 					events[order.cart[i].name] = order.cart[i].dishesNum
 				}
 				mixpanel.track("payment", events)
-
+				setForceOrderUpdate(forceOrderUpdate + 1)
+				// end the interval
+				console.log(`clearing interval`);
+				if(orders){
+					let idx = orders.findIndex( x=> x === order)
+					setOrders([...orders.slice(0,idx), ...orders.slice(idx+1)])
+				}
+				clearInterval(interval);
 				break
 			}
 			}   
-	}}, 5000); 
+	}}, 3000);} 
 
     return () => {
       console.log(`clearing interval`);
       clearInterval(interval);
     };
-  }, [havePayed]);
+  }, []);
 
 
 
@@ -74,6 +82,11 @@ const Order = ({order, index}) => {
 	}
 
 	return (
+		<>
+		{havePayed === true
+		?
+		<></>
+		:
 		<>
 		<div style={{"margin":"auto", "marginBottom":"40px", "marginTop":"30px", "marginLeft":"40px"}} onClick={onClickOpen} >
 			<div style={{"display":"flex"}}>
@@ -118,6 +131,8 @@ const Order = ({order, index}) => {
 		</div>
 		<Divider style={{"marginTop":"40px"}}/>
 		</div>
+		</>	
+		}
 		</>
 	)
 }

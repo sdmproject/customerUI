@@ -19,9 +19,15 @@ const gettotalprice = (cart) => {
   return sum;
 };
 
-export const getMenuApi = async (resturantID) => {
+export const getMenuApi = async (resturantID, lang) => {
   try {
-    const { data } = await getitems(`${baseUrl}/menu/${resturantID}`);
+    // const { data } = await getitems(`${baseUrl}/menu/${resturantID}`);
+    console.log(lang)
+    const {data} = await axios.get(`${baseUrl}/menu/${resturantID}`, {
+      headers:{
+        "Content-Language":lang
+      }
+    })
     console.log(data);
     return data;
   } catch (error) {
@@ -29,7 +35,7 @@ export const getMenuApi = async (resturantID) => {
   }
 };
 
-export const getResturantsApi = async () => {
+export const getResturantsApi = async (lang) => {
   try {
     const { data } = await getitems(`${baseUrl}/restaurants`);
     return data;

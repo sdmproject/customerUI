@@ -68,6 +68,8 @@ function App() {
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
   const [loginUserProfile, setLoginUserProfile] = useState(null);
   const [historyOrders, setHistoryOrders] = useState([]);
+  const [forceOrderUpdate, setForceOrderUpdate] = useState(0);
+
 
   ReactSession.setStoreType("localStorage");
   ReactSession.set("isTakeOut", true);
@@ -92,32 +94,31 @@ function App() {
   };
 
   useEffect(async() => {
-    console.log("sd")
     InitMixpanel();
     const {data} = await getOrderById();
-    console.log(data)
     setHistoryOrders(data)
   }, []);
 
-
+  useEffect(async() => {
+    const {data} = await getOrderById();
+    setHistoryOrders(data)
+  }, [forceOrderUpdate]);
   useEffect(() => {
     const getResturantsData = async () => {
       try {
-        // const { data } = await axios.get(`https://api.eatba.tk/restaurants`);
-        const data = await getResturantsApi();
+        const data = await getResturantsApi(lang);
         if (data) {
           setResturants(data);
-          // console.log("set resturants");
         }
       } catch (error) {
         console.log(error);
       }
     };
-    if (resturants.length === 0) {
+    // if (resturants.length === 0) {
       // console.log("into get resturants");
-      getResturantsData();
-    }
-  }, [resturants.length]);
+      getResturantsData(lang);
+    // }
+  }, [lang]);
 
   useEffect(() => {
     const haveOrdered = Cookies.get("orderID");
@@ -126,8 +127,7 @@ function App() {
     }
     const getMenuData = async (resturantID) => {
       try {
-        // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
-        const data = await getMenuApi(resturantID);
+        const data = await getMenuApi(resturantID, lang);
         if (data) {
           setDishes(data);
         }
@@ -135,10 +135,10 @@ function App() {
         console.log(error);
       }
     };
-    if (dishes.length === 0) {
+    // if (dishes.length === 0) {
       getMenuData(resturantID);
-    }
-  }, [resturantID, dishes.length]);
+    // }
+  }, [resturantID, dishes.length, lang]);
 
 
 
@@ -243,7 +243,7 @@ function App() {
                 element={
                   <RequireAuth authed={authed}>
                     <OrdersPage
-                      orders={orders} historyOrders={historyOrders}
+                      orders={orders} setOrders={setOrders} historyOrders={historyOrders} getOrderById={getOrderById} forceOrderUpdate={forceOrderUpdate} setForceOrderUpdate={setForceOrderUpdate} setHistoryOrders={setHistoryOrders} 
                     />
                    </RequireAuth>
                 }
