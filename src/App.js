@@ -92,10 +92,10 @@ function App() {
   };
 
   useEffect(async () => {
-    console.log("sd");
+    // console.log("sd");
     InitMixpanel();
     const { data } = await getOrderById();
-    console.log(data);
+    // console.log(data);
     setHistoryOrders(data);
   }, []);
 
@@ -123,21 +123,22 @@ function App() {
     if (haveOrdered) {
       setCommentAble(true);
     }
-    const getMenuData = async (resturantID) => {
+    const getMenuData = async (resturantID, lang) => {
       try {
         // const { data } = await axios.get(`https://api.eatba.tk/menu/${resturantID}`);
         const data = await getMenuApi(resturantID, lang);
         if (data) {
+          // console.log(data);
           setDishes(data);
         }
       } catch (error) {
         console.log(error);
       }
     };
-    if (dishes.length === 0) {
-      getMenuData(resturantID);
-    }
-  }, [resturantID, dishes.length]);
+    // if (dishes.length === 0) {
+    getMenuData(resturantID, lang);
+    // }
+  }, [resturantID, lang]);
 
   const sendorder = async () => {
     setLinePayUrl(null);
@@ -147,11 +148,11 @@ function App() {
     // const data = await sendOrderApi(cart);
     // try {
     const _ = await sendPrime(cart);
-    console.log(_);
+    // console.log(_);
     setTimeout(async () => {
       const payment = await sendPrime(cart);
-      console.log(payment);
-      console.log(window.payment);
+      // console.log(payment);
+      // console.log(window.payment);
       const now = new Date();
       let newWaitToPay = {
         cart: cart,
@@ -234,7 +235,8 @@ function App() {
                       cart={cart}
                       setCart={setCart}
                       loginUserProfile={loginUserProfile}
-                    ></Menu>
+                      lang={lang}
+                    />
                   </RequireAuth>
                 }
               />

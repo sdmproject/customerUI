@@ -1,4 +1,5 @@
-import * as React from "react";
+// import * as React from "react";
+import { useEffect } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -6,7 +7,7 @@ import { Divider } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { withStyles } from "@mui/styles";
 
-export default function TabBar({ items, dishType, setDishType }) {
+export default function TabBar({ items, dishType, setDishType, lang }) {
   const theme = useTheme();
   const CustomTab = withStyles({
     root: {
@@ -17,7 +18,12 @@ export default function TabBar({ items, dishType, setDishType }) {
     },
   })(Tab);
 
+  // useEffect(() => {
+  //   setDishType(items[items.indexOf(dishType));
+  // }, [lang]);
+
   const handleChange = (event, newValue) => {
+    // console.log(newValue);
     setDishType(newValue);
   };
 
@@ -40,8 +46,8 @@ export default function TabBar({ items, dishType, setDishType }) {
         variant={items.length > 4 ? "scrollable" : "fullWidth"}
         scrollButtons={false}
       >
-        {items.map((item) => (
-          <CustomTab key={item} label={item} value={item} />
+        {items.map((item, index) => (
+          <CustomTab label={item} value={index} />
         ))}
       </Tabs>
       <Divider></Divider>

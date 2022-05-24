@@ -26,7 +26,7 @@ export const getMenuApi = async (resturantID, value = "zh") => {
         "Content-Language": value,
       },
     });
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -86,7 +86,7 @@ export const sendOrderApi = async (cart) => {
         };
       }),
     });
-    console.log("sendOrderApi", data);
+    // console.log("sendOrderApi", data);
     return data;
   } catch (error) {
     console.log(error);
@@ -116,7 +116,7 @@ export const sendPrime = async (cart) => {
       prime = result.prime;
       data = await payment({ prime: prime, cart: cart });
       window.payment = data;
-      console.log(`Check your order, ${data}`);
+      // console.log(`Check your order, ${data}`);
     });
     return window.payment;
   } catch (error) {
@@ -131,28 +131,28 @@ export const getTradeResult = async (trade_id) => {
 };
 
 export const getOrderById = async () => {
-  console.log("sd");
+  // console.log("sd");
   const data = await axios.post(`${baseUrl}/orderById`, {
     // "customerId":"103600190401282656299"
     customerId: ReactSession.get("google_ID"),
   });
-  console.log(data);
+  // console.log(data);
   return data;
 };
 export const sendComment = async (commentInfo) => {
   // var tmpApi = "https://49e6-150-117-240-26.ngrok.io";
   var tmpApi = "https://api.eatba.tk";
   try {
-    console.log("session name", ReactSession.get("username"));
+    // console.log("session name", ReactSession.get("username"));
     let date = new Date(); // Or the date you'd like converted.
     let isoDateTime = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
     )
       .toISOString()
       .slice(0, -1);
-    console.log("into send comment");
-    console.log(isoDateTime);
-    console.log(commentInfo);
+    // console.log("into send comment");
+    // console.log(isoDateTime);
+    // console.log(commentInfo);
     // const { data } = await createitem(`${tmpApi}/comment`, {
     const { data } = await createitem(`${baseUrl}/order`, {
       itemId: commentInfo.itemId,

@@ -3,27 +3,24 @@ import Box from "@mui/material/Box";
 import HomeIcon from "@mui/icons-material/Home";
 import Restaurant from "../Components/Restaurant";
 import { FormattedMessage } from "react-intl";
-import { ReactSession } from 'react-client-session';
-
+import { ReactSession } from "react-client-session";
 
 const Home = ({ resturants, setResturantID }) => {
   const [hintText, setHintText] = useState("Select ypur resturant");
   const [ratingValue, setRatingValue] = useState(3);
   const [isTakeOut, setIsTakeOut] = useState(ReactSession.get("isTakeOut"));
 
-
-  console.log(resturants);
+  // console.log(resturants);
 
   const switchTakeOut = () => {
     var current = ReactSession.get("isTakeOut");
     // console.log(`local is ${isTakeOut},global is ${current}`);
     if (!current) {
       ReactSession.set("herePeople", 1);
-    };
-    setIsTakeOut(prev => !prev);
+    }
+    setIsTakeOut((prev) => !prev);
     ReactSession.set("isTakeOut", !current);
-
-  }
+  };
 
   return (
     <>
@@ -54,8 +51,10 @@ const Home = ({ resturants, setResturantID }) => {
         </div>
         <div className="ts-space" />
         <div className="ts-center">
-
-          <div className="ts-box is-elevated" style={{ margin: "10px", maxWidth: "500px" }}>
+          <div
+            className="ts-box is-elevated"
+            style={{ margin: "10px", maxWidth: "500px" }}
+          >
             <div className="ts-space" />
             <div className="ts-row is-center-aligned">
               <div className="ts-wrap">
@@ -67,7 +66,7 @@ const Home = ({ resturants, setResturantID }) => {
                   </label>
                 </div> */}
                 <div className="column">
-                  <label className="ts-switch is-large" >
+                  <label className="ts-switch is-large">
                     <FormattedMessage id="home.takeout" defaultMessage="外帶" />
                     <input type="checkbox" onClick={switchTakeOut} />
                     <FormattedMessage id="home.inside" defaultMessage="內用" />
@@ -77,11 +76,15 @@ const Home = ({ resturants, setResturantID }) => {
             </div>
             <div className="ts-space" />
 
-
             <label>
               <FormattedMessage id="home.approximate" defaultMessage="大約" />
               <div className="ts-select is-small is-dense">
-                <select defaultValue={15} onChange={(e) => ReactSession.set("minutesLater", e.target.value)}>
+                <select
+                  defaultValue={15}
+                  onChange={(e) =>
+                    ReactSession.set("minutesLater", e.target.value)
+                  }
+                >
                   <option value={5}>5</option>
                   <option value={10}>10</option>
                   <option value={15}>15</option>
@@ -90,16 +93,27 @@ const Home = ({ resturants, setResturantID }) => {
                   <option value={45}>45</option>
                 </select>
               </div>
-              <FormattedMessage id="home.getMeal" defaultMessage="分鐘後到餐廳取餐" />
+              <FormattedMessage
+                id="home.getMeal"
+                defaultMessage="分鐘後到餐廳取餐"
+              />
             </label>
             {
               //內用
               !isTakeOut ? (
                 <label>
-                  <FormattedMessage id="home.people1" defaultMessage="，內用人數" />
+                  <FormattedMessage
+                    id="home.people1"
+                    defaultMessage="，內用人數"
+                  />
 
                   <div className="ts-select is-small is-dense">
-                    <select defaultValue={1} onChange={(e) => ReactSession.set("herePeople", e.target.value)}>
+                    <select
+                      defaultValue={1}
+                      onChange={(e) =>
+                        ReactSession.set("herePeople", e.target.value)
+                      }
+                    >
                       <option value={1}>1</option>
                       <option value={2}>2</option>
                       <option value={3}>3</option>
@@ -110,13 +124,15 @@ const Home = ({ resturants, setResturantID }) => {
                   </div>
                   <FormattedMessage id="home.people2" defaultMessage="." />
                 </label>
-
               ) : null
             }
 
             <div className="ts-grid">
               <div className="column is-1-wide"></div>
-              <div className="column is-14-wide" style={{ alignItems: "center" }}>
+              <div
+                className="column is-14-wide"
+                style={{ alignItems: "center" }}
+              >
                 {resturants.length > 0 ? (
                   <div key={0}>
                     <Restaurant
@@ -166,9 +182,15 @@ const Home = ({ resturants, setResturantID }) => {
               <div className="ts-box">
                 <div className="ts-content is-padded">
                   <div className="ts-quote is-heading ">
-                    <FormattedMessage id="home.resturant.title" defaultMessage="Order Now!" />
+                    <FormattedMessage
+                      id="home.resturant.title"
+                      defaultMessage="Order Now!"
+                    />
                     <div className="cite">
-                      <FormattedMessage id="home.resturant.description" defaultMessage="Good resturant don't wait." />
+                      <FormattedMessage
+                        id="home.resturant.description"
+                        defaultMessage="Good resturant don't wait."
+                      />
                     </div>
                   </div>
                 </div>

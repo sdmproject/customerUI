@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import shuffle from "../Functions/Shuffle";
 // import getRedirectUrl from "../Functions/Test";
 
-const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
+const Menu = ({ dishes, cart, setCart, loginUserProfile, lang }) => {
   const [dishType, setDishType] = useState("");
   const [allTypeName, setAllTypeName] = useState([]);
   const [allTypeImage, setAllTypeImage] = useState([]);
@@ -16,17 +16,17 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
     shuffle(dishes);
     let typeTemp = [];
     for (let i = 0; i < dishes.length; i++) {
-      if (!typeTemp.includes(dishes[i].type)) {
-        typeTemp.push(dishes[i].type);
+      if (!typeTemp.includes(dishes[i].type.toUpperCase())) {
+        typeTemp.push(dishes[i].type.toUpperCase());
         setAllTypeImage((all) => [...all, dishes[i].img]);
       }
     }
-    console.log(dishes);
+    // console.log(typeTemp);
     setAllTypeName(typeTemp);
   }, [dishes]);
 
-  const onClick_dishType = (e, type) => {
-    setDishType(type);
+  const onClick_dishType = (e, index) => {
+    setDishType(index);
   };
 
   return (
@@ -36,7 +36,7 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
           <div
             key={index} //if not => Warning: Each child in a list should have a unique "key" prop.
             className={"button-object"}
-            onClick={(e) => onClick_dishType(e, type)}
+            onClick={(e) => onClick_dishType(e, index)}
           >
             <AnimateButton
               imageUrl={allTypeImage[index]}
@@ -51,18 +51,19 @@ const Menu = ({ dishes, cart, setCart, loginUserProfile }) => {
             items={allTypeName}
             dishType={dishType}
             setDishType={setDishType}
+            lang={lang}
           />
           <Box sx={{ paddingTop: 6 }}>
             <AnimateButton
-              imageUrl={allTypeImage[allTypeName.indexOf(dishType)]}
-              imageTitle={dishType}
+              imageUrl={allTypeImage[dishType]}
+              imageTitle={allTypeName[dishType]}
               imageWidth={"100%"}
               clickAble="false"
             ></AnimateButton>
             {dishes.map((dish) =>
-              dish.type === dishType ? (
+              dish.type.toUpperCase() === allTypeName[dishType] ? (
                 <Dish
-                  key={dish.name}
+                  // key={dish.name}
                   dish={dish}
                   cart={cart}
                   setCart={setCart}

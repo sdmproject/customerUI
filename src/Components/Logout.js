@@ -12,7 +12,7 @@ function Logout({ setAuthed, setLoginUserProfile }) {
   let navigate = useNavigate();
 
   const onLogoutSuccess = (res) => {
-    console.log("Logged out Success");
+    // console.log("Logged out Success");
     alert("Logged out Successfully ✌");
     setAuthed(false);
     setLoginUserProfile(null);

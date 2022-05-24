@@ -6,9 +6,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 // refresh token
 import { refreshTokenSetup } from "../Functions/refreshToken";
 import { FormattedMessage } from "react-intl";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 import mixpanel from "mixpanel-browser";
-
 
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
@@ -17,7 +16,7 @@ function Login({ setAuthed, setLoginUserProfile }) {
   let navigate = useNavigate();
 
   const onSuccess = (res) => {
-    console.log("Login Success: currentUser:", res.profileObj);
+    // console.log("Login Success: currentUser:", res.profileObj);
     alert(`Logged in successfully welcome ${res.profileObj.name} 😍.`);
     refreshTokenSetup(res);
     setAuthed(true);
@@ -28,12 +27,12 @@ function Login({ setAuthed, setLoginUserProfile }) {
     ReactSession.set("email", res.profileObj.email);
     ReactSession.set("google_ID", res.profileObj.googleId);
     setLoginUserProfile({
-      "username": res.profileObj.name,
-      "image_URL": res.profileObj.imageUrl,
-      "email": res.profileObj.email,
-      "google_ID": res.profileObj.googleId,
-    })
-    mixpanel.track('login', {
+      username: res.profileObj.name,
+      image_URL: res.profileObj.imageUrl,
+      email: res.profileObj.email,
+      google_ID: res.profileObj.googleId,
+    });
+    mixpanel.track("login", {
       customerId: ReactSession.get("google_ID"),
       customerName: ReactSession.get("username"),
     });
@@ -50,8 +49,8 @@ function Login({ setAuthed, setLoginUserProfile }) {
   };
 
   const onFailure = (res) => {
-    console.log("Login failed: res:", res);
-    mixpanel.track('login_fail');
+    // console.log("Login failed: res:", res);
+    mixpanel.track("login_fail");
     alert(`Failed to login. 😢`);
   };
 
