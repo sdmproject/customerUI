@@ -17,7 +17,9 @@ const OrdersPage = ({ orders, setOrders, historyOrders, getOrderById, forceOrder
 	return (
 		<>
 			<Box sx={{ height: 80 }}></Box>
-			<div style={{"fontSize":"20px"}}>{google_ID} ---- {userName}</div>
+			
+			<div style={{"fontSize":"20px", "fontWeight":"500", "color":"#D0D0D0"}}>Google ID : {google_ID}</div>
+			<div style={{"fontSize":"30px"}}>{userName}</div>
 			<Tab
 				items={["歷史訂單", "待付款訂單"]}
 				type={type}
