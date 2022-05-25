@@ -4,7 +4,7 @@ import Rating from "@mui/material/Rating";
 import { sendComment, getResturantsApi } from "../Functions/api";
 import { ReactSession } from 'react-client-session';
 
-const DishComment = ({ show, commentData, dishId, setDishes }) => {
+const DishComment = ({ show, commentData, dishId, setDishes, userName}) => {
   const [addCommentModal, setAddCommentModal] = React.useState(false);
   const [rateFilter, setRateFilter] = React.useState([1, 2, 3, 4, 5]);
   const [ratingValue, setRatingValue] = React.useState(3);
@@ -72,6 +72,7 @@ const DishComment = ({ show, commentData, dishId, setDishes }) => {
     var commentInfo = {
       itemId: dishId,
       name: ReactSession.get("username"),
+      // name: userName,
       content: content,
       rate: rating,
       imgUrl: ReactSession.get("image_URL"),

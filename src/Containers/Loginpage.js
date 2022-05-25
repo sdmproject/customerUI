@@ -2,7 +2,7 @@ import Login from "../Components/Login";
 import Logout from "../Components/Logout";
 import { Grid } from "@mui/material";
 
-export const Loginpage = ({ authed, setAuthed }) => {
+export const Loginpage = ({ authed, setAuthed , setUserName, setGoogle_ID}) => {
   return (
     <Grid
       container
@@ -18,7 +18,7 @@ export const Loginpage = ({ authed, setAuthed }) => {
         </Grid>
       ) : (
         <Grid item xs={3}>
-          <Login setAuthed={setAuthed} />
+          <Login setAuthed={setAuthed} setUserName={setUserName} setGoogle_ID={setGoogle_ID} />
         </Grid>
       )}
     </Grid>

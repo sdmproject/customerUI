@@ -16,7 +16,7 @@ import DishComment from "./DishComment";
 import { FormattedMessage, useIntl } from "react-intl";
 import mixpanel from "mixpanel-browser";
 
-const Dish = ({ dish, cart, setCart, setDishes }) => {
+const Dish = ({ dish, cart, setCart, setDishes ,userName}) => {
   // const theme = useTheme();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [commentModalOpen, setCommentModalOpen] = React.useState(false);
@@ -206,7 +206,7 @@ const Dish = ({ dish, cart, setCart, setDishes }) => {
                 )}
               </div>
             </div>
-            <DishComment show={commentModalOpen} commentData={dish.comments} dishId={dish.id} setDishes={setDishes} />
+            <DishComment show={commentModalOpen} commentData={dish.comments} dishId={dish.id} setDishes={setDishes} userName={userName} />
           </Box>
         </Fade>
       </Modal>

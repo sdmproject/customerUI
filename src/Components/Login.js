@@ -12,7 +12,7 @@ import mixpanel from "mixpanel-browser";
 const clientId =
   "513189472543-7auhhvn57gdsetv10fpg3chs7s3kgq8i.apps.googleusercontent.com";
 
-function Login({ setAuthed }) {
+function Login({ setAuthed , setUserName, setGoogle_ID}) {
   let navigate = useNavigate();
 
   const onSuccess = (res) => {
@@ -24,6 +24,8 @@ function Login({ setAuthed }) {
     ReactSession.set("image_URL", res.profileObj.imageUrl);
     ReactSession.set("email", res.profileObj.email);
     ReactSession.set("google_ID", res.profileObj.googleId);
+    setUserName(res.profileObj.name)
+    setGoogle_ID(res.profileObj.googleId)
     // setLoginUserProfile({
     //   username: res.profileObj.name,
     //   image_URL: res.profileObj.imageUrl,

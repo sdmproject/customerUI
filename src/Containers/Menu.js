@@ -10,7 +10,7 @@ import shuffle from "../Functions/Shuffle";
 import { ReactSession } from 'react-client-session';
 
 
-const Menu = ({ dishes, cart, setCart, setDishes, lang }) => {
+const Menu = ({ dishes, cart, setCart, setDishes, lang, userName }) => {
   const [dishType, setDishType] = useState("");
   const [allTypeName, setAllTypeName] = useState([]);
   const [allTypeImage, setAllTypeImage] = useState([]);
@@ -94,6 +94,7 @@ const Menu = ({ dishes, cart, setCart, setDishes, lang }) => {
                     cart={cart}
                     setCart={setCart}
                     setDishes={setDishes}
+                    userName={userName}
                   />
                 ) : null
               )
@@ -109,6 +110,7 @@ const Menu = ({ dishes, cart, setCart, setDishes, lang }) => {
                       cart={cart}
                       setCart={setCart}
                       setDishes={setDishes}
+                      userName={userName}
                     />
                   ) : null
                 )}

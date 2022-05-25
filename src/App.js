@@ -68,6 +68,8 @@ function App() {
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
   const [historyOrders, setHistoryOrders] = useState([]);
   const [forceOrderUpdate, setForceOrderUpdate] = useState(0);
+  const [userName, setUserName] = useState("--anonymous");
+  const [google_ID, setGoogle_ID] = useState("");
 
 
   ReactSession.setStoreType("localStorage");
@@ -186,7 +188,7 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<Loginpage authed={authed} setAuthed={setAuthed} />}
+                element={<Loginpage authed={authed} setAuthed={setAuthed} setUserName={setUserName} setGoogle_ID={setGoogle_ID} />}
               />
               <Route
                 exact
@@ -214,7 +216,7 @@ function App() {
                 path="/menu"
                 element={
                   // <RequireAuth authed={authed}>
-                  <Menu dishes={dishes} cart={cart} setCart={setCart} setDishes={setDishes} lang={lang}></Menu>
+                  <Menu dishes={dishes} cart={cart} setCart={setCart} setDishes={setDishes} lang={lang} userName={userName}></Menu>
                   // </RequireAuth>
                 }
               />
@@ -240,6 +242,7 @@ function App() {
                   <RequireAuth authed={authed}>
                     <OrdersPage
                       orders={orders} setOrders={setOrders} historyOrders={historyOrders} getOrderById={getOrderById} forceOrderUpdate={forceOrderUpdate} setForceOrderUpdate={setForceOrderUpdate} setHistoryOrders={setHistoryOrders}
+                      userName={userName} google_ID={google_ID}
                     />
                   </RequireAuth>
                 }

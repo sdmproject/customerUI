@@ -4,8 +4,9 @@ import Box from '@mui/material/Box';
 import HistoryOrder from "../Components/HistoryOrder"
 import Tab from "../Components/TabForOrder";
 import { FormattedMessage } from "react-intl";
+import { ReactSession } from "react-client-session";
 // getOrderById={getOrderById} forceOrderUpdate={forceOrderUpdate} setForceOrderUpdate={setForceOrderUpdate}
-const OrdersPage = ({ orders, setOrders, historyOrders, getOrderById, forceOrderUpdate, setForceOrderUpdate, setHistoryOrders }) => {
+const OrdersPage = ({ orders, setOrders, historyOrders, getOrderById, forceOrderUpdate, setForceOrderUpdate, setHistoryOrders, userName, google_ID }) => {
 	const onClickRefresh = async () => {
 		console.log('into onClickRefresh');
 		const { data } = await getOrderById()
@@ -16,6 +17,7 @@ const OrdersPage = ({ orders, setOrders, historyOrders, getOrderById, forceOrder
 	return (
 		<>
 			<Box sx={{ height: 80 }}></Box>
+			<div style={{"fontSize":"20px"}}>{google_ID} ---- {userName}</div>
 			<Tab
 				items={["歷史訂單", "待付款訂單"]}
 				type={type}
