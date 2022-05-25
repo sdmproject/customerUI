@@ -39,9 +39,9 @@ const DishComment = ({ show, commentData, dishId, setDishes, userName}) => {
     return <div className="ts-rating is-small is-yellow">{starList}</div>;
   };
 
-  const setNewCommentToDishData = (commentInfo) => {
+  function setNewCommentToDishData(commentInfo) {
 
-    const newComment = {
+    var newComment = {
       content: commentInfo.content,
       id: commentInfo.time,//not sure what to use
       imgUrl: commentInfo.imgUrl,
@@ -49,11 +49,10 @@ const DishComment = ({ show, commentData, dishId, setDishes, userName}) => {
       rate: commentInfo.rate,
       time: commentInfo.time,
     }
-    // console.log("setNewCommentToDishData", commentData)
     const newComments = [...localCommentData, newComment];
-    console.log("new commentData", newComments);
+    // console.log("new commentData", newComments);
 
-    const dishData = ReactSession.get("dishData");
+    var dishData = ReactSession.get("dishData");
 
     for (var i = 0; i < dishData.length; i++) {
       if (dishData[i].id == dishId) {
@@ -67,8 +66,8 @@ const DishComment = ({ show, commentData, dishId, setDishes, userName}) => {
 
   }
 
-  const clickSendComment = async (content, rating) => {
-    console.log({ content, rating });
+  async function clickSendComment(content, rating) {
+    // console.log('clickSendComment',{ content, rating }, ReactSession.get("username"));
     var commentInfo = {
       itemId: dishId,
       name: ReactSession.get("username"),
@@ -77,7 +76,6 @@ const DishComment = ({ show, commentData, dishId, setDishes, userName}) => {
       rate: rating,
       imgUrl: ReactSession.get("image_URL"),
     }
-
     var sendData = await sendComment(commentInfo);
     setNewCommentToDishData(sendData);
   }
