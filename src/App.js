@@ -70,15 +70,9 @@ function App() {
   const [forceOrderUpdate, setForceOrderUpdate] = useState(0);
 
 
-  ReactSession.setStoreType("localStorage");
-  ReactSession.set("isTakeOut", true);
-  ReactSession.set("minutesLater", 15);
-  ReactSession.set("herePeople", 1);
 
-  ReactSession.set("username", "--anonymous");
-  ReactSession.set("image_URL", "");
-  ReactSession.set("email", "");
-  ReactSession.set("google_ID", "");
+
+
 
   const [orders, setOrders] = useState([]);
   const [forceIntervalUpdate, setForceIntervalUpdate] = useState(0)
@@ -98,9 +92,18 @@ function App() {
   };
 
   useEffect(async () => {
+    console.log('--------------------------useEffect');
     InitMixpanel();
     const { data } = await getOrderById();
-    setHistoryOrders(data)
+    setHistoryOrders(data);
+    ReactSession.setStoreType("localStorage");
+    ReactSession.set("isTakeOut", true);
+    ReactSession.set("minutesLater", 15);
+    ReactSession.set("herePeople", 1);
+    ReactSession.set("username", "--anonymous");
+    ReactSession.set("image_URL", "");
+    ReactSession.set("email", "");
+    ReactSession.set("google_ID", "");
   }, []);
 
   useEffect(async () => {
